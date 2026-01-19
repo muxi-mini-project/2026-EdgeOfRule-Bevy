@@ -1,6 +1,7 @@
 mod gameplay;
 mod ui;
 
+use crate::gameplay::GamePlayPlugin;
 use crate::ui::UiPlugin;
 use bevy::prelude::*;
 use bevy::window::WindowMode;
@@ -16,5 +17,6 @@ fn main() {
             ..default()
         }))
         .add_plugins(UiPlugin)
+        .add_plugins(GamePlayPlugin)
         .run();
 }
