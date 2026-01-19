@@ -8,14 +8,19 @@ use bevy::window::WindowMode;
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins.set(WindowPlugin {
-            primary_window: Some(Window {
-                title: "校园疾跑：规则边缘".to_string(),
-                mode: WindowMode::Fullscreen,
-                ..default()
-            }),
-            ..default()
-        }))
+        .insert_resource(Msaa::Off)
+        .add_plugins(
+            DefaultPlugins
+                .set(WindowPlugin {
+                    primary_window: Some(Window {
+                        title: "校园疾跑：规则边缘".to_string(),
+                        mode: WindowMode::Fullscreen,
+                        ..default()
+                    }),
+                    ..default()
+                })
+                .set(ImagePlugin::default_nearest()),
+        )
         .add_plugins(UiPlugin)
         .add_plugins(GamePlayPlugin)
         .run();
