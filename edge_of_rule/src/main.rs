@@ -1,7 +1,16 @@
-mod gameplay;
+mod animation;
+mod assets;
+mod constants;
+mod core;
+mod entities;
+mod levels;
+mod physics;
 mod ui;
+mod utils;
 
-use crate::gameplay::GamePlayPlugin;
+use crate::assets::AssetsPlugin;
+use crate::core::CorePlugin;
+use crate::entities::EntitiesPlugin;
 use crate::ui::UiPlugin;
 use bevy::prelude::*;
 use bevy::window::WindowMode;
@@ -21,7 +30,9 @@ fn main() {
                 })
                 .set(ImagePlugin::default_nearest()),
         )
+        .add_plugins(CorePlugin)
+        .add_plugins(AssetsPlugin)
+        .add_plugins(EntitiesPlugin)
         .add_plugins(UiPlugin)
-        .add_plugins(GamePlayPlugin)
         .run();
 }
