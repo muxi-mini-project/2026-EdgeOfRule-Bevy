@@ -1,10 +1,14 @@
+mod player;
+
 use bevy::prelude::*;
 
 pub struct GamePlayPlugin;
 
 impl Plugin for GamePlayPlugin {
     fn build(&self, app: &mut App) {
-        app.init_state::<State>();
+        app.init_state::<State>()
+            .add_systems(Startup, player::load_player_assets)
+            .add_systems(OnEnter(State::InGame), player::spawn_player);
     }
 }
 
