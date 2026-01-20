@@ -11,14 +11,14 @@ pub fn spawn_ground(mut commands: Commands) {
         SpriteBundle {
             sprite: Sprite {
                 color: Color::GRAY,
-                custom_size: Some(Vec2::new(1000.0, 50.0)),
+                custom_size: Some(Vec2::new(2000.0, 50.0)),
                 ..default()
             },
             transform: Transform::from_xyz(0.0, -150.0, 0.0),
             ..default()
         },
         RigidBody::Fixed,
-        Collider::cuboid(500.0, 25.0),
+        Collider::cuboid(1000.0, 25.0),
         CollisionGroups::new(CollisionGroup::Ground.into(), Group::ALL),
         Friction {
             coefficient: 0.0,

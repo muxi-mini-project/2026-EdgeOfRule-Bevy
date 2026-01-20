@@ -12,9 +12,15 @@ pub struct Player {
     pub jump_count: usize,
     pub max_jumps: usize,
     pub is_grounded: bool,
+    pub dash_speed: f32,
+    pub dash_direction: f32,
+    pub dash_timer: Timer,
+    pub dash_cooldown_timer: Timer,
+    pub is_dashing: bool,
 }
 
 pub fn spawn_player(mut commands: Commands, player_assets: Res<PlayerAssets>) {
+    commands.spawn(Camera2dBundle::default());
     commands.spawn((
         SpriteBundle {
             texture: player_assets.front_texture.clone(),
@@ -36,11 +42,20 @@ pub fn spawn_player(mut commands: Commands, player_assets: Res<PlayerAssets>) {
             angular_damping: 0.0,
         },
         Player {
-            speed: 450.0,
+            speed: 350.0,
             jump_force: 400.0,
             jump_count: 0,
             max_jumps: 2,
             is_grounded: false,
+            dash_speed: 800.0,
+            dash_direction: 0.0,
+            dash_timer: Timer::from_seconds(0.3, TimerMode::Once),
+            dash_cooldown_timer: {
+                let mut timer = Timer::from_seconds(1.0, TimerMode::Once);
+                timer.set_elapsed(timer.duration());
+                timer
+            },
+            is_dashing: false,
         },
         CollisionGroups::new(CollisionGroup::Player.into(), CollisionGroup::Ground.into()),
         ActiveEvents::COLLISION_EVENTS,
