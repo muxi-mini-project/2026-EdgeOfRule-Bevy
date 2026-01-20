@@ -5,4 +5,5 @@ edition = "2024"
 
 [dependencies]
 bevy = "0.13.0"
+bevy_asset_loader = "0.17"
 bevy_rapier2d = "0.25.0"
