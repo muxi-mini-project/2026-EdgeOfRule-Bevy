@@ -17,7 +17,7 @@ pub struct Player {
 pub fn spawn_player(mut commands: Commands, player_assets: Res<PlayerAssets>) {
     commands.spawn((
         SpriteBundle {
-            texture: player_assets.texture.clone(),
+            texture: player_assets.front_texture.clone(),
             transform: Transform::from_xyz(-50.0, 20.0, 0.0).with_scale(Vec3::splat(SCALE)),
             ..Default::default()
         },

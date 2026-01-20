@@ -9,6 +9,7 @@ mod physics;
 mod ui;
 mod utils;
 
+use crate::animation::AnimationPlugin;
 use crate::assets::AssetsPlugin;
 use crate::control::ControlPlugin;
 use crate::core::CorePlugin;
@@ -38,6 +39,7 @@ fn main() {
         .add_plugins(AssetsPlugin)
         .add_plugins(EntitiesPlugin)
         .add_plugins(ControlPlugin)
+        .add_plugins(AnimationPlugin)
         .add_plugins(UiPlugin)
         .run();
 }
