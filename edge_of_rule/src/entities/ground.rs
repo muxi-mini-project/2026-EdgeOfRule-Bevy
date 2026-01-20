@@ -10,7 +10,7 @@ pub fn spawn_ground(mut commands: Commands) {
     commands.spawn((
         SpriteBundle {
             sprite: Sprite {
-                color: Color::GREEN,
+                color: Color::GRAY,
                 custom_size: Some(Vec2::new(1000.0, 50.0)),
                 ..default()
             },
