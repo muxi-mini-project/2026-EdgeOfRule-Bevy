@@ -40,6 +40,6 @@ fn main() {
         .add_plugins(EntitiesPlugin)
         .add_plugins(ControlPlugin)
         .add_plugins(AnimationPlugin)
-        .add_plugins(UiPlugin)
+        // .add_plugins(UiPlugin)
         .run();
 }

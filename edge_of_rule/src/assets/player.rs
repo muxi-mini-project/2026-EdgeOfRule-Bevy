@@ -4,6 +4,7 @@ use bevy::prelude::*;
 pub struct PlayerAssets {
     pub front_texture: Handle<Image>,
     pub side_textures: Vec<Handle<Image>>,
+    pub front_squat_texture: Handle<Image>,
 }
 
 pub fn load_player_assets(mut commands: Commands, asset_server: Res<AssetServer>) {
@@ -15,5 +16,6 @@ pub fn load_player_assets(mut commands: Commands, asset_server: Res<AssetServer>
             asset_server.load("images/player_side_2.png"),
             asset_server.load("images/player_side_3.png"),
         ],
+        front_squat_texture: asset_server.load("images/player_squat.png"),
     });
 }

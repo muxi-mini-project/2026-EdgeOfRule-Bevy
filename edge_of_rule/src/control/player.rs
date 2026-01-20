@@ -5,11 +5,45 @@ use bevy_rapier2d::prelude::*;
 pub fn player_movement(
     time: Res<Time>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut query: Query<(&mut Velocity, &Player)>,
+    mut query: Query<(&mut Velocity, &mut Player)>,
 ) {
     const HORIZONTAL_ACCELERATION: f32 = 3000.0;
 
-    for (mut velocity, player) in &mut query {
+    for (mut velocity, mut player) in &mut query {
+        if player.is_dashing {
+            player.dash_timer.tick(time.delta());
+            velocity.linvel.x = player.dash_direction * player.dash_speed;
+
+            if player.dash_timer.finished() {
+                player.is_dashing = false;
+                player.dash_direction = 0.0;
+                player.dash_cooldown_timer.reset();
+            } else {
+                continue;
+            }
+        } else if !player.dash_cooldown_timer.finished() {
+            player.dash_cooldown_timer.tick(time.delta());
+        }
+
+        let dash_ready = player.dash_cooldown_timer.finished();
+        let shift_just_pressed = keyboard_input.just_pressed(KeyCode::ShiftLeft)
+            || keyboard_input.just_pressed(KeyCode::ShiftRight);
+
+        if keyboard_input.pressed(KeyCode::KeyA) && shift_just_pressed && dash_ready {
+            player.is_dashing = true;
+            player.dash_direction = -1.0;
+            player.dash_timer.reset();
+            velocity.linvel.x = player.dash_direction * player.dash_speed;
+            continue;
+        }
+        if keyboard_input.pressed(KeyCode::KeyD) && shift_just_pressed && dash_ready {
+            player.is_dashing = true;
+            player.dash_direction = 1.0;
+            player.dash_timer.reset();
+            velocity.linvel.x = player.dash_direction * player.dash_speed;
+            continue;
+        }
+
         let mut direction = 0.0;
 
         if keyboard_input.pressed(KeyCode::KeyA) || keyboard_input.pressed(KeyCode::ArrowLeft) {
