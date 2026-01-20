@@ -1,6 +1,7 @@
 mod animation;
 mod assets;
 mod constants;
+mod control;
 mod core;
 mod entities;
 mod levels;
@@ -9,6 +10,7 @@ mod ui;
 mod utils;
 
 use crate::assets::AssetsPlugin;
+use crate::control::ControlPlugin;
 use crate::core::CorePlugin;
 use crate::entities::EntitiesPlugin;
 use crate::ui::UiPlugin;
@@ -35,6 +37,7 @@ fn main() {
         .add_plugins(CorePlugin)
         .add_plugins(AssetsPlugin)
         .add_plugins(EntitiesPlugin)
+        .add_plugins(ControlPlugin)
         .add_plugins(UiPlugin)
         .run();
 }
