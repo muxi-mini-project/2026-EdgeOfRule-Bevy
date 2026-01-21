@@ -6,6 +6,6 @@ pub struct AnimationPlugin;
 
 impl Plugin for AnimationPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, player::player_walk);
+        app.add_systems(Update, player::player_animation_system);
     }
 }
