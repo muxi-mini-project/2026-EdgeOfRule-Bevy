@@ -6,6 +6,7 @@ pub struct PlayerAssets {
     pub side_textures: Vec<Handle<Image>>,
     pub front_squat_texture: Handle<Image>,
     pub side_squat_textures: Vec<Handle<Image>>,
+    pub slide_textures: [Handle<Image>; 2],
 }
 
 pub fn load_player_assets(mut commands: Commands, asset_server: Res<AssetServer>) {
@@ -21,6 +22,10 @@ pub fn load_player_assets(mut commands: Commands, asset_server: Res<AssetServer>
         side_squat_textures: vec![
             asset_server.load("images/player_squat_side_0.png"),
             asset_server.load("images/player_squat_side_1.png"),
+        ],
+        slide_textures: [
+            asset_server.load("images/slide_0.png"),
+            asset_server.load("images/slide_1.png"),
         ],
     });
 }

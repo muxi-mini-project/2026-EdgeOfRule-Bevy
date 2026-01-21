@@ -16,9 +16,13 @@ pub fn player_animation_system(
 
     for (entity, velocity, player, mut handle) in &mut player {
         let new_texture = match player.state {
-            PlayerState::Dashing | PlayerState::Sliding => Some(match player.facing {
+            PlayerState::Dashing => Some(match player.facing {
                 FacingDirection::Right => player_assets.side_squat_textures[0].clone(),
                 FacingDirection::Left => player_assets.side_squat_textures[1].clone(),
+            }),
+            PlayerState::Sliding => Some(match player.facing {
+                FacingDirection::Right => player_assets.slide_textures[0].clone(),
+                FacingDirection::Left => player_assets.slide_textures[1].clone(),
             }),
             PlayerState::Crouching => Some(player_assets.front_squat_texture.clone()),
             PlayerState::Walking => {
