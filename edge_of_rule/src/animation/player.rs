@@ -44,11 +44,11 @@ pub fn player_animation_system(
             PlayerState::Idle => Some(player_assets.front_texture.clone()),
         };
 
-        if let Some(new_texture) = new_texture {
-            if *handle != new_texture {
-                commands.entity(entity).insert(new_texture.clone());
-                *handle = new_texture;
-            }
+        if let Some(new_texture) = new_texture
+            && *handle != new_texture
+        {
+            commands.entity(entity).insert(new_texture.clone());
+            *handle = new_texture;
         }
     }
 }

@@ -5,20 +5,16 @@ use crate::physics::collision::CollisionGroup;
 use bevy::prelude::*;
 use bevy_rapier2d::prelude::*;
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
 pub enum FacingDirection {
     Left,
+    #[default]
     Right,
 }
 
-impl Default for FacingDirection {
-    fn default() -> Self {
-        Self::Right
-    }
-}
-
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
 pub enum PlayerState {
+    #[default]
     Idle,
     Walking,
     Jumping,
@@ -27,12 +23,6 @@ pub enum PlayerState {
     Crouching,
     Sliding,
     Dashing,
-}
-
-impl Default for PlayerState {
-    fn default() -> Self {
-        Self::Idle
-    }
 }
 
 #[derive(Component)]

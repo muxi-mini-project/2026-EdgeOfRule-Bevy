@@ -46,7 +46,7 @@ pub fn player_control_system(
         apply_horizontal_movement(&time, &player, &mut velocity, horizontal_direction);
 
         if player.is_grounded {
-            update_ground_state(&input, &mut player, horizontal_input, down_without_move);
+            update_ground_state(&mut player, horizontal_input, down_without_move);
         } else {
             update_air_state(&input, &mut player, &mut velocity);
         }
@@ -260,12 +260,7 @@ fn handle_jump(input: &PlayerInput, player: &mut Player, velocity: &mut Velocity
     }
 }
 
-fn update_ground_state(
-    input: &PlayerInput,
-    player: &mut Player,
-    horizontal_input: f32,
-    down_without_move: bool,
-) {
+fn update_ground_state(player: &mut Player, horizontal_input: f32, down_without_move: bool) {
     if matches!(player.state, PlayerState::Sliding) {
         return;
     }
