@@ -9,7 +9,7 @@ pub struct EntitiesPlugin;
 
 impl Plugin for EntitiesPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(GameState::InGame), player::spawn_player)
-            .add_systems(OnEnter(GameState::InGame), ground::spawn_ground);
+        app.add_systems(OnEnter(GameState::Day1), player::spawn_player)
+            .add_systems(OnEnter(GameState::Day1), ground::spawn_ground);
     }
 }
