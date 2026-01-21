@@ -1,4 +1,5 @@
 pub mod player;
+pub mod ui_image;
 
 use bevy::prelude::*;
 

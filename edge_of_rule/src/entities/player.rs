@@ -5,6 +5,26 @@ use crate::physics::collision::CollisionGroup;
 use bevy::prelude::*;
 use bevy_rapier2d::prelude::*;
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
+pub enum FacingDirection {
+    Left,
+    #[default]
+    Right,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
+pub enum PlayerState {
+    #[default]
+    Idle,
+    Walking,
+    Jumping,
+    Falling,
+    FastFalling,
+    Crouching,
+    Sliding,
+    Dashing,
+}
+
 #[derive(Component)]
 pub struct Player {
     pub speed: f32,
@@ -16,7 +36,9 @@ pub struct Player {
     pub dash_direction: Vec2,
     pub dash_timer: Timer,
     pub dash_cooldown_timer: Timer,
-    pub is_dashing: bool,
+    pub state: PlayerState,
+    pub facing: FacingDirection,
+    pub ignore_down_input: bool,
 }
 
 pub fn spawn_player(mut commands: Commands, player_assets: Res<PlayerAssets>) {
@@ -42,9 +64,9 @@ pub fn spawn_player(mut commands: Commands, player_assets: Res<PlayerAssets>) {
         },
         Player {
             speed: 350.0,
-            jump_force: 400.0,
+            jump_force: 500.0,
             jump_count: 0,
-            max_jumps: 20,
+            max_jumps: 2,
             is_grounded: false,
             dash_speed: 800.0,
             dash_direction: Vec2::ZERO,
@@ -54,7 +76,9 @@ pub fn spawn_player(mut commands: Commands, player_assets: Res<PlayerAssets>) {
                 timer.set_elapsed(timer.duration());
                 timer
             },
-            is_dashing: false,
+            state: PlayerState::Idle,
+            facing: FacingDirection::Right,
+            ignore_down_input: false,
         },
         CollisionGroups::new(CollisionGroup::Player.into(), CollisionGroup::Ground.into()),
         ActiveEvents::COLLISION_EVENTS,

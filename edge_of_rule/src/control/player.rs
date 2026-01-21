@@ -1,113 +1,150 @@
-use crate::entities::{ground::Ground, player::Player};
+use crate::entities::{
+    ground::Ground,
+    player::{FacingDirection, Player, PlayerState},
+};
 use bevy::prelude::*;
 use bevy_rapier2d::prelude::*;
 
-pub fn player_movement(
+const FAST_FALL_ACCELERATION: f32 = 70.0;
+
+pub fn player_control_system(
     time: Res<Time>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mut query: Query<(&mut Velocity, &mut Player)>,
 ) {
-    const HORIZONTAL_ACCELERATION: f32 = 3000.0;
-
     for (mut velocity, mut player) in &mut query {
-        let was_dashing = player.is_dashing;
+        let input = PlayerInput::from(&keyboard_input);
+
         if handle_active_dash(&time, &mut player, &mut velocity) {
             continue;
         }
 
-        if !was_dashing {
-            update_dash_cooldown(&time, &mut player);
-        }
+        update_dash_cooldown(&time, &mut player);
 
-        let input = DashInput::from_input(&keyboard_input);
-        let dash_ready = player.dash_cooldown_timer.finished();
-
-        if try_trigger_dash(&input, dash_ready, &mut player, &mut velocity) {
+        if try_trigger_dash(&input, &mut player, &mut velocity) {
             continue;
         }
 
-        apply_horizontal_movement(&time, &player, &mut velocity, input.horizontal_direction);
+        handle_jump(&input, &mut player, &mut velocity);
+
+        let horizontal_input = input.horizontal_direction();
+        let down_without_move = player.is_grounded && input.down_pressed && horizontal_input == 0.0;
+        let horizontal_direction = if down_without_move {
+            0.0
+        } else {
+            horizontal_input
+        };
+
+        if horizontal_direction != 0.0 {
+            player.facing = if horizontal_direction > 0.0 {
+                FacingDirection::Right
+            } else {
+                FacingDirection::Left
+            };
+        }
+
+        apply_horizontal_movement(&time, &player, &mut velocity, horizontal_direction);
+
+        if player.is_grounded {
+            update_ground_state(&mut player, horizontal_input, down_without_move);
+        } else {
+            update_air_state(&input, &mut player, &mut velocity);
+        }
     }
 }
 
-struct DashInput {
+struct PlayerInput {
+    left_pressed: bool,
+    left_just_pressed: bool,
+    right_pressed: bool,
+    right_just_pressed: bool,
+    down_pressed: bool,
+    down_just_pressed: bool,
+    jump_just_pressed: bool,
     shift_pressed: bool,
     shift_just_pressed: bool,
-    a_pressed: bool,
-    a_just_pressed: bool,
-    d_pressed: bool,
-    d_just_pressed: bool,
-    s_pressed: bool,
-    s_just_pressed: bool,
-    horizontal_direction: f32,
 }
 
-impl DashInput {
-    fn from_input(input: &ButtonInput<KeyCode>) -> Self {
+impl PlayerInput {
+    fn from(input: &ButtonInput<KeyCode>) -> Self {
+        let left_pressed = input.pressed(KeyCode::KeyA);
+        let right_pressed = input.pressed(KeyCode::KeyD);
+        let down_pressed = input.pressed(KeyCode::KeyS);
         let shift_pressed = input.pressed(KeyCode::ShiftLeft) || input.pressed(KeyCode::ShiftRight);
+
+        let left_just_pressed = input.just_pressed(KeyCode::KeyA);
+        let right_just_pressed = input.just_pressed(KeyCode::KeyD);
+        let down_just_pressed = input.just_pressed(KeyCode::KeyS);
         let shift_just_pressed =
             input.just_pressed(KeyCode::ShiftLeft) || input.just_pressed(KeyCode::ShiftRight);
-        let a_pressed = input.pressed(KeyCode::KeyA);
-        let a_just_pressed = input.just_pressed(KeyCode::KeyA);
-        let d_pressed = input.pressed(KeyCode::KeyD);
-        let d_just_pressed = input.just_pressed(KeyCode::KeyD);
-        let s_pressed = input.pressed(KeyCode::KeyS) || input.pressed(KeyCode::ArrowDown);
-        let s_just_pressed =
-            input.just_pressed(KeyCode::KeyS) || input.just_pressed(KeyCode::ArrowDown);
 
-        let mut horizontal_direction = 0.0;
-        if a_pressed || input.pressed(KeyCode::ArrowLeft) {
-            horizontal_direction = -1.0;
-        }
-        if d_pressed || input.pressed(KeyCode::ArrowRight) {
-            horizontal_direction = 1.0;
-        }
+        let jump_just_pressed =
+            input.just_pressed(KeyCode::Space) || input.just_pressed(KeyCode::KeyW);
 
         Self {
+            left_pressed,
+            left_just_pressed,
+            right_pressed,
+            right_just_pressed,
+            down_pressed,
+            down_just_pressed,
+            jump_just_pressed,
             shift_pressed,
             shift_just_pressed,
-            a_pressed,
-            a_just_pressed,
-            d_pressed,
-            d_just_pressed,
-            s_pressed,
-            s_just_pressed,
-            horizontal_direction,
+        }
+    }
+
+    fn horizontal_direction(&self) -> f32 {
+        match (self.left_pressed, self.right_pressed) {
+            (true, false) => -1.0,
+            (false, true) => 1.0,
+            _ => 0.0,
         }
     }
 
     fn shift_left_combo(&self) -> bool {
-        (self.shift_pressed && self.a_just_pressed) || (self.a_pressed && self.shift_just_pressed)
+        (self.shift_pressed && self.left_just_pressed)
+            || (self.left_pressed && self.shift_just_pressed)
     }
 
     fn shift_right_combo(&self) -> bool {
-        (self.shift_pressed && self.d_just_pressed) || (self.d_pressed && self.shift_just_pressed)
+        (self.shift_pressed && self.right_just_pressed)
+            || (self.right_pressed && self.shift_just_pressed)
     }
 
-    fn left_combo(&self) -> bool {
-        (self.s_pressed && self.a_just_pressed) || (self.a_pressed && self.s_just_pressed)
+    fn down_left_combo(&self) -> bool {
+        (self.down_pressed && self.left_just_pressed)
+            || (self.left_pressed && self.down_just_pressed)
     }
 
-    fn right_combo(&self) -> bool {
-        (self.s_pressed && self.d_just_pressed) || (self.d_pressed && self.s_just_pressed)
+    fn down_right_combo(&self) -> bool {
+        (self.down_pressed && self.right_just_pressed)
+            || (self.right_pressed && self.down_just_pressed)
     }
 }
 
 fn handle_active_dash(time: &Time, player: &mut Player, velocity: &mut Velocity) -> bool {
-    if player.is_dashing {
-        player.dash_timer.tick(time.delta());
-        velocity.linvel.x = player.dash_direction.x * player.dash_speed;
-        if player.dash_direction.y != 0.0 {
-            velocity.linvel.y = player.dash_direction.y * player.dash_speed;
-        }
+    if !matches!(player.state, PlayerState::Dashing | PlayerState::Sliding) {
+        return false;
+    }
 
-        if player.dash_timer.finished() {
-            player.is_dashing = false;
-            player.dash_direction = Vec2::ZERO;
-            player.dash_cooldown_timer.reset();
+    player.dash_timer.tick(time.delta());
+    velocity.linvel.x = player.dash_direction.x * player.dash_speed;
+    if player.dash_direction.y != 0.0 {
+        velocity.linvel.y = player.dash_direction.y * player.dash_speed;
+    }
+
+    if player.dash_timer.finished() {
+        player.dash_direction = Vec2::ZERO;
+        player.dash_cooldown_timer.reset();
+        player.ignore_down_input = false;
+        player.state = if player.is_grounded {
+            PlayerState::Idle
         } else {
-            return true;
-        }
+            PlayerState::Falling
+        };
+    } else {
+        return true;
     }
 
     false
@@ -119,53 +156,77 @@ fn update_dash_cooldown(time: &Time, player: &mut Player) {
     }
 }
 
-fn try_trigger_dash(
-    input: &DashInput,
-    dash_ready: bool,
-    player: &mut Player,
-    velocity: &mut Velocity,
-) -> bool {
-    if !dash_ready {
+fn try_trigger_dash(input: &PlayerInput, player: &mut Player, velocity: &mut Velocity) -> bool {
+    if !player.dash_cooldown_timer.finished() {
         return false;
     }
 
     if input.shift_left_combo() {
-        return start_dash(player, velocity, Vec2::new(-1.0, 0.0));
+        return start_dash(player, velocity, PlayerState::Dashing, Vec2::new(-1.0, 0.0));
     }
 
     if input.shift_right_combo() {
-        return start_dash(player, velocity, Vec2::new(1.0, 0.0));
+        return start_dash(player, velocity, PlayerState::Dashing, Vec2::new(1.0, 0.0));
     }
 
-    if input.left_combo() {
-        let direction = if player.is_grounded {
+    if input.down_left_combo() {
+        let desired_state = if player.is_grounded {
+            PlayerState::Sliding
+        } else {
+            PlayerState::Dashing
+        };
+        let dash_direction = if player.is_grounded {
             Vec2::new(-1.0, 0.0)
         } else {
             Vec2::new(-1.0, -1.0)
         };
-        return start_dash(player, velocity, direction);
+        player.ignore_down_input = player.is_grounded;
+        return start_dash(player, velocity, desired_state, dash_direction);
     }
 
-    if input.right_combo() {
-        let direction = if player.is_grounded {
+    if input.down_right_combo() {
+        let desired_state = if player.is_grounded {
+            PlayerState::Sliding
+        } else {
+            PlayerState::Dashing
+        };
+        let dash_direction = if player.is_grounded {
             Vec2::new(1.0, 0.0)
         } else {
             Vec2::new(1.0, -1.0)
         };
-        return start_dash(player, velocity, direction);
+        player.ignore_down_input = player.is_grounded;
+        return start_dash(player, velocity, desired_state, dash_direction);
     }
 
     false
 }
 
-fn start_dash(player: &mut Player, velocity: &mut Velocity, direction: Vec2) -> bool {
-    player.is_dashing = true;
+fn start_dash(
+    player: &mut Player,
+    velocity: &mut Velocity,
+    next_state: PlayerState,
+    direction: Vec2,
+) -> bool {
+    player.state = next_state;
     player.dash_direction = direction;
     player.dash_timer.reset();
+
+    if direction.x != 0.0 {
+        player.facing = if direction.x > 0.0 {
+            FacingDirection::Right
+        } else {
+            FacingDirection::Left
+        };
+    }
 
     velocity.linvel.x = direction.x * player.dash_speed;
     if direction.y != 0.0 {
         velocity.linvel.y = direction.y * player.dash_speed;
+    }
+
+    if matches!(player.state, PlayerState::Sliding) {
+        velocity.linvel.y = 0.0;
     }
 
     true
@@ -190,36 +251,40 @@ fn apply_horizontal_movement(
     }
 }
 
-pub fn player_jump(
-    keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut query: Query<(&mut Velocity, &mut Player)>,
-) {
-    for (mut velocity, mut player) in &mut query {
-        if (keyboard_input.just_pressed(KeyCode::Space)
-            || keyboard_input.just_pressed(KeyCode::KeyW))
-            && player.jump_count < player.max_jumps
-        {
-            velocity.linvel.y = player.jump_force;
-            player.jump_count += 1;
-            player.is_grounded = false;
-        }
+fn handle_jump(input: &PlayerInput, player: &mut Player, velocity: &mut Velocity) {
+    if input.jump_just_pressed && player.jump_count < player.max_jumps {
+        velocity.linvel.y = player.jump_force;
+        player.jump_count += 1;
+        player.is_grounded = false;
+        player.state = PlayerState::Jumping;
     }
 }
 
-pub fn player_squat(
-    keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut query: Query<(&mut Velocity, &Player)>,
-) {
-    const FAST_FALL_ACCELERATION: f32 = 70.0;
+fn update_ground_state(player: &mut Player, horizontal_input: f32, down_without_move: bool) {
+    if matches!(player.state, PlayerState::Sliding) {
+        return;
+    }
 
-    for (mut velocity, player) in &mut query {
-        if player.is_dashing {
-            continue;
-        }
+    if down_without_move && !player.ignore_down_input {
+        player.state = PlayerState::Crouching;
+    } else if horizontal_input != 0.0 {
+        player.state = PlayerState::Walking;
+    } else {
+        player.state = PlayerState::Idle;
+    }
+}
 
-        if keyboard_input.pressed(KeyCode::KeyS) || keyboard_input.pressed(KeyCode::ArrowDown) {
-            velocity.linvel.y -= FAST_FALL_ACCELERATION;
-        }
+fn update_air_state(input: &PlayerInput, player: &mut Player, velocity: &mut Velocity) {
+    if input.down_pressed && !player.ignore_down_input {
+        player.state = PlayerState::FastFalling;
+        velocity.linvel.y -= FAST_FALL_ACCELERATION;
+        return;
+    }
+
+    if velocity.linvel.y > 1.0 {
+        player.state = PlayerState::Jumping;
+    } else {
+        player.state = PlayerState::Falling;
     }
 }
 
@@ -233,17 +298,29 @@ pub fn player_ground_detection(
     for event in contact_events.read() {
         match event {
             CollisionEvent::Started(entity1, entity2, _) => {
-                for mut player in &mut player_query {
-                    if ground_entities.contains(entity1) || ground_entities.contains(entity2) {
+                if ground_entities.contains(entity1) || ground_entities.contains(entity2) {
+                    for mut player in &mut player_query {
                         player.is_grounded = true;
                         player.jump_count = 0;
+                        if matches!(
+                            player.state,
+                            PlayerState::Jumping | PlayerState::Falling | PlayerState::FastFalling
+                        ) {
+                            player.state = PlayerState::Idle;
+                        }
                     }
                 }
             }
             CollisionEvent::Stopped(entity1, entity2, _) => {
-                for mut player in &mut player_query {
-                    if ground_entities.contains(entity1) || ground_entities.contains(entity2) {
+                if ground_entities.contains(entity1) || ground_entities.contains(entity2) {
+                    for mut player in &mut player_query {
                         player.is_grounded = false;
+                        if matches!(
+                            player.state,
+                            PlayerState::Idle | PlayerState::Walking | PlayerState::Crouching
+                        ) {
+                            player.state = PlayerState::Falling;
+                        }
                     }
                 }
             }
