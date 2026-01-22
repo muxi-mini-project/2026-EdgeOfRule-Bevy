@@ -4,9 +4,9 @@ use bevy_rapier2d::prelude::*;
 use crate::physics::collision::CollisionGroup;
 
 #[derive(Component)]
-pub struct Ground;
+pub struct Wall;
 
-pub fn spawn_ground(commands: &mut Commands, custom_size: Vec2, transform: Transform) {
+pub fn spawn_wall(commands: &mut Commands, custom_size: Vec2, transform: Transform) {
     commands.spawn((
         SpriteBundle {
             sprite: Sprite {
@@ -24,6 +24,6 @@ pub fn spawn_ground(commands: &mut Commands, custom_size: Vec2, transform: Trans
             coefficient: 0.0,
             combine_rule: CoefficientCombineRule::Max,
         },
-        Ground,
+        Wall,
     ));
 }

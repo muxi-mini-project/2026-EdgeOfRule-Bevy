@@ -13,7 +13,7 @@ use crate::animation::AnimationPlugin;
 use crate::assets::AssetsPlugin;
 use crate::control::ControlPlugin;
 use crate::core::CorePlugin;
-use crate::entities::EntitiesPlugin;
+use crate::levels::LevelsPlugin;
 use crate::ui::UiPlugin;
 use bevy::prelude::*;
 use bevy::window::WindowMode;
@@ -37,9 +37,9 @@ fn main() {
         .add_plugins(RapierPhysicsPlugin::<NoUserData>::default())
         .add_plugins(CorePlugin)
         .add_plugins(AssetsPlugin)
-        .add_plugins(EntitiesPlugin)
         .add_plugins(ControlPlugin)
         .add_plugins(AnimationPlugin)
+        .add_plugins(LevelsPlugin)
         .add_plugins(UiPlugin)
         .run();
 }
