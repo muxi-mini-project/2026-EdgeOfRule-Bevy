@@ -41,11 +41,15 @@ pub struct Player {
     pub ignore_down_input: bool,
 }
 
-pub fn spawn_player(mut commands: Commands, player_assets: Res<PlayerAssets>) {
+pub fn spawn_player(
+    mut commands: Commands,
+    player_assets: Res<PlayerAssets>,
+    transform: Transform,
+) {
     commands.spawn((
         SpriteBundle {
             texture: player_assets.front_texture.clone(),
-            transform: Transform::from_xyz(-50.0, 20.0, 0.0).with_scale(Vec3::splat(SCALE)),
+            transform: transform.with_scale(Vec3::splat(SCALE)),
             ..Default::default()
         },
         RigidBody::Dynamic,
