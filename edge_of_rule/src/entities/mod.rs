@@ -1,4 +1,9 @@
+pub mod broken_floor;
+pub mod door;
 pub mod general;
 pub mod ground;
+pub mod mirror;
 pub mod player;
+pub mod table;
+pub mod trapdoor;
 pub mod wall;
