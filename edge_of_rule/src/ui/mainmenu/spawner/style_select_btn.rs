@@ -20,25 +20,43 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
             StyleSelectBtn,
         ))
         .with_children(|root| {
-            root.spawn((
-                ImageBundle {
-                    style: Style {
-                        width: Val::Percent(25.0),
-                        height: Val::Percent(9.0),
-                        margin: UiRect::bottom(Val::Percent(30.0)),
+            root.spawn(
+                (
+                    ButtonBundle{
+                        style: Style{
+                            width: Val::Percent(19.8),
+                            height: Val::Percent(9.52),
+                            margin: UiRect::bottom(Val::Percent(27.0)),
+                            align_items: AlignItems::Center,
+                            justify_content: JustifyContent::Center,
+                            ..Default::default()
+                        },
+                        background_color: Color::NONE.into(),
                         ..Default::default()
                     },
-                    image: UiImage::new(asset_server.load("images/mainmenu/style_select_btn.png")),
-                    ..Default::default()
-                },
-                StyleSelectBtn,
+                    StyleSelectBtn,
+                )
+            ).with_children(|root| {
+                root.spawn((
+                TextBundle::from_section(
+                    "Select Style",
+                    TextStyle {
+                        font: asset_server.load("font/font/aLiFont.ttf"), 
+                        font_size: 55.0, 
+                        color: Color::WHITE
+                    },
+                    
+                ),
                 Interaction::None,
             ));
+            })
+            ;
+            // 
         });
 }
 
 pub fn despawn(mut commands: Commands, btns: Query<Entity, With<StyleSelectBtn>>) {
     for btn in &btns {
-        commands.entity(btn).despawn();
+        commands.entity(btn).despawn_recursive();
     }
 }
