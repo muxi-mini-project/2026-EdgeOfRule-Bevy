@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 #[derive(Component)]
-pub struct OptionBtn(pub bool);
+pub struct OptionBtn;
 
 pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn((
@@ -18,7 +18,7 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
             z_index: ZIndex::Global(0),
             ..Default::default()
         },
-        OptionBtn(false),
+        OptionBtn,
         Interaction::None,
     ));
 }

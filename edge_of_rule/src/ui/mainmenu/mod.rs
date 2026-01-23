@@ -23,7 +23,6 @@ impl Plugin for MainMenuPlugin {
             OnExit(GameState::MainMenu),
             (
                 spawner::titled_background::despawn,
-                spawner::options_btn::despawn,
                 spawner::style_select_btn::despawn,
                 spawner::game_start_btn::despawn,
                 spawner::rules_btn::despawn,
@@ -33,23 +32,27 @@ impl Plugin for MainMenuPlugin {
             OnEnter(GameState::Options),
             (
                 spawner::background::spawn,
-                spawner::options_btn::spawn,
                 spawner::backward_btn::spawn,
+                spawner::options_area::spawn,
+                spawner::exit_game_btn::spawn,
             ),
         )
         .add_systems(
             OnExit(GameState::Options),
             (
                 spawner::background::despawn,
-                spawner::options_btn::despawn,
                 spawner::backward_btn::despawn,
+                spawner::options_area::despawn,
+                spawner::exit_game_btn::despawn,
             ),
         )
         .add_systems(
             OnEnter(GameState::StyleSelect),
             (
                 spawner::background::spawn,
-                spawner::options_btn::spawn,
+                spawner::style_area::spawn,
+                spawner::styles_introduct::spawn,
+                spawner::styles_btn::spawn,
                 spawner::backward_btn::spawn,
             ),
         )
@@ -57,7 +60,9 @@ impl Plugin for MainMenuPlugin {
             OnExit(GameState::StyleSelect),
             (
                 spawner::background::despawn,
-                spawner::options_btn::despawn,
+                spawner::style_area::despawn,
+                spawner::styles_introduct::despawn,
+                spawner::styles_btn::despawn,
                 spawner::backward_btn::despawn,
             ),
         )
@@ -65,23 +70,22 @@ impl Plugin for MainMenuPlugin {
             OnEnter(GameState::LevelSelect),
             (
                 spawner::background::spawn,
-                spawner::options_btn::spawn,
                 spawner::backward_btn::spawn,
+                spawner::levels::spawn,
             ),
         )
         .add_systems(
             OnExit(GameState::LevelSelect),
             (
                 spawner::background::despawn,
-                spawner::options_btn::despawn,
                 spawner::backward_btn::despawn,
+                spawner::levels::despawn,
             ),
         )
         .add_systems(
             OnEnter(GameState::RulesView),
             (
                 spawner::background::spawn,
-                spawner::options_btn::spawn,
                 spawner::backward_btn::spawn,
                 spawner::rules::spawn,
             ),
@@ -90,7 +94,6 @@ impl Plugin for MainMenuPlugin {
             OnExit(GameState::RulesView),
             (
                 spawner::background::despawn,
-                spawner::options_btn::despawn,
                 spawner::backward_btn::despawn,
                 spawner::rules::despawn,
             ),
@@ -99,9 +102,21 @@ impl Plugin for MainMenuPlugin {
             Update,
             (
                 actions::options_btn::on_click,
+                actions::exit_game_btn::on_click,
+
                 actions::style_select_btn::on_click,
+                actions::styles_btn::on_click,
+
                 actions::game_start_btn::on_click,
+                actions::levels::on_click_day1,
+                actions::levels::on_click_day2,
+                actions::levels::on_click_day3,
+                actions::levels::on_click_day4,
+                actions::levels::on_click_day5,
+                actions::levels::on_click_day6,
+                actions::levels::on_click_day7,
                 actions::rules_btn::on_click,
+
                 actions::backward_btn::on_click,
             ),
         );
