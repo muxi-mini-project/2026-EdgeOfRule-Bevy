@@ -1,8 +1,8 @@
 use bevy::prelude::*;
 
 use crate::entities::{
-    ground::{Ground, spawn_ground},
-    wall::{Wall, spawn_wall},
+    ground::{spawn_ground, Ground},
+    wall::{spawn_wall, Wall},
 };
 
 pub fn spawn(mut commands: Commands) {
