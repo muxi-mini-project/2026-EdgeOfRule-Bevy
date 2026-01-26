@@ -63,7 +63,7 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
     .with_children(|parent| {
         parent.spawn(TextBundle {
             text: Text::from_section(
-                "我有点牛逼",
+                "我有点水平",
                 TextStyle {
                     font: asset_server.load("font/font/aLiFont.ttf"), 
                     font_size: 50.0, 
@@ -95,7 +95,7 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
     .with_children(|parent| {
         parent.spawn(TextBundle {
             text: Text::from_section(
-                "吔屎啦你",
+                "我牛逼坏了",
                 TextStyle {
                     font: asset_server.load("font/font/aLiFont.ttf"), 
                     font_size: 50.0, 
