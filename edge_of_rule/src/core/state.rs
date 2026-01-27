@@ -16,4 +16,5 @@ pub enum GameState {
     Day5,
     Day6,
     Day7,
+    InGameOption,
 }
