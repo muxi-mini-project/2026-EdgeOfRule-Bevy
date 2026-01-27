@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::entities::mirror::{Mirror, spawn_mirror};
+use crate::entities::mirror::{spawn_mirror, Mirror};
 
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_mirror(&mut commands, Transform::from_xyz(-6.0, 32.0, -5.0), asset);

@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::entities::trapdoor::{Trapdoor, spawn_trapdoor};
+use crate::entities::trapdoor::{spawn_trapdoor, Trapdoor};
 
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_trapdoor(

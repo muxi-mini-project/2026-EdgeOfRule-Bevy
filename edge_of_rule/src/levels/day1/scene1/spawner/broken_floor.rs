@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::entities::broken_floor::{BrokenFloor, spawn_broken_floor};
+use crate::entities::broken_floor::{spawn_broken_floor, BrokenFloor};
 
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_broken_floor(

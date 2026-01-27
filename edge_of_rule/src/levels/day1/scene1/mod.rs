@@ -1,3 +1,4 @@
+pub mod actions;
 pub mod spawner;
 
 use bevy::prelude::*;
@@ -17,6 +18,7 @@ impl Plugin for Scene1Plugin {
                 spawner::table::spawn,
                 spawner::broken_floor::spawn,
                 spawner::door::spawn,
+                spawner::small_note::spawn,
             ),
         )
         .add_systems(
@@ -28,7 +30,23 @@ impl Plugin for Scene1Plugin {
                 spawner::table::despawn,
                 spawner::broken_floor::despawn,
                 spawner::door::despawn,
+                spawner::small_note::despawn,
+                spawner::arrow_of_door::despawn_all,
+                spawner::press_e_to_open_door::despawn_all,
             ),
+        )
+        .add_systems(
+            Update,
+            (
+                spawner::arrow_of_door::spawn.run_if(in_state(GameState::Day1Scene1)),
+                spawner::arrow_of_door::despawn,
+                spawner::press_e_to_open_door::spawn.run_if(in_state(GameState::Day1Scene1)),
+                spawner::press_e_to_open_door::despawn,
+            ),
+        )
+        .add_systems(
+            Update,
+            actions::open_door.run_if(in_state(GameState::Day1Scene1)),
         );
     }
 }
