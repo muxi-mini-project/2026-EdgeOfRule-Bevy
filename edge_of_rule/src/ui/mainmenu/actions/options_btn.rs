@@ -8,7 +8,7 @@ pub fn on_click(
 ) {
     for btn in &btns {
         if *btn == Interaction::Pressed {
-            next_state.set(GameState::Day1Scene1);
+            next_state.set(GameState::Options);
         }
     }
 }

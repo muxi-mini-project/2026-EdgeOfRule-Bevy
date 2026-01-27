@@ -5,4 +5,5 @@ pub mod door;
 pub mod ground_and_wall;
 pub mod player;
 pub mod press_e_to_open_door;
+pub mod small_note;
 pub mod table;

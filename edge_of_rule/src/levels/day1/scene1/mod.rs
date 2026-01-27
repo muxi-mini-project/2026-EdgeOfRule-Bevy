@@ -18,6 +18,7 @@ impl Plugin for Scene1Plugin {
                 spawner::table::spawn,
                 spawner::broken_floor::spawn,
                 spawner::door::spawn,
+                spawner::small_note::spawn,
             ),
         )
         .add_systems(
@@ -29,6 +30,7 @@ impl Plugin for Scene1Plugin {
                 spawner::table::despawn,
                 spawner::broken_floor::despawn,
                 spawner::door::despawn,
+                spawner::small_note::despawn,
                 spawner::arrow_of_door::despawn_all,
                 spawner::press_e_to_open_door::despawn_all,
             ),

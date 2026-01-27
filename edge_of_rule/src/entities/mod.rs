@@ -6,6 +6,7 @@ pub mod ground;
 pub mod mirror;
 pub mod player;
 pub mod press_e;
+pub mod small_note;
 pub mod table;
 pub mod trapdoor;
 pub mod wall;
