@@ -22,4 +22,4 @@ jobs:
         uses: Swatinem/rust-cache@v2
 
       - name: Run clippy
-        run: cargo clippy --all-targets --all-features
+        run: cargo clippy --all-targets --all-features --manifest-path ./edge_of_rule/Cargo.toml
