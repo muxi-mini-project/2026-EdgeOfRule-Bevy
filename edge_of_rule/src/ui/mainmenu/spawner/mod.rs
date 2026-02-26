@@ -7,6 +7,7 @@ pub mod levels;
 
 pub mod options_btn;
 pub mod options_area;
+pub mod volumn_slider;
 pub mod exit_game_btn;
 
 pub mod rules;
