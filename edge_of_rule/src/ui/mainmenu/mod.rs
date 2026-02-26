@@ -35,6 +35,7 @@ impl Plugin for MainMenuPlugin {
                 spawner::background::spawn,
                 spawner::backward_btn::spawn,
                 spawner::options_area::spawn,
+                spawner::volumn_slider::spawn,
                 spawner::exit_game_btn::spawn,
             ),
         )
@@ -45,6 +46,7 @@ impl Plugin for MainMenuPlugin {
                 spawner::options_btn::despawn,
                 spawner::backward_btn::despawn,
                 spawner::options_area::despawn,
+                spawner::volumn_slider::despawn,
                 spawner::exit_game_btn::despawn,
             ),
         )
@@ -111,6 +113,7 @@ impl Plugin for MainMenuPlugin {
             (
                 actions::options_btn::on_click,
                 actions::exit_game_btn::on_click,
+                actions::volumn_slider::on_drag,
 
                 actions::style_select_btn::on_click,
                 actions::styles_btn::on_click,
