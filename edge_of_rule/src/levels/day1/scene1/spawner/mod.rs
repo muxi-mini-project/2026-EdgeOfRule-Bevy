@@ -1,9 +1,11 @@
 pub mod arrow_of_door;
+pub mod arrow_of_small_note;
 pub mod background;
 pub mod broken_floor;
 pub mod door;
 pub mod ground_and_wall;
 pub mod player;
 pub mod press_e_to_open_door;
+pub mod press_e_to_read;
 pub mod small_note;
 pub mod table;
