@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::entities::key::{Key, spawn_key};
+use crate::entities::key::{spawn_key, Key};
 
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_key(

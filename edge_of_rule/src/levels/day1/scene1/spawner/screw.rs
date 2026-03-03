@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::entities::screw::{Screw, spawn_screw};
+use crate::entities::screw::{spawn_screw, Screw};
 
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_screw(
