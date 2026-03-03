@@ -1,30 +1,30 @@
 use bevy::prelude::*;
 
-use crate::entities::{player::Player, press_e::spawn_press_e, small_note::SmallNote};
+use crate::entities::{key::Key, player::Player, press_e::spawn_press_e};
 
 #[derive(Component)]
-pub struct PressEtoRead;
+pub struct PressEtoPickKey;
 
 pub fn spawn(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
-    querys: Query<&PressEtoRead>,
+    querys: Query<&PressEtoPickKey>,
     players: Query<&Transform, With<Player>>,
-    notes: Query<&Transform, With<SmallNote>>,
+    keys: Query<&Transform, With<Key>>,
 ) {
     if querys.iter().len() != 0 {
         return;
     }
 
     for player in &players {
-        for note in &notes {
-            if (player.translation.x - note.translation.x).abs() < 60.0 {
+        for key in &keys {
+            if (player.translation.x - key.translation.x).abs() < 60.0 {
                 spawn_press_e(
                     &mut commands,
-                    Transform::from_xyz(80.0, 2.0, 1.0),
+                    Transform::from_xyz(key.translation.x + 72.0, key.translation.y + 60.0, 1.0),
                     &asset_server,
-                    "阅读",
-                    PressEtoRead,
+                    "拾取钥匙",
+                    PressEtoPickKey,
                 );
             }
         }
@@ -33,13 +33,13 @@ pub fn spawn(
 
 pub fn despawn(
     mut commands: Commands,
-    querys: Query<Entity, With<PressEtoRead>>,
+    querys: Query<Entity, With<PressEtoPickKey>>,
     players: Query<&Transform, With<Player>>,
-    notes: Query<&Transform, With<SmallNote>>,
+    keys: Query<&Transform, With<Key>>,
 ) {
     for player in &players {
-        for note in &notes {
-            if (player.translation.x - note.translation.x).abs() < 60.0 {
+        for key in &keys {
+            if (player.translation.x - key.translation.x).abs() < 60.0 {
                 return;
             }
         }
@@ -50,7 +50,7 @@ pub fn despawn(
     }
 }
 
-pub fn despawn_all(mut commands: Commands, querys: Query<Entity, With<PressEtoRead>>) {
+pub fn despawn_all(mut commands: Commands, querys: Query<Entity, With<PressEtoPickKey>>) {
     for query in &querys {
         commands.entity(query).despawn_recursive();
     }

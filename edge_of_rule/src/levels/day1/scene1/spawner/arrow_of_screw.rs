@@ -1,29 +1,29 @@
 use bevy::prelude::*;
 
-use crate::entities::{arrow::spawn_arrow, player::Player, small_note::SmallNote};
+use crate::entities::{arrow::spawn_arrow, player::Player, screw::Screw};
 
 #[derive(Component)]
-pub struct ArrowOfSmallNote;
+pub struct ArrowOfScrew;
 
 pub fn spawn(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
-    arrows: Query<&ArrowOfSmallNote>,
+    arrows: Query<&ArrowOfScrew>,
     players: Query<&Transform, With<Player>>,
-    notes: Query<&Transform, With<SmallNote>>,
+    screws: Query<&Transform, With<Screw>>,
 ) {
     if arrows.iter().len() != 0 {
         return;
     }
 
     for player in &players {
-        for note in &notes {
-            if (player.translation.x - note.translation.x).abs() < 60.0 {
+        for screw in &screws {
+            if (player.translation.x - screw.translation.x).abs() < 60.0 {
                 spawn_arrow(
                     &mut commands,
-                    Transform::from_xyz(8.0, 2.0, 1.0),
+                    Transform::from_xyz(screw.translation.x, screw.translation.y + 60.0, 1.0),
                     &asset_server,
-                    ArrowOfSmallNote,
+                    ArrowOfScrew,
                 );
             }
         }
@@ -32,13 +32,13 @@ pub fn spawn(
 
 pub fn despawn(
     mut commands: Commands,
-    arrows: Query<Entity, With<ArrowOfSmallNote>>,
+    arrows: Query<Entity, With<ArrowOfScrew>>,
     players: Query<&Transform, With<Player>>,
-    notes: Query<&Transform, With<SmallNote>>,
+    screws: Query<&Transform, With<Screw>>,
 ) {
     for player in &players {
-        for note in &notes {
-            if (player.translation.x - note.translation.x).abs() < 60.0 {
+        for screw in &screws {
+            if (player.translation.x - screw.translation.x).abs() < 60.0 {
                 return;
             }
         }
@@ -49,7 +49,7 @@ pub fn despawn(
     }
 }
 
-pub fn despawn_all(mut commands: Commands, arrows: Query<Entity, With<ArrowOfSmallNote>>) {
+pub fn despawn_all(mut commands: Commands, arrows: Query<Entity, With<ArrowOfScrew>>) {
     for arrow in &arrows {
         commands.entity(arrow).despawn();
     }

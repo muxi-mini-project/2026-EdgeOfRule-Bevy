@@ -19,6 +19,8 @@ impl Plugin for Scene1Plugin {
                 spawner::broken_floor::spawn,
                 spawner::door::spawn,
                 spawner::small_note::spawn,
+                spawner::key::spawn,
+                spawner::screw::spawn,
             ),
         )
         .add_systems(
@@ -35,6 +37,12 @@ impl Plugin for Scene1Plugin {
                 spawner::press_e_to_open_door::despawn_all,
                 spawner::arrow_of_small_note::despawn_all,
                 spawner::press_e_to_read::despawn_all,
+                spawner::arrow_of_key::despawn_all,
+                spawner::press_e_to_pick_key::despawn_all,
+                spawner::arrow_of_screw::despawn_all,
+                spawner::press_e_to_pick_screw::despawn_all,
+                spawner::key::despawn,
+                spawner::screw::despawn,
             ),
         )
         .add_systems(
@@ -48,6 +56,14 @@ impl Plugin for Scene1Plugin {
                 spawner::arrow_of_small_note::despawn,
                 spawner::press_e_to_read::spawn.run_if(in_state(GameState::Day1Scene1)),
                 spawner::press_e_to_read::despawn,
+                spawner::arrow_of_key::spawn.run_if(in_state(GameState::Day1Scene1)),
+                spawner::arrow_of_key::despawn,
+                spawner::press_e_to_pick_key::spawn.run_if(in_state(GameState::Day1Scene1)),
+                spawner::press_e_to_pick_key::despawn,
+                spawner::arrow_of_screw::spawn.run_if(in_state(GameState::Day1Scene1)),
+                spawner::arrow_of_screw::despawn,
+                spawner::press_e_to_pick_screw::spawn.run_if(in_state(GameState::Day1Scene1)),
+                spawner::press_e_to_pick_screw::despawn,
             ),
         )
         .add_systems(
