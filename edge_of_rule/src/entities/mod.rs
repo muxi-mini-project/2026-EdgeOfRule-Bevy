@@ -3,6 +3,7 @@ pub mod broken_floor;
 pub mod door;
 pub mod general;
 pub mod ground;
+pub mod key;
 pub mod mirror;
 pub mod player;
 pub mod press_e;

@@ -21,7 +21,7 @@ pub fn spawn(
             if (player.translation.x - note.translation.x).abs() < 60.0 {
                 spawn_arrow(
                     &mut commands,
-                    Transform::from_xyz(8.0, 42.0, -4.0),
+                    Transform::from_xyz(8.0, 2.0, 1.0),
                     &asset_server,
                     ArrowOfSmallNote,
                 );
