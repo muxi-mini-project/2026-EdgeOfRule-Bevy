@@ -8,5 +8,6 @@ pub mod key;
 pub mod player;
 pub mod press_e_to_open_door;
 pub mod press_e_to_read;
+pub mod screw;
 pub mod small_note;
 pub mod table;

@@ -20,6 +20,7 @@ impl Plugin for Scene1Plugin {
                 spawner::door::spawn,
                 spawner::small_note::spawn,
                 spawner::key::spawn,
+                spawner::screw::spawn,
             ),
         )
         .add_systems(
@@ -37,6 +38,7 @@ impl Plugin for Scene1Plugin {
                 spawner::arrow_of_small_note::despawn_all,
                 spawner::press_e_to_read::despawn_all,
                 spawner::key::despawn,
+                spawner::screw::despawn,
             ),
         )
         .add_systems(

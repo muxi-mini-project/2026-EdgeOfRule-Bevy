@@ -7,6 +7,7 @@ pub mod key;
 pub mod mirror;
 pub mod player;
 pub mod press_e;
+pub mod screw;
 pub mod small_note;
 pub mod table;
 pub mod trapdoor;
