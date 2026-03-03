@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::entities::{arrow::spawn_arrow, door::Door, player::Player, trapdoor::Trapdoor};
+use crate::entities::{arrow::spawn_arrow, player::Player, trapdoor::Trapdoor};
 
 #[derive(Component)]
 pub struct ArrowOfTrapdoor;
@@ -44,12 +44,6 @@ pub fn despawn(
         }
     }
 
-    for arrow in &arrows {
-        commands.entity(arrow).despawn();
-    }
-}
-
-pub fn despawn_all(mut commands: Commands, arrows: Query<Entity, With<ArrowOfTrapdoor>>) {
     for arrow in &arrows {
         commands.entity(arrow).despawn();
     }

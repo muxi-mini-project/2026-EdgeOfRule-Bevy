@@ -33,6 +33,8 @@ impl Plugin for Scene1Plugin {
                 spawner::small_note::despawn,
                 spawner::arrow_of_door::despawn_all,
                 spawner::press_e_to_open_door::despawn_all,
+                spawner::arrow_of_small_note::despawn_all,
+                spawner::press_e_to_read::despawn_all,
             ),
         )
         .add_systems(
@@ -42,6 +44,10 @@ impl Plugin for Scene1Plugin {
                 spawner::arrow_of_door::despawn,
                 spawner::press_e_to_open_door::spawn.run_if(in_state(GameState::Day1Scene1)),
                 spawner::press_e_to_open_door::despawn,
+                spawner::arrow_of_small_note::spawn.run_if(in_state(GameState::Day1Scene1)),
+                spawner::arrow_of_small_note::despawn,
+                spawner::press_e_to_read::spawn.run_if(in_state(GameState::Day1Scene1)),
+                spawner::press_e_to_read::despawn,
             ),
         )
         .add_systems(
