@@ -16,7 +16,7 @@ use crate::core::CorePlugin;
 use crate::levels::LevelsPlugin;
 use crate::ui::UiPlugin;
 use bevy::prelude::*;
-use bevy::window::WindowMode;
+use bevy::window::{PrimaryWindow, WindowMode};
 use bevy_rapier2d::prelude::*;
 
 fn main() {
@@ -24,7 +24,7 @@ fn main() {
         .set(WindowPlugin {
             primary_window: Some(Window {
                 title: "校园疾跑：规则边缘".to_string(),
-                mode: WindowMode::Fullscreen,
+                visible: false,
                 ..default()
             }),
             ..default()
@@ -34,6 +34,7 @@ fn main() {
     App::new()
         .insert_resource(Msaa::Off)
         .add_plugins(default_plugin)
+        .add_systems(Startup, start_fullscreen)
         .add_plugins(RapierPhysicsPlugin::<NoUserData>::default())
         .add_plugins(CorePlugin)
         .add_plugins(AssetsPlugin)
@@ -42,4 +43,10 @@ fn main() {
         .add_plugins(LevelsPlugin)
         .add_plugins(UiPlugin)
         .run();
+}
+
+fn start_fullscreen(mut windows: Query<&mut Window, With<PrimaryWindow>>) {
+    let mut window = windows.single_mut();
+    window.mode = WindowMode::BorderlessFullscreen;
+    window.visible = true;
 }

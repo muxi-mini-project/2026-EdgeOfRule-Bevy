@@ -31,6 +31,7 @@ impl Plugin for Scene2Plugin {
                 spawner::mirror::despawn,
                 spawner::arrow_of_door::despawn_all,
                 spawner::press_e_to_back_scene1::despawn_all,
+                spawner::press_e_to_enter_trapdoor::despawn_all,
             ),
         )
         .add_systems(
@@ -38,13 +39,20 @@ impl Plugin for Scene2Plugin {
             (
                 spawner::arrow_of_door::spawn.run_if(in_state(GameState::Day1Scene2)),
                 spawner::arrow_of_door::despawn,
+                spawner::arrow_of_trapdoor::spawn.run_if(in_state(GameState::Day1Scene2)),
+                spawner::arrow_of_trapdoor::despawn,
                 spawner::press_e_to_back_scene1::spawn.run_if(in_state(GameState::Day1Scene2)),
                 spawner::press_e_to_back_scene1::despawn,
+                spawner::press_e_to_enter_trapdoor::spawn.run_if(in_state(GameState::Day1Scene2)),
+                spawner::press_e_to_enter_trapdoor::despawn,
             ),
         )
         .add_systems(
             Update,
-            actions::back_to_scene1.run_if(in_state(GameState::Day1Scene2)),
+            (
+                actions::back_to_scene1.run_if(in_state(GameState::Day1Scene2)),
+                actions::enter_trapdoor.run_if(in_state(GameState::Day1Scene2)),
+            ),
         );
     }
 }
