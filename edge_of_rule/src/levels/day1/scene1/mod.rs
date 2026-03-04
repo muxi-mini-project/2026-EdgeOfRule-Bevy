@@ -68,7 +68,10 @@ impl Plugin for Scene1Plugin {
         )
         .add_systems(
             Update,
-            actions::open_door.run_if(in_state(GameState::Day1Scene1)),
+            (
+                actions::open_door.run_if(in_state(GameState::Day1Scene1)),
+                actions::read_small_note.run_if(in_state(GameState::Day1Scene1)),
+            ),
         );
     }
 }
