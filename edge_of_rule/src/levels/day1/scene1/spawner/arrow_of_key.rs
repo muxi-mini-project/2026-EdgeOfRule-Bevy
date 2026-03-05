@@ -1,6 +1,9 @@
 use bevy::prelude::*;
 
-use crate::entities::{arrow::spawn_arrow, key::Key, player::Player};
+use crate::{
+    entities::{arrow::spawn_arrow, key::Key, player::Player},
+    levels::day1::scene1::Picked,
+};
 
 #[derive(Component)]
 pub struct ArrowOfKey;
@@ -11,7 +14,11 @@ pub fn spawn(
     arrows: Query<&ArrowOfKey>,
     players: Query<&Transform, With<Player>>,
     keys: Query<&Transform, With<Key>>,
+    picked: Res<Picked>,
 ) {
+    if *picked != Picked::None {
+        return;
+    }
     if arrows.iter().len() != 0 {
         return;
     }

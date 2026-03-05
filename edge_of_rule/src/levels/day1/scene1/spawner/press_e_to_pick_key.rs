@@ -1,6 +1,9 @@
 use bevy::prelude::*;
 
-use crate::entities::{key::Key, player::Player, press_e::spawn_press_e};
+use crate::{
+    entities::{key::Key, player::Player, press_e::spawn_press_e},
+    levels::day1::scene1::Picked,
+};
 
 #[derive(Component)]
 pub struct PressEtoPickKey;
@@ -11,7 +14,11 @@ pub fn spawn(
     querys: Query<&PressEtoPickKey>,
     players: Query<&Transform, With<Player>>,
     keys: Query<&Transform, With<Key>>,
+    picked: Res<Picked>,
 ) {
+    if *picked != Picked::None {
+        return;
+    }
     if querys.iter().len() != 0 {
         return;
     }
