@@ -3,7 +3,6 @@ use bevy::prelude::*;
 use crate::{
     constants::SCALE,
     core::state::GameState,
-    entities::small_note::SmallNote,
     levels::day1::scene1::spawner::{
         press_e_to_open_door::PressEtoOpenDoor, press_e_to_read::PressEtoRead,
     },
@@ -50,5 +49,17 @@ pub fn read_small_note(
             },
             OpenedSmallNote,
         ));
+    }
+}
+
+pub fn close_small_note(
+    mut commands: Commands,
+    input: Res<ButtonInput<KeyCode>>,
+    query: Query<Entity, With<OpenedSmallNote>>,
+) {
+    if input.just_pressed(KeyCode::Escape) {
+        for entity in query.iter() {
+            commands.entity(entity).despawn();
+        }
     }
 }

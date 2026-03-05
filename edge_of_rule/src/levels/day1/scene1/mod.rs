@@ -71,6 +71,7 @@ impl Plugin for Scene1Plugin {
             (
                 actions::open_door.run_if(in_state(GameState::Day1Scene1)),
                 actions::read_small_note.run_if(in_state(GameState::Day1Scene1)),
+                actions::close_small_note.run_if(in_state(GameState::Day1Scene1)),
             ),
         );
     }
