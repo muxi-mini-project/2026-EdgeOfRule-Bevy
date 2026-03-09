@@ -24,7 +24,7 @@ pub fn open_door(
     query: Query<&PressEtoOpenDoor>,
     input: Res<ButtonInput<KeyCode>>,
     picked: Res<Picked>,
-    mut door_state: ResMut<DoorState>,
+    mut commands: Commands,
 ) {
     if query.iter().len() == 0 {
         return;
@@ -35,7 +35,7 @@ pub fn open_door(
     }
 
     if input.just_pressed(KeyCode::KeyE) {
-        *door_state = DoorState::Opened;
+        commands.insert_resource(DoorState::Opened);
     }
 }
 
