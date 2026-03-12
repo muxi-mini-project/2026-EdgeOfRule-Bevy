@@ -18,6 +18,7 @@ impl Plugin for Scene3Plugin {
                 spawner::pipe::spawn,
                 spawner::ground_and_wall::spawn,
                 spawner::player::spawn,
+                spawner::door::spawn,
             ),
         )
         .add_systems(
@@ -29,6 +30,7 @@ impl Plugin for Scene3Plugin {
                 spawner::pipe::despawn,
                 spawner::ground_and_wall::despawn,
                 spawner::player::despawn,
+                spawner::door::despawn,
             ),
         );
     }
