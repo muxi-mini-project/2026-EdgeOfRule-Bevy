@@ -4,11 +4,13 @@ use bevy::prelude::*;
 pub struct LevelsImageAssets {
     pub day1_scene1_background: Handle<Image>,
     pub day1_scene2_background: Handle<Image>,
+    pub day1_scene3_background: Handle<Image>,
 }
 
 pub fn load_levels_image_assets(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.insert_resource(LevelsImageAssets {
         day1_scene1_background: asset_server.load("images/levels/day1/scene1_background.png"),
         day1_scene2_background: asset_server.load("images/levels/day1/scene2_background.png"),
+        day1_scene3_background: asset_server.load("images/levels/day1/scene3_background.png"),
     });
 }
