@@ -10,7 +10,12 @@ pub fn door_animation_system(
 ) {
     for mut texture in &mut doors {
         *texture = match *door_state {
-            DoorState::Closed => asset_server.load("images/animations/door.png"),
+            DoorState::Closed => match **game_state {
+                GameState::Day1Scene3 => {
+                    asset_server.load("images/animations/control_room_door.png")
+                }
+                _ => asset_server.load("images/animations/door.png"),
+            },
             DoorState::Opened => match **game_state {
                 GameState::Day1Scene1 => {
                     asset_server.load("images/levels/day1/scene1_opened_door.png")
