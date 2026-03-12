@@ -10,6 +10,7 @@ pub enum GameState {
     RulesView,
     Day1Scene1,
     Day1Scene2,
+    Day1Scene3,
     Day2,
     Day3,
     Day4,
