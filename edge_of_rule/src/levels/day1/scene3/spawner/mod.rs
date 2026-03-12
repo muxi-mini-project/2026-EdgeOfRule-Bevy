@@ -1,3 +1,4 @@
+pub mod arrow_of_door;
 pub mod background;
 pub mod door;
 pub mod ground_and_wall;
@@ -5,3 +6,4 @@ pub mod ladder;
 pub mod pipe;
 pub mod platform;
 pub mod player;
+pub mod press_e_to_open_door;
