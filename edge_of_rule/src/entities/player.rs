@@ -68,7 +68,7 @@ pub fn spawn_player(
         },
         Player {
             speed: 350.0,
-            jump_force: 500.0,
+            jump_force: 400.0,
             jump_count: 0,
             max_jumps: 2,
             is_grounded: false,

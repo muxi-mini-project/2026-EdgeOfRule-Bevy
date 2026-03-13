@@ -6,15 +6,18 @@ use crate::{assets::levels::LevelsImageAssets, constants::SCALE};
 pub struct Day1Scene1Background;
 
 pub fn spawn(mut commands: Commands, assets: Res<LevelsImageAssets>) {
-    commands.spawn(SpriteBundle {
-        sprite: Sprite {
-            color: Color::BLACK,
-            custom_size: Some(Vec2 { x: 320.0, y: 200.0 }),
+    commands.spawn((
+        SpriteBundle {
+            sprite: Sprite {
+                color: Color::BLACK,
+                custom_size: Some(Vec2 { x: 320.0, y: 200.0 }),
+                ..Default::default()
+            },
+            transform: Transform::from_xyz(0.0, 0.0, -20.0).with_scale(Vec3::splat(SCALE)),
             ..Default::default()
         },
-        transform: Transform::from_xyz(0.0, 0.0, -20.0).with_scale(Vec3::splat(SCALE)),
-        ..Default::default()
-    });
+        Day1Scene1Background,
+    ));
     commands.spawn((
         SpriteBundle {
             texture: assets.day1_scene1_background.clone(),

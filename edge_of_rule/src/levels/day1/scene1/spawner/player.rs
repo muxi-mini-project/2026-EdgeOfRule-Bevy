@@ -6,7 +6,7 @@ use crate::{
 };
 
 pub fn spawn(commands: Commands, asset: Res<PlayerAssets>) {
-    spawn_player(commands, asset, Transform::from_xyz(-50.0, 20.0, 0.0));
+    spawn_player(commands, asset, Transform::from_xyz(408.0, -68.0, 0.0));
 }
 
 pub fn despawn(mut commands: Commands, players: Query<Entity, With<Player>>) {

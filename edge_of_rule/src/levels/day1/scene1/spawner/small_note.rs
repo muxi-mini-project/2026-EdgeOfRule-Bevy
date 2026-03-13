@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::entities::small_note::{SmallNote, spawn_small_note};
+use crate::entities::small_note::{spawn_small_note, SmallNote};
 
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_small_note(&mut commands, Transform::from_xyz(8.0, -58.0, -4.0), asset);
