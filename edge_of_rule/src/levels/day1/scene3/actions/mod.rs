@@ -1,6 +1,13 @@
 use crate::{
     core::state::GameState,
-    levels::day1::{scene1::DoorState, scene3::spawner::press_e_to_open_door::PressEtoOpenDoor},
+    entities::player::Player,
+    levels::day1::{
+        scene1::DoorState,
+        scene3::spawner::{
+            fog::{self, Day1Scene3Fog},
+            press_e_to_open_door::PressEtoOpenDoor,
+        },
+    },
 };
 use bevy::prelude::*;
 
@@ -34,5 +41,16 @@ pub fn enter_door(
 
     if input.just_pressed(KeyCode::KeyE) {
         game_state.set(GameState::Day1Scene4);
+    }
+}
+
+pub fn fog_follow(
+    mut fog: Query<&mut Transform, (With<Day1Scene3Fog>, Without<Player>)>,
+    player: Query<&Transform, (With<Player>, Without<Day1Scene3Fog>)>,
+) {
+    for mut fog_transform in fog.iter_mut() {
+        for player_transform in player.iter() {
+            fog_transform.translation = player_transform.translation;
+        }
     }
 }

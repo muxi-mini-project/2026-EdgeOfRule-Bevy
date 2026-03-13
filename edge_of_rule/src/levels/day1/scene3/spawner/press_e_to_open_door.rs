@@ -25,7 +25,7 @@ pub fn spawn(
             if (player.translation.x - door.translation.x).abs() < 60.0 {
                 spawn_press_e(
                     &mut commands,
-                    Transform::from_xyz(468.0, 268.0, -4.0),
+                    Transform::from_xyz(468.0, 268.0, 25.0),
                     &asset_server,
                     if *door_state == DoorState::Closed {
                         "开门"

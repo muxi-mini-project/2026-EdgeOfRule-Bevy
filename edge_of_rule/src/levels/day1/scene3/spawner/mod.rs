@@ -1,6 +1,7 @@
 pub mod arrow_of_door;
 pub mod background;
 pub mod door;
+pub mod fog;
 pub mod ground_and_wall;
 pub mod ladder;
 pub mod pipe;

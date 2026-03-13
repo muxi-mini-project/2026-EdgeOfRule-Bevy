@@ -21,7 +21,7 @@ pub fn spawn(
             if (player.translation.x - door.translation.x).abs() < 60.0 {
                 spawn_arrow(
                     &mut commands,
-                    Transform::from_xyz(396.0, 268.0, -4.0),
+                    Transform::from_xyz(396.0, 268.0, 25.0),
                     &asset_server,
                     ArrowOfDoor,
                 );
