@@ -19,6 +19,7 @@ impl Plugin for Scene3Plugin {
                 spawner::ground_and_wall::spawn,
                 spawner::player::spawn,
                 spawner::door::spawn,
+                spawner::fog::spawn,
             ),
         )
         .add_systems(
@@ -31,6 +32,26 @@ impl Plugin for Scene3Plugin {
                 spawner::ground_and_wall::despawn,
                 spawner::player::despawn,
                 spawner::door::despawn,
+                spawner::fog::despawn,
+                spawner::arrow_of_door::despawn_all,
+                spawner::press_e_to_open_door::despawn_all,
+            ),
+        )
+        .add_systems(
+            Update,
+            (
+                spawner::arrow_of_door::spawn.run_if(in_state(GameState::Day1Scene3)),
+                spawner::arrow_of_door::despawn,
+                spawner::press_e_to_open_door::spawn.run_if(in_state(GameState::Day1Scene3)),
+                spawner::press_e_to_open_door::despawn,
+            ),
+        )
+        .add_systems(
+            Update,
+            (
+                actions::open_door.run_if(in_state(GameState::Day1Scene3)),
+                actions::enter_door.run_if(in_state(GameState::Day1Scene3)),
+                actions::fog_follow,
             ),
         );
     }
