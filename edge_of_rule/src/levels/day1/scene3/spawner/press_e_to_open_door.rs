@@ -22,7 +22,9 @@ pub fn spawn(
 
     for player in &players {
         for door in &doors {
-            if (player.translation.x - door.translation.x).abs() < 60.0 {
+            if (player.translation.x - door.translation.x).abs() < 60.0
+                && (player.translation.y - door.translation.y).abs() < 90.0
+            {
                 spawn_press_e(
                     &mut commands,
                     Transform::from_xyz(468.0, 268.0, 25.0),
