@@ -9,47 +9,19 @@ use crate::core::state::GameState;
 
 pub struct HudPlugin;
 
-// impl Plugin for HudPlugin {
-//     fn build(&self, app: &mut App) {
-//         app
-//             .add_systems(
-//                 OnEnter(GameState::Day1Scene1),
-//                 (
+impl Plugin for HudPlugin {
+    fn build(&self, app: &mut App) {
+        app
+            .insert_resource(actions::esc_ingame_option::OptionSpawnState { is_visible: bool::default() })
+            .add_systems(Startup, actions::esc_ingame_option::spawn)
+            .add_systems(
+                Update,
+                    (
+                        actions::esc_ingame_option::on_key_esc,
+                        crate::ui::mainmenu::actions::exit_game_btn::on_click,
+                    ),
+            );
+    }
+}
 
-//                 ),
-//             )
-//             .add_systems(
-//                 OnExit(GameState::Day1Scene1),
-//                 (
 
-//                 ),
-//             )
-//             .add_systems(
-//                 OnEnter(GameState::Day1Scene2),
-//                 (
-
-//                 ),
-//             )
-//             .add_systems(
-//                 OnExit(GameState::Day1Scene2),
-//                 (
-
-//                 ),
-//             )
-//             .add_systems(
-//                 OnEnter(GameState::InGameOption),
-//                 (
-//                 )
-//             )
-//             .add_systems(
-//                 OnExit(GameState::InGameOption),
-//                 (
-//                 )
-//             )
-//             .add_systems(
-//                 Update,
-//                 (
-//                 )
-//             );
-//     }
-// }   
