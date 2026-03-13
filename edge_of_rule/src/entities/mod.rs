@@ -5,6 +5,7 @@ pub mod general;
 pub mod ground;
 pub mod key;
 pub mod ladder;
+pub mod log;
 pub mod mirror;
 pub mod pipe;
 pub mod platform;

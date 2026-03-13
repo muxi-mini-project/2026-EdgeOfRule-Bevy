@@ -23,7 +23,7 @@ pub fn door_animation_system(
                 GameState::Day1Scene2 => {
                     asset_server.load("images/levels/day1/scene2_opened_door.png")
                 }
-                GameState::Day1Scene3 => {
+                GameState::Day1Scene3 | GameState::Day1Scene4 => {
                     asset_server.load("images/levels/day1/scene3_opened_door.png")
                 }
                 _ => asset_server.load("images/animations/door.png"),
