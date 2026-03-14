@@ -13,7 +13,7 @@ pub enum Picked {
 }
 
 #[derive(Resource, Eq, PartialEq)]
-pub enum DoorState {
+pub enum Scene1DoorState {
     Closed,
     Opened,
 }
@@ -23,7 +23,7 @@ pub struct Scene1Plugin;
 impl Plugin for Scene1Plugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(Picked::None)
-            .insert_resource(DoorState::Closed)
+            .insert_resource(Scene1DoorState::Closed)
             .add_systems(
                 OnEnter(GameState::Day1Scene1),
                 (

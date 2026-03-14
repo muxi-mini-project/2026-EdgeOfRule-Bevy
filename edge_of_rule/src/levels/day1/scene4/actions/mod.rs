@@ -1,9 +1,12 @@
 use bevy::prelude::*;
 
 use crate::{
+    constants::SCALE,
     core::state::GameState,
     entities::player::Player,
-    levels::day1::scene4::spawner::{fog::Day1Scene4Fog, press_e_to_enter::PressEtoEnter},
+    levels::day1::scene4::spawner::{
+        fog::Day1Scene4Fog, press_e_to_enter::PressEtoEnter, press_e_to_read_log::PressEtoRead,
+    },
 };
 
 pub fn fog_follow(
@@ -28,5 +31,35 @@ pub fn back_to_scene3(
 
     if input.just_pressed(KeyCode::KeyE) {
         state.set(GameState::Day1Scene3);
+    }
+}
+
+#[derive(Component)]
+pub struct OpenedLog;
+
+pub fn read_log(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    query: Query<&PressEtoRead>,
+    input: Res<ButtonInput<KeyCode>>,
+    note: Query<&OpenedLog>,
+) {
+    if query.iter().len() == 0 {
+        return;
+    }
+
+    if note.iter().len() != 0 {
+        return;
+    }
+
+    if input.just_pressed(KeyCode::KeyE) {
+        commands.spawn((
+            SpriteBundle {
+                texture: asset_server.load("images/HUD/small_note.png"),
+                transform: Transform::from_xyz(0.0, 0.0, 5.0).with_scale(Vec3::splat(SCALE)),
+                ..default()
+            },
+            OpenedLog,
+        ));
     }
 }

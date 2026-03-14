@@ -8,7 +8,7 @@ use crate::{
         screw::{Screw, spawn_screw},
     },
     levels::day1::scene1::{
-        DoorState, Picked,
+        Picked, Scene1DoorState,
         spawner::{
             press_e_to_open_door::PressEtoOpenDoor, press_e_to_pick_key::PressEtoPickKey,
             press_e_to_pick_screw::PressEtoPickScrew, press_e_to_read::PressEtoRead,
@@ -35,21 +35,21 @@ pub fn open_door(
     }
 
     if input.just_pressed(KeyCode::KeyE) {
-        commands.insert_resource(DoorState::Opened);
+        commands.insert_resource(Scene1DoorState::Opened);
     }
 }
 
 pub fn enter_door(
     query: Query<&PressEtoOpenDoor>,
     input: Res<ButtonInput<KeyCode>>,
-    door_state: Res<DoorState>,
+    door_state: Res<Scene1DoorState>,
     mut game_state: ResMut<NextState<GameState>>,
 ) {
     if query.iter().len() == 0 {
         return;
     }
 
-    if *door_state != DoorState::Opened {
+    if *door_state != Scene1DoorState::Opened {
         return;
     }
 

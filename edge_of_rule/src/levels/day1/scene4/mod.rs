@@ -31,6 +31,8 @@ impl Plugin for Scene4Plugin {
                 spawner::door::despawn,
                 spawner::arrow_of_door::despawn_all,
                 spawner::press_e_to_enter::despawn_all,
+                spawner::arrow_of_log::despawn_all,
+                spawner::press_e_to_read_log::despawn_all,
             ),
         )
         .add_systems(
@@ -40,8 +42,19 @@ impl Plugin for Scene4Plugin {
                 spawner::arrow_of_door::despawn,
                 spawner::press_e_to_enter::spawn.run_if(in_state(GameState::Day1Scene4)),
                 spawner::press_e_to_enter::despawn,
+                spawner::arrow_of_log::spawn.run_if(in_state(GameState::Day1Scene4)),
+                spawner::arrow_of_log::despawn,
+                spawner::press_e_to_read_log::spawn.run_if(in_state(GameState::Day1Scene4)),
+                spawner::press_e_to_read_log::despawn,
             ),
         )
-        .add_systems(Update, (actions::fog_follow, actions::back_to_scene3));
+        .add_systems(
+            Update,
+            (
+                actions::fog_follow,
+                actions::back_to_scene3,
+                actions::read_log,
+            ),
+        );
     }
 }

@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 use crate::{
     entities::{door::Door, player::Player, press_e::spawn_press_e},
-    levels::day1::scene1::DoorState,
+    levels::day1::scene3::Scene3DoorState,
 };
 
 #[derive(Component)]
@@ -14,7 +14,7 @@ pub fn spawn(
     querys: Query<&PressEtoOpenDoor>,
     players: Query<&Transform, With<Player>>,
     doors: Query<&Transform, With<Door>>,
-    door_state: Res<DoorState>,
+    door_state: Res<Scene3DoorState>,
 ) {
     if querys.iter().len() != 0 {
         return;
@@ -29,7 +29,7 @@ pub fn spawn(
                     &mut commands,
                     Transform::from_xyz(468.0, 268.0, 25.0),
                     &asset_server,
-                    if *door_state == DoorState::Closed {
+                    if *door_state == Scene3DoorState::Closed {
                         "开门"
                     } else {
                         "进入"
@@ -46,7 +46,7 @@ pub fn despawn(
     querys: Query<Entity, With<PressEtoOpenDoor>>,
     players: Query<&Transform, With<Player>>,
     doors: Query<&Transform, With<Door>>,
-    door_state: Res<DoorState>,
+    door_state: Res<Scene3DoorState>,
 ) {
     if door_state.is_changed() {
         for query in &querys {

@@ -1,5 +1,6 @@
 pub mod arrow;
 pub mod broken_floor;
+pub mod chest;
 pub mod door;
 pub mod general;
 pub mod ground;
