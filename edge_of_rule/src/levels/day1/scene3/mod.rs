@@ -26,7 +26,7 @@ impl Plugin for Scene3Plugin {
                     spawner::ground_and_wall::spawn,
                     spawner::player::spawn,
                     spawner::door::spawn,
-                    // spawner::fog::spawn,
+                    spawner::fog::spawn,
                     spawner::chest::spawn,
                 ),
             )
