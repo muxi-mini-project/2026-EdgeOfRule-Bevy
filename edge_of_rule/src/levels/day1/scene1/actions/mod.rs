@@ -56,7 +56,7 @@ pub fn enter_door(
     }
 
     if input.just_pressed(KeyCode::KeyE) {
-        commands.insert_resource(SpawnPoint(Transform::from_xyz(-92.0, -68.0, 0.0)));
+        commands.insert_resource(SpawnPoint(Transform::from_xyz(-92.0, -50.0, 0.0)));
         game_state.set(GameState::Day1Scene2);
     }
 }

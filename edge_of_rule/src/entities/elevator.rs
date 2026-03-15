@@ -13,6 +13,14 @@ pub struct Elevator {
     pub max_y: f32,
 }
 
+#[derive(Component)]
+pub struct ElevatorAnimState {
+    pub last_y: f32,
+}
+
+#[derive(Component)]
+pub struct ElevatorSprite;
+
 pub fn spawn_elevator(
     commands: &mut Commands,
     transform: Transform,
@@ -29,16 +37,22 @@ pub fn spawn_elevator(
             },
             Elevator {
                 // Default travel range; can be overridden later per-scene.
-                min_y: transform.translation.y - 260.0,
+                min_y: transform.translation.y - 242.0,
                 max_y: transform.translation.y,
+            },
+            ElevatorAnimState {
+                last_y: transform.translation.y,
             },
         ))
         .with_children(|parent| {
-            parent.spawn(SpriteBundle {
-                texture,
-                transform: Transform::from_xyz(0.0, 0.0, 0.0).with_scale(Vec3::splat(SCALE)),
-                ..default()
-            });
+            parent.spawn((
+                SpriteBundle {
+                    texture,
+                    transform: Transform::from_xyz(0.0, 0.0, 0.0).with_scale(Vec3::splat(SCALE)),
+                    ..default()
+                },
+                ElevatorSprite,
+            ));
 
             spawn_elevator_ground(
                 parent,
