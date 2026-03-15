@@ -1,4 +1,5 @@
 mod arrow;
+mod chest;
 mod door;
 mod player;
 mod trapdoor;
@@ -29,6 +30,10 @@ impl Plugin for AnimationPlugin {
                 Update,
                 door::scene3_door_animation_system.run_if(in_state(GameState::Day1Scene4)),
             )
-            .add_systems(Update, trapdoor::trapdoor_animation_system);
+            .add_systems(Update, trapdoor::trapdoor_animation_system)
+            .add_systems(
+                Update,
+                chest::chest_animation_system.run_if(in_state(GameState::Day1Scene3)),
+            );
     }
 }

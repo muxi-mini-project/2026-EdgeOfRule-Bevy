@@ -1,6 +1,7 @@
 pub mod arrow;
 pub mod broken_floor;
 pub mod chest;
+pub mod controller;
 pub mod door;
 pub mod elevator;
 pub mod general;

@@ -59,7 +59,7 @@ pub fn read_log(
         commands.spawn((
             SpriteBundle {
                 texture: asset_server.load("images/HUD/small_note.png"),
-                transform: Transform::from_xyz(0.0, 0.0, 5.0).with_scale(Vec3::splat(SCALE)),
+                transform: Transform::from_xyz(0.0, 0.0, 50.0).with_scale(Vec3::splat(SCALE)),
                 ..default()
             },
             OpenedLog,

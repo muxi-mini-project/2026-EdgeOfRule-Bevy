@@ -2,10 +2,10 @@ use crate::{
     core::state::GameState,
     entities::player::{Player, SpawnPoint},
     levels::day1::scene3::{
-        Scene3DoorState,
+        Scene3ChestState, Scene3DoorState,
         spawner::{
             fog::Day1Scene3Fog, press_e_to_enter_hole::PressEtoEnterHole,
-            press_e_to_open_door::PressEtoOpenDoor,
+            press_e_to_open_chest::PressEtoOpenChest, press_e_to_open_door::PressEtoOpenDoor,
         },
     },
 };
@@ -59,6 +59,24 @@ pub fn enter_door(
     if input.just_pressed(KeyCode::KeyE) {
         commands.insert_resource(SpawnPoint(Transform::from_xyz(-92.0, -68.0, 0.0)));
         game_state.set(GameState::Day1Scene4);
+    }
+}
+
+pub fn open_chest(
+    querys: Query<&PressEtoOpenChest>,
+    input: Res<ButtonInput<KeyCode>>,
+    mut chest_state: ResMut<Scene3ChestState>,
+) {
+    if querys.iter().len() == 0 {
+        return;
+    }
+
+    if input.just_pressed(KeyCode::KeyE) {
+        match *chest_state {
+            Scene3ChestState::Packed => *chest_state = Scene3ChestState::Opened,
+            Scene3ChestState::Opened => *chest_state = Scene3ChestState::Picked,
+            _ => (),
+        }
     }
 }
 

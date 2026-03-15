@@ -11,11 +11,18 @@ pub enum Scene3DoorState {
     Opened,
 }
 
+#[derive(Resource, Eq, PartialEq)]
+pub enum Scene3ChestState {
+    Packed,
+    Opened,
+    Picked,
+}
 pub struct Scene3Plugin;
 
 impl Plugin for Scene3Plugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(Scene3DoorState::Closed)
+            .insert_resource(Scene3ChestState::Packed)
             .add_systems(
                 OnEnter(GameState::Day1Scene3),
                 (
@@ -78,6 +85,7 @@ impl Plugin for Scene3Plugin {
                     actions::enter_door.run_if(in_state(GameState::Day1Scene3)),
                     actions::enter_hole.run_if(in_state(GameState::Day1Scene3)),
                     actions::fog_follow,
+                    actions::open_chest,
                 ),
             );
     }

@@ -1,6 +1,9 @@
 use bevy::prelude::*;
 
-use crate::entities::{arrow::spawn_arrow, chest::Chest, player::Player};
+use crate::{
+    entities::{arrow::spawn_arrow, chest::Chest, player::Player},
+    levels::day1::scene3::Scene3ChestState,
+};
 
 #[derive(Component)]
 pub struct ArrowOfChest;
@@ -11,8 +14,13 @@ pub fn spawn(
     arrows: Query<&ArrowOfChest>,
     players: Query<&Transform, With<Player>>,
     doors: Query<&Transform, With<Chest>>,
+    chest_state: Res<Scene3ChestState>,
 ) {
     if arrows.iter().len() != 0 {
+        return;
+    }
+
+    if *chest_state == Scene3ChestState::Picked {
         return;
     }
 
@@ -37,10 +45,16 @@ pub fn despawn(
     arrows: Query<Entity, With<ArrowOfChest>>,
     players: Query<&Transform, With<Player>>,
     doors: Query<&Transform, With<Chest>>,
+    chest_state: Res<Scene3ChestState>,
 ) {
     for player in &players {
+        if *chest_state == Scene3ChestState::Picked {
+            break;
+        }
         for door in &doors {
-            if (player.translation.x - door.translation.x).abs() < 60.0 {
+            if (player.translation.x - door.translation.x).abs() < 60.0
+                && (player.translation.y - door.translation.y).abs() < 90.0
+            {
                 return;
             }
         }
