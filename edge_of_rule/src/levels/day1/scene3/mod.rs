@@ -33,7 +33,7 @@ impl Plugin for Scene3Plugin {
                     spawner::ground_and_wall::spawn,
                     spawner::player::spawn,
                     spawner::door::spawn,
-                    // spawner::fog::spawn,
+                    spawner::fog::spawn,
                     spawner::chest::spawn,
                     spawner::elevator::spawn,
                     spawner::hole::spawn,
@@ -86,6 +86,8 @@ impl Plugin for Scene3Plugin {
                     actions::enter_hole.run_if(in_state(GameState::Day1Scene3)),
                     actions::fog_follow,
                     actions::open_chest,
+                    actions::move_elevator_when_chest_picked
+                        .run_if(in_state(GameState::Day1Scene3)),
                 ),
             );
     }

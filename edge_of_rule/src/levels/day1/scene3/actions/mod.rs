@@ -1,12 +1,13 @@
 use crate::{
     core::state::GameState,
+    entities::elevator::Elevator,
     entities::player::{Player, SpawnPoint},
     levels::day1::scene3::{
-        Scene3ChestState, Scene3DoorState,
         spawner::{
             fog::Day1Scene3Fog, press_e_to_enter_hole::PressEtoEnterHole,
             press_e_to_open_chest::PressEtoOpenChest, press_e_to_open_door::PressEtoOpenDoor,
         },
+        Scene3ChestState, Scene3DoorState,
     },
 };
 use bevy::prelude::*;
@@ -89,5 +90,35 @@ pub fn fog_follow(
             fog_transform.translation = player_transform.translation;
             fog_transform.translation.z += 20.0;
         }
+    }
+}
+
+pub fn move_elevator_when_chest_picked(
+    time: Res<Time>,
+    input: Res<ButtonInput<KeyCode>>,
+    chest_state: Res<Scene3ChestState>,
+    mut elevators: Query<(&mut Transform, &Elevator)>,
+) {
+    if *chest_state != Scene3ChestState::Picked {
+        return;
+    }
+
+    let mut dir = 0.0;
+    if input.pressed(KeyCode::ArrowUp) {
+        dir += 1.0;
+    }
+    if input.pressed(KeyCode::ArrowDown) {
+        dir -= 1.0;
+    }
+
+    if dir == 0.0 {
+        return;
+    }
+
+    const ELEVATOR_SPEED: f32 = 60.0;
+    let delta_y = dir * ELEVATOR_SPEED * time.delta_seconds();
+    for (mut transform, elevator) in &mut elevators {
+        transform.translation.y =
+            (transform.translation.y + delta_y).clamp(elevator.min_y, elevator.max_y);
     }
 }

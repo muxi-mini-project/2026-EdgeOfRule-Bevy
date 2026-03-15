@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::entities::ladder::{Ladder, spawn_ladder};
+use crate::entities::ladder::{spawn_ladder, Ladder};
 
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_ladder(

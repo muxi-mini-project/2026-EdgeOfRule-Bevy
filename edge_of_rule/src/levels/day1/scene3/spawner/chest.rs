@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::entities::chest::{Chest, spawn_chest};
+use crate::entities::chest::{spawn_chest, Chest};
 
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_chest(&mut commands, Transform::from_xyz(56.0, -136.0, 1.0), asset);

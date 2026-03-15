@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::entities::elevator::{Elevator, spawn_elevator};
+use crate::entities::elevator::{spawn_elevator, Elevator};
 
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_elevator(
@@ -12,6 +12,6 @@ pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
 
 pub fn despawn(mut commands: Commands, ladders: Query<Entity, With<Elevator>>) {
     for ladder in &ladders {
-        commands.entity(ladder).despawn();
+        commands.entity(ladder).despawn_recursive();
     }
 }
