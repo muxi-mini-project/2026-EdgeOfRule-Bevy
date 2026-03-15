@@ -8,7 +8,7 @@ use crate::{
 
 pub fn spawn(commands: Commands, asset: Res<PlayerAssets>, door_state: Res<Scene3DoorState>) {
     if *door_state == Scene3DoorState::Closed {
-        spawn_player(commands, asset, Transform::from_xyz(-234.0, 250.0, 0.0));
+        spawn_player(commands, asset, Transform::from_xyz(-398.0, 250.0, 0.0));
     } else {
         spawn_player(commands, asset, Transform::from_xyz(394.0, 100.0, 0.0));
     }

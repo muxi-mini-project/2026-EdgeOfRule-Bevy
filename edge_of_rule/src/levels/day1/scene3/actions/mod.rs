@@ -1,12 +1,29 @@
 use crate::{
     core::state::GameState,
     entities::player::Player,
-    levels::day1::{
-        scene3::Scene3DoorState,
-        scene3::spawner::{fog::Day1Scene3Fog, press_e_to_open_door::PressEtoOpenDoor},
+    levels::day1::scene3::{
+        Scene3DoorState,
+        spawner::{
+            fog::Day1Scene3Fog, press_e_to_enter_hole::PressEtoEnterHole,
+            press_e_to_open_door::PressEtoOpenDoor,
+        },
     },
 };
 use bevy::prelude::*;
+
+pub fn enter_hole(
+    query: Query<&PressEtoEnterHole>,
+    input: Res<ButtonInput<KeyCode>>,
+    mut game_state: ResMut<NextState<GameState>>,
+) {
+    if query.iter().len() == 0 {
+        return;
+    }
+
+    if input.just_pressed(KeyCode::KeyE) {
+        game_state.set(GameState::Day1Scene2);
+    }
+}
 
 pub fn open_door(
     query: Query<&PressEtoOpenDoor>,

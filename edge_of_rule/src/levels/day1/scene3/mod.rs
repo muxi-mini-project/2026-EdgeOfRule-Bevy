@@ -28,6 +28,8 @@ impl Plugin for Scene3Plugin {
                     spawner::door::spawn,
                     spawner::fog::spawn,
                     spawner::chest::spawn,
+                    spawner::elevator::spawn,
+                    spawner::hole::spawn,
                 ),
             )
             .add_systems(
@@ -42,10 +44,14 @@ impl Plugin for Scene3Plugin {
                     spawner::door::despawn,
                     spawner::fog::despawn,
                     spawner::chest::despawn,
+                    spawner::elevator::despawn,
+                    spawner::hole::despawn,
                     spawner::arrow_of_door::despawn_all,
                     spawner::press_e_to_open_door::despawn_all,
                     spawner::arrow_of_chest::despawn_all,
                     spawner::press_e_to_open_chest::despawn_all,
+                    spawner::arrow_of_hole::despawn_all,
+                    spawner::press_e_to_enter_hole::despawn_all,
                 ),
             )
             .add_systems(
@@ -59,6 +65,10 @@ impl Plugin for Scene3Plugin {
                     spawner::arrow_of_chest::despawn,
                     spawner::press_e_to_open_chest::spawn.run_if(in_state(GameState::Day1Scene3)),
                     spawner::press_e_to_open_chest::despawn,
+                    spawner::arrow_of_hole::spawn.run_if(in_state(GameState::Day1Scene3)),
+                    spawner::arrow_of_hole::despawn,
+                    spawner::press_e_to_enter_hole::spawn.run_if(in_state(GameState::Day1Scene3)),
+                    spawner::press_e_to_enter_hole::despawn,
                 ),
             )
             .add_systems(
@@ -66,6 +76,7 @@ impl Plugin for Scene3Plugin {
                 (
                     actions::open_door.run_if(in_state(GameState::Day1Scene3)),
                     actions::enter_door.run_if(in_state(GameState::Day1Scene3)),
+                    actions::enter_hole.run_if(in_state(GameState::Day1Scene3)),
                     actions::fog_follow,
                 ),
             );
