@@ -5,6 +5,7 @@ use crate::{
     core::state::GameState,
     entities::{
         key::{Key, spawn_key},
+        player::SpawnPoint,
         screw::{Screw, spawn_screw},
     },
     levels::day1::scene1::{
@@ -40,6 +41,7 @@ pub fn open_door(
 }
 
 pub fn enter_door(
+    mut commands: Commands,
     query: Query<&PressEtoOpenDoor>,
     input: Res<ButtonInput<KeyCode>>,
     door_state: Res<Scene1DoorState>,
@@ -54,6 +56,7 @@ pub fn enter_door(
     }
 
     if input.just_pressed(KeyCode::KeyE) {
+        commands.insert_resource(SpawnPoint(Transform::from_xyz(-92.0, -68.0, 0.0)));
         game_state.set(GameState::Day1Scene2);
     }
 }

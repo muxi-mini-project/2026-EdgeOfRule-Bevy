@@ -3,7 +3,7 @@ use bevy::prelude::*;
 use crate::{
     constants::SCALE,
     core::state::GameState,
-    entities::player::Player,
+    entities::player::{Player, SpawnPoint},
     levels::day1::scene4::spawner::{
         fog::Day1Scene4Fog, press_e_to_enter::PressEtoEnter, press_e_to_read_log::PressEtoRead,
     },
@@ -16,11 +16,13 @@ pub fn fog_follow(
     for mut fog_transform in fog.iter_mut() {
         for player_transform in player.iter() {
             fog_transform.translation = player_transform.translation;
+            fog_transform.translation.z += 20.0;
         }
     }
 }
 
 pub fn back_to_scene3(
+    mut commands: Commands,
     query: Query<&PressEtoEnter>,
     input: Res<ButtonInput<KeyCode>>,
     mut state: ResMut<NextState<GameState>>,
@@ -30,6 +32,7 @@ pub fn back_to_scene3(
     }
 
     if input.just_pressed(KeyCode::KeyE) {
+        commands.insert_resource(SpawnPoint(Transform::from_xyz(394.0, 100.0, 0.0)));
         state.set(GameState::Day1Scene3);
     }
 }

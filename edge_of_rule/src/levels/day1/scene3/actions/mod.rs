@@ -1,6 +1,6 @@
 use crate::{
     core::state::GameState,
-    entities::player::Player,
+    entities::player::{Player, SpawnPoint},
     levels::day1::scene3::{
         Scene3DoorState,
         spawner::{
@@ -12,6 +12,7 @@ use crate::{
 use bevy::prelude::*;
 
 pub fn enter_hole(
+    mut commands: Commands,
     query: Query<&PressEtoEnterHole>,
     input: Res<ButtonInput<KeyCode>>,
     mut game_state: ResMut<NextState<GameState>>,
@@ -21,6 +22,7 @@ pub fn enter_hole(
     }
 
     if input.just_pressed(KeyCode::KeyE) {
+        commands.insert_resource(SpawnPoint(Transform::from_xyz(116.0, -68.0, 0.0)));
         game_state.set(GameState::Day1Scene2);
     }
 }
@@ -40,6 +42,7 @@ pub fn open_door(
 }
 
 pub fn enter_door(
+    mut commands: Commands,
     query: Query<&PressEtoOpenDoor>,
     input: Res<ButtonInput<KeyCode>>,
     door_state: Res<Scene3DoorState>,
@@ -54,6 +57,7 @@ pub fn enter_door(
     }
 
     if input.just_pressed(KeyCode::KeyE) {
+        commands.insert_resource(SpawnPoint(Transform::from_xyz(-92.0, -68.0, 0.0)));
         game_state.set(GameState::Day1Scene4);
     }
 }
@@ -65,6 +69,7 @@ pub fn fog_follow(
     for mut fog_transform in fog.iter_mut() {
         for player_transform in player.iter() {
             fog_transform.translation = player_transform.translation;
+            fog_transform.translation.z += 20.0;
         }
     }
 }

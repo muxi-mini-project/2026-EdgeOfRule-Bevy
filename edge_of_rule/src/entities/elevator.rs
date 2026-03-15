@@ -23,7 +23,7 @@ pub fn spawn_elevator(
     ));
     spawn_ground(
         commands,
-        Vec2::new(116.0, 4.0),
+        Vec2::new(124.0, 4.0),
         Transform::from_xyz(
             transform.translation.x,
             transform.translation.y + 12.0,
@@ -42,7 +42,7 @@ pub fn spawn_elevator(
     );
     spawn_wall(
         commands,
-        Vec2::new(4.0, 28.0),
+        Vec2::new(4.0, 20.0),
         Transform::from_xyz(
             transform.translation.x - 60.0,
             transform.translation.y,
@@ -51,7 +51,7 @@ pub fn spawn_elevator(
     );
     spawn_wall(
         commands,
-        Vec2::new(4.0, 28.0),
+        Vec2::new(4.0, 20.0),
         Transform::from_xyz(
             transform.translation.x + 60.0,
             transform.translation.y,

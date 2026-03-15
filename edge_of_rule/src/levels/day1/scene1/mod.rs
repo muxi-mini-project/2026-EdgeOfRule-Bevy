@@ -3,7 +3,7 @@ pub mod spawner;
 
 use bevy::prelude::*;
 
-use crate::core::state::GameState;
+use crate::{core::state::GameState, entities::player::SpawnPoint};
 
 #[derive(Resource, Eq, PartialEq)]
 pub enum Picked {
@@ -24,6 +24,7 @@ impl Plugin for Scene1Plugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(Picked::None)
             .insert_resource(Scene1DoorState::Closed)
+            .insert_resource(SpawnPoint(Transform::from_xyz(-100.0, -68.0, 0.0)))
             .add_systems(
                 OnEnter(GameState::Day1Scene1),
                 (
