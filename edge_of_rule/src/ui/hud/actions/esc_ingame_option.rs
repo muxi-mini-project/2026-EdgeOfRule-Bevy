@@ -11,10 +11,10 @@ pub fn on_key_esc(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mut menu_state: ResMut<OptionSpawnState>,
     mut param_set: ParamSet<(
-        Query<&mut Visibility, With<InGameOptionArea>>,  // 根节点
-        Query<&mut Visibility, With<InGameOptionTitle>>, // 标题
-        Query<&mut Visibility, With<InGameExitBtn>>,     // 按钮
-        Query<&mut Visibility, With<UnderTip>>,          // 提示
+        Query<&mut Visibility, With<InGameOptionArea>>,  
+        Query<&mut Visibility, With<InGameOptionTitle>>, 
+        Query<&mut Visibility, With<InGameExitBtn>>,     
+        Query<&mut Visibility, With<UnderTip>>,          
     )>,
 ) {
     if keyboard_input.just_pressed(KeyCode::Escape) {
@@ -28,7 +28,6 @@ pub fn on_key_esc(
             Visibility::Hidden
         };
         
-        // 依次使用每个查询，ParamSet确保它们不会同时被借用
         for mut visibility in param_set.p0().iter_mut() {
             *visibility = new_visibility;
         }

@@ -5,6 +5,7 @@ pub struct UiImageAssets {
     pub background: Handle<Image>,
     pub titled_background: Handle<Image>,
     pub rules: Handle<Image>,
+    pub choise_triangle: Handle<Image>,
 }
 
 pub fn load_ui_image_assets(mut commands: Commands, asset_server: Res<AssetServer>) {
@@ -12,6 +13,6 @@ pub fn load_ui_image_assets(mut commands: Commands, asset_server: Res<AssetServe
         background: asset_server.load("images/mainmenu/background.png"),
         titled_background: asset_server.load("images/mainmenu/titled_background.png"),
         rules: asset_server.load("images/mainmenu/rules.png"),
-        // choise_triangle: asset_server.load("images/mainmenu/choise_triangle.png"),
+        choise_triangle: asset_server.load("images/mainmenu/choise_triangle.png"),
     });
 }
