@@ -18,6 +18,7 @@ pub fn on_click(
             }
             Interaction::Hovered => {
                 *btn.1 = BackgroundColor::from(Color::rgba(1.0, 1.0, 1.0, 0.1));
+                
             }
             Interaction::Pressed => {
                 *btn.1 = BackgroundColor::from(Color::rgba(1.0, 1.0, 1.0, 0.2));

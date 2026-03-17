@@ -42,7 +42,7 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
                     "Select Style",
                     TextStyle {
                         font: asset_server.load("font/font/aLiFont.ttf"), 
-                        font_size: 55.0, 
+                        font_size: 50.0, 
                         color: Color::WHITE
                     },
                     

@@ -1,93 +1,69 @@
 use bevy::prelude::*;
 
-use crate::ui::mainmenu::spawner::exit_game_btn::ExitGameBtn;
-
-#[derive(Component)]
-pub struct InGameOptionsArea;
+use crate::ui::hud::spawner::ingame_option_area::{InGameOptionArea, InGameExitBtn, InGameOptionTitle, UnderTip};
 
 #[derive(Resource, Default)]
 pub struct OptionSpawnState {
     pub is_visible: bool,
 }
 
-// 在启动时生成 UI（需要在插件中添加）
-pub fn spawn(
-    mut commands: Commands,
-    asset_server: Res<AssetServer>,
-) {
-    commands.spawn((
-        NodeBundle {
-            style: Style {
-                width: Val::Percent(60.0),
-                height: Val::Percent(70.0),
-                justify_content: JustifyContent::End,
-                align_items: AlignItems::Center,
-                position_type: PositionType::Absolute,
-                top: Val::Percent(15.0),
-                left: Val::Percent(20.0),
-                flex_direction: FlexDirection::Column,
-                ..Default::default()
-            },
-            z_index: ZIndex::Global(1),
-            background_color: BackgroundColor::from(Color::rgb(0.2, 0.2, 0.3)),
-            visibility: Visibility::Hidden, 
-            ..Default::default()
-        },
-        InGameOptionsArea,
-    ))
-    .with_children(|parent| {
-        parent.spawn((
-            ButtonBundle {
-                style: Style {
-                width: Val::Percent(19.8),
-                height: Val::Percent(8.52),
-                position_type: PositionType::Absolute,
-                justify_content: JustifyContent::Center,
-                align_items: AlignItems::Center,
-                bottom: Val::Percent(20.0),
-                right: Val::Percent(40.1),
-                ..Default::default()
-            },
-            background_color: BackgroundColor::from(Color::rgb(82.0 / 255.0, 4.0 / 255.0, 4.0 / 255.0)),
-            ..Default::default()
-            },
-            ExitGameBtn,
-        ))
-        .with_children(|parent| {
-            parent.spawn(
-                TextBundle {
-                    text: Text::from_section(
-                        "退出游戏",
-                        TextStyle {
-                            font: asset_server.load("font/font/aLiFont.ttf"),
-                            font_size: 40.0,
-                            color: Color::WHITE,
-                        },
-                    ),
-                    ..Default::default()
-                },
-            );
-    });});
-}
-
 pub fn on_key_esc(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mut menu_state: ResMut<OptionSpawnState>,
-    mut q_menu: Query<&mut Visibility, With<InGameOptionsArea>>,
+    mut param_set: ParamSet<(
+        Query<&mut Visibility, With<InGameOptionArea>>,  // 根节点
+        Query<&mut Visibility, With<InGameOptionTitle>>, // 标题
+        Query<&mut Visibility, With<InGameExitBtn>>,     // 按钮
+        Query<&mut Visibility, With<UnderTip>>,          // 提示
+    )>,
 ) {
     if keyboard_input.just_pressed(KeyCode::Escape) {
         menu_state.is_visible = !menu_state.is_visible;
         
-        if let Ok(mut visibility) = q_menu.get_single_mut() {
-            *visibility = if menu_state.is_visible {
-                info!("显示菜单");
-                Visibility::Visible
-            } else {
-                info!("隐藏菜单");
-                Visibility::Hidden
-            };
+        let new_visibility = if menu_state.is_visible {
+            info!("显示菜单");
+            Visibility::Visible
         } else {
-            warn!("未找到 InGameOptionsArea 实体");
+            info!("隐藏菜单");
+            Visibility::Hidden
+        };
+        
+        // 依次使用每个查询，ParamSet确保它们不会同时被借用
+        for mut visibility in param_set.p0().iter_mut() {
+            *visibility = new_visibility;
+        }
+        
+        for mut visibility in param_set.p1().iter_mut() {
+            *visibility = new_visibility;
+        }
+        
+        for mut visibility in param_set.p2().iter_mut() {
+            *visibility = new_visibility;
+        }
+        
+        for mut visibility in param_set.p3().iter_mut() {
+            *visibility = new_visibility;
+        }
+    }
+}
+
+pub fn on_click(
+    mut exit_game: EventWriter<bevy::app::AppExit>,
+    mut btns: Query<(&Interaction,&mut BackgroundColor), With<InGameExitBtn>>,
+) {
+    for (reaction,mut color) in &mut btns {
+        match *reaction {
+            Interaction::Pressed => {
+                *color = BackgroundColor::from(Color::rgba(65.0 / 255.0, 2.0 / 255.0, 2.0 / 255.0, 1.0));
+                exit_game.send(bevy::app::AppExit);
+            }
+            Interaction::Hovered => {
+                *color = BackgroundColor::from(Color::rgb(115.0 / 255.0, 7.0 / 255.0, 7.0 / 255.0));
+                
+            }
+            Interaction::None => {
+                *color = BackgroundColor::from(Color::rgba(82.0 / 255.0, 4.0 / 255.0, 4.0 / 255.0, 1.0));
+            }
         }
     }
 }
