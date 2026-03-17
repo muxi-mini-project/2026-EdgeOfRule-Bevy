@@ -109,6 +109,14 @@ impl Plugin for MainMenuPlugin {
             ),
         )
         .add_systems(
+            OnEnter(GameState::MainMenu),
+            (
+                spawner::arrow_levels::spawn,
+                spawner::arrow_rules::spawn,
+                spawner::arrow_styles::spawn,
+            )
+        )
+        .add_systems(
             Update,
             (
                 actions::options_btn::on_click,
@@ -129,6 +137,10 @@ impl Plugin for MainMenuPlugin {
                 actions::rules_btn::on_click,
 
                 actions::backward_btn::on_click,
+
+                actions::arrow_levels::on_hover,
+                actions::arrow_rules::on_hover,
+                actions::arrow_styles::on_hover,
             ),
         );
     }

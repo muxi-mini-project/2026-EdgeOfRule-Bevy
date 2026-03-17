@@ -12,3 +12,7 @@ pub mod style_select_btn;
 
 pub mod styles_btn;
 
+pub mod arrow_levels;
+pub mod arrow_rules;
+pub mod arrow_styles;
+

@@ -13,12 +13,16 @@ impl Plugin for HudPlugin {
     fn build(&self, app: &mut App) {
         app
             .insert_resource(actions::esc_ingame_option::OptionSpawnState { is_visible: bool::default() })
-            .add_systems(Startup, actions::esc_ingame_option::spawn)
+            .add_systems(Startup, spawner::ingame_option_area::spawn_ingame_option_area)
+            .add_systems(Startup, spawner::ingame_option_area::spawn_in_game_option_title)
+            .add_systems(Startup, spawner::ingame_option_area::spawn_exit_game_btn)
+            .add_systems(Startup, spawner::ingame_option_area::spawn_under_tip)
+
             .add_systems(
                 Update,
                     (
                         actions::esc_ingame_option::on_key_esc,
-                        crate::ui::mainmenu::actions::exit_game_btn::on_click,
+                        actions::esc_ingame_option::on_click,
                     ),
             );
     }

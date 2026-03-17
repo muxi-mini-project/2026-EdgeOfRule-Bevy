@@ -14,6 +14,7 @@ pub fn on_click(
             }
             Interaction::Hovered => {
                 *color = BackgroundColor::from(Color::rgb(115.0 / 255.0, 7.0 / 255.0, 7.0 / 255.0));
+                
             }
             Interaction::None => {
                 *color = BackgroundColor::from(Color::rgba(82.0 / 255.0, 4.0 / 255.0, 4.0 / 255.0, 1.0));
