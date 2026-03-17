@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 use crate::{
     entities::{door::Door, player::Player, press_e::spawn_press_e},
-    levels::day1::scene3::Scene3DoorState,
+    levels::day1::scene3::{Scene3CoverState, Scene3DoorState},
 };
 
 #[derive(Component)]
@@ -15,8 +15,13 @@ pub fn spawn(
     players: Query<&Transform, With<Player>>,
     doors: Query<&Transform, With<Door>>,
     door_state: Res<Scene3DoorState>,
+    picked: Res<Scene3CoverState>,
 ) {
     if querys.iter().len() != 0 {
+        return;
+    }
+
+    if *picked != Scene3CoverState::Picked {
         return;
     }
 

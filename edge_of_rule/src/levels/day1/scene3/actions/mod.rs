@@ -1,13 +1,16 @@
 use crate::{
     core::state::GameState,
-    entities::elevator::Elevator,
-    entities::player::{Player, SpawnPoint},
+    entities::{
+        elevator::Elevator,
+        player::{Player, SpawnPoint},
+    },
     levels::day1::scene3::{
+        Scene3ChestState, Scene3CoverState, Scene3DoorState,
         spawner::{
             fog::Day1Scene3Fog, press_e_to_enter_hole::PressEtoEnterHole,
-            press_e_to_open_chest::PressEtoOpenChest, press_e_to_open_door::PressEtoOpenDoor,
+            press_e_to_open_chest::PressEtoOpenChest, press_e_to_open_cover::PressEtoOpenCover,
+            press_e_to_open_door::PressEtoOpenDoor,
         },
-        Scene3ChestState, Scene3DoorState,
     },
 };
 use bevy::prelude::*;
@@ -76,6 +79,24 @@ pub fn open_chest(
         match *chest_state {
             Scene3ChestState::Packed => *chest_state = Scene3ChestState::Opened,
             Scene3ChestState::Opened => *chest_state = Scene3ChestState::Picked,
+            _ => (),
+        }
+    }
+}
+
+pub fn open_cover(
+    querys: Query<&PressEtoOpenCover>,
+    input: Res<ButtonInput<KeyCode>>,
+    mut chest_state: ResMut<Scene3CoverState>,
+) {
+    if querys.iter().len() == 0 {
+        return;
+    }
+
+    if input.just_pressed(KeyCode::KeyE) {
+        match *chest_state {
+            Scene3CoverState::Packed => *chest_state = Scene3CoverState::Opened,
+            Scene3CoverState::Opened => *chest_state = Scene3CoverState::Picked,
             _ => (),
         }
     }

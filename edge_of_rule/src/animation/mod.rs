@@ -1,5 +1,6 @@
 mod arrow;
 mod chest;
+mod cover;
 mod door;
 mod elevator;
 mod player;
@@ -36,6 +37,10 @@ impl Plugin for AnimationPlugin {
             .add_systems(
                 Update,
                 chest::chest_animation_system.run_if(in_state(GameState::Day1Scene3)),
+            )
+            .add_systems(
+                Update,
+                cover::cover_animation_system.run_if(in_state(GameState::Day1Scene3)),
             );
     }
 }

@@ -1,8 +1,10 @@
 pub mod arrow_of_chest;
+pub mod arrow_of_cover;
 pub mod arrow_of_door;
 pub mod arrow_of_hole;
 pub mod background;
 pub mod chest;
+pub mod cover;
 pub mod door;
 pub mod elevator;
 pub mod fog;
@@ -14,4 +16,5 @@ pub mod platform;
 pub mod player;
 pub mod press_e_to_enter_hole;
 pub mod press_e_to_open_chest;
+pub mod press_e_to_open_cover;
 pub mod press_e_to_open_door;

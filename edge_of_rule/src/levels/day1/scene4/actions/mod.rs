@@ -4,8 +4,11 @@ use crate::{
     constants::SCALE,
     core::state::GameState,
     entities::player::{Player, SpawnPoint},
-    levels::day1::scene4::spawner::{
-        fog::Day1Scene4Fog, press_e_to_enter::PressEtoEnter, press_e_to_read_log::PressEtoRead,
+    levels::day1::{
+        scene1::Day1Finished,
+        scene4::spawner::{
+            fog::Day1Scene4Fog, press_e_to_enter::PressEtoEnter, press_e_to_read_log::PressEtoRead,
+        },
     },
 };
 
@@ -46,6 +49,7 @@ pub fn read_log(
     query: Query<&PressEtoRead>,
     input: Res<ButtonInput<KeyCode>>,
     note: Query<&OpenedLog>,
+    mut finished: ResMut<Day1Finished>,
 ) {
     if query.iter().len() == 0 {
         return;
@@ -64,5 +68,18 @@ pub fn read_log(
             },
             OpenedLog,
         ));
+        *finished = Day1Finished::Yes;
+    }
+}
+
+pub fn close_log(
+    mut commands: Commands,
+    input: Res<ButtonInput<KeyCode>>,
+    query: Query<Entity, With<OpenedLog>>,
+) {
+    if input.just_pressed(KeyCode::KeyE) {
+        for entity in query.iter() {
+            commands.entity(entity).despawn();
+        }
     }
 }

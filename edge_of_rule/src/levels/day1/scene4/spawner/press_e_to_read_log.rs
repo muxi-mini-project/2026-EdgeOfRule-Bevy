@@ -21,7 +21,7 @@ pub fn spawn(
             if (player.translation.x - note.translation.x).abs() < 60.0 {
                 spawn_press_e(
                     &mut commands,
-                    Transform::from_xyz(96.0, 2.0, 1.0),
+                    Transform::from_xyz(96.0, 2.0, 25.0),
                     &asset_server,
                     "阅读",
                     PressEtoRead,

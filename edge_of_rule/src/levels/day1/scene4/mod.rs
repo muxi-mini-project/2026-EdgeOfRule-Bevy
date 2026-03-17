@@ -54,6 +54,7 @@ impl Plugin for Scene4Plugin {
                 actions::fog_follow,
                 actions::back_to_scene3,
                 actions::read_log,
+                actions::close_log,
             ),
         );
     }

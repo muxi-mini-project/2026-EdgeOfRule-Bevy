@@ -17,12 +17,21 @@ pub enum Scene3ChestState {
     Opened,
     Picked,
 }
+
+#[derive(Resource, Eq, PartialEq)]
+pub enum Scene3CoverState {
+    Packed,
+    Opened,
+    Picked,
+}
+
 pub struct Scene3Plugin;
 
 impl Plugin for Scene3Plugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(Scene3DoorState::Closed)
             .insert_resource(Scene3ChestState::Packed)
+            .insert_resource(Scene3CoverState::Packed)
             .add_systems(
                 OnEnter(GameState::Day1Scene3),
                 (
@@ -37,6 +46,7 @@ impl Plugin for Scene3Plugin {
                     spawner::chest::spawn,
                     spawner::elevator::spawn,
                     spawner::hole::spawn,
+                    spawner::cover::spawn,
                 ),
             )
             .add_systems(
@@ -53,12 +63,15 @@ impl Plugin for Scene3Plugin {
                     spawner::chest::despawn,
                     spawner::elevator::despawn,
                     spawner::hole::despawn,
+                    spawner::cover::despawn,
                     spawner::arrow_of_door::despawn_all,
                     spawner::press_e_to_open_door::despawn_all,
                     spawner::arrow_of_chest::despawn_all,
                     spawner::press_e_to_open_chest::despawn_all,
                     spawner::arrow_of_hole::despawn_all,
                     spawner::press_e_to_enter_hole::despawn_all,
+                    spawner::arrow_of_cover::despawn_all,
+                    spawner::press_e_to_open_cover::despawn_all,
                 ),
             )
             .add_systems(
@@ -76,6 +89,10 @@ impl Plugin for Scene3Plugin {
                     spawner::arrow_of_hole::despawn,
                     spawner::press_e_to_enter_hole::spawn.run_if(in_state(GameState::Day1Scene3)),
                     spawner::press_e_to_enter_hole::despawn,
+                    spawner::arrow_of_cover::spawn.run_if(in_state(GameState::Day1Scene3)),
+                    spawner::arrow_of_cover::despawn,
+                    spawner::press_e_to_open_cover::spawn.run_if(in_state(GameState::Day1Scene3)),
+                    spawner::press_e_to_open_cover::despawn,
                 ),
             )
             .add_systems(
@@ -86,6 +103,7 @@ impl Plugin for Scene3Plugin {
                     actions::enter_hole.run_if(in_state(GameState::Day1Scene3)),
                     actions::fog_follow,
                     actions::open_chest,
+                    actions::open_cover,
                     actions::move_elevator_when_chest_picked
                         .run_if(in_state(GameState::Day1Scene3)),
                 ),
