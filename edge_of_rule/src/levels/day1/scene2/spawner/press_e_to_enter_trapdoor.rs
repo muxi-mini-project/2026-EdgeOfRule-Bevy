@@ -1,6 +1,9 @@
 use bevy::prelude::*;
 
-use crate::entities::{player::Player, press_e::spawn_press_e, trapdoor::Trapdoor};
+use crate::{
+    entities::{player::Player, press_e::spawn_press_e, trapdoor::Trapdoor},
+    levels::day1::{scene1::Picked, scene2::TrapdoorState},
+};
 
 #[derive(Component)]
 pub struct PressEtoEnterTrapdoor;
@@ -11,11 +14,16 @@ pub fn spawn(
     querys: Query<&PressEtoEnterTrapdoor>,
     players: Query<&Transform, With<Player>>,
     doors: Query<&Transform, With<Trapdoor>>,
+    picked: Res<Picked>,
+    trapdoor_state: Res<TrapdoorState>,
 ) {
     if querys.iter().len() != 0 {
         return;
     }
 
+    if *picked != Picked::Screw && *trapdoor_state == TrapdoorState::Closed {
+        return;
+    }
     for player in &players {
         for door in &doors {
             if (player.translation.x - door.translation.x).abs() < 60.0 {

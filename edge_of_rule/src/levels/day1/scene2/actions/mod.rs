@@ -2,6 +2,7 @@ use bevy::prelude::*;
 
 use crate::{
     core::state::GameState,
+    entities::player::SpawnPoint,
     levels::day1::{
         scene1::Picked,
         scene2::{
@@ -15,6 +16,7 @@ use crate::{
 };
 
 pub fn back_to_scene1(
+    mut commands: Commands,
     query: Query<&PressEtoBackScene1>,
     input: Res<ButtonInput<KeyCode>>,
     mut state: ResMut<NextState<GameState>>,
@@ -24,6 +26,7 @@ pub fn back_to_scene1(
     }
 
     if input.just_pressed(KeyCode::KeyE) {
+        commands.insert_resource(SpawnPoint(Transform::from_xyz(408.0, -68.0, 0.0)));
         state.set(GameState::Day1Scene1);
     }
 }
@@ -48,6 +51,7 @@ pub fn open_trapdoor(
 }
 
 pub fn enter_trapdoor(
+    mut commands: Commands,
     query: Query<&PressEtoEnterTrapdoor>,
     input: Res<ButtonInput<KeyCode>>,
     trapdoor_state: Res<TrapdoorState>,
@@ -62,6 +66,7 @@ pub fn enter_trapdoor(
     }
 
     if input.just_pressed(KeyCode::KeyE) {
+        commands.insert_resource(SpawnPoint(Transform::from_xyz(-398.0, 250.0, 0.0)));
         state.set(GameState::Day1Scene3);
     }
 }

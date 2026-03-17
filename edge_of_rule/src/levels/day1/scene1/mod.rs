@@ -3,7 +3,7 @@ pub mod spawner;
 
 use bevy::prelude::*;
 
-use crate::core::state::GameState;
+use crate::{core::state::GameState, entities::player::SpawnPoint};
 
 #[derive(Resource, Eq, PartialEq)]
 pub enum Picked {
@@ -13,9 +13,15 @@ pub enum Picked {
 }
 
 #[derive(Resource, Eq, PartialEq)]
-pub enum DoorState {
+pub enum Scene1DoorState {
     Closed,
     Opened,
+}
+
+#[derive(Resource, Eq, PartialEq)]
+pub enum Day1Finished {
+    No,
+    Yes,
 }
 
 pub struct Scene1Plugin;
@@ -23,7 +29,9 @@ pub struct Scene1Plugin;
 impl Plugin for Scene1Plugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(Picked::None)
-            .insert_resource(DoorState::Closed)
+            .insert_resource(Scene1DoorState::Closed)
+            .insert_resource(SpawnPoint(Transform::from_xyz(-100.0, -68.0, 0.0)))
+            .insert_resource(Day1Finished::No)
             .add_systems(
                 OnEnter(GameState::Day1Scene1),
                 (
@@ -67,6 +75,8 @@ impl Plugin for Scene1Plugin {
                 (
                     spawner::arrow_of_return_screw::despawn_all,
                     spawner::press_e_to_return_screw::despawn_all,
+                    spawner::arrow_of_sleep::despawn_all,
+                    spawner::press_e_to_sleep::despawn_all,
                 ),
             )
             .add_systems(
@@ -101,6 +111,10 @@ impl Plugin for Scene1Plugin {
                     spawner::arrow_of_return_screw::despawn,
                     spawner::press_e_to_return_screw::spawn.run_if(in_state(GameState::Day1Scene1)),
                     spawner::press_e_to_return_screw::despawn,
+                    spawner::arrow_of_sleep::spawn.run_if(in_state(GameState::Day1Scene1)),
+                    spawner::arrow_of_sleep::despawn,
+                    spawner::press_e_to_sleep::spawn.run_if(in_state(GameState::Day1Scene1)),
+                    spawner::press_e_to_sleep::despawn,
                 ),
             )
             .add_systems(
@@ -114,6 +128,7 @@ impl Plugin for Scene1Plugin {
                     actions::pick_screw.run_if(in_state(GameState::Day1Scene1)),
                     actions::return_key.run_if(in_state(GameState::Day1Scene1)),
                     actions::return_screw.run_if(in_state(GameState::Day1Scene1)),
+                    actions::sleep.run_if(in_state(GameState::Day1Scene1)),
                 ),
             );
     }

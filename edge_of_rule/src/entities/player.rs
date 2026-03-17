@@ -5,6 +5,9 @@ use crate::physics::collision::CollisionGroup;
 use bevy::prelude::*;
 use bevy_rapier2d::prelude::*;
 
+#[derive(Resource)]
+pub struct SpawnPoint(pub Transform);
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
 pub enum FacingDirection {
     Left,

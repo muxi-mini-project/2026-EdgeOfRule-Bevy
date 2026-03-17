@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::entities::platform::{Platform, spawn_platform};
+use crate::entities::platform::{spawn_platform, Platform};
 
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_platform(

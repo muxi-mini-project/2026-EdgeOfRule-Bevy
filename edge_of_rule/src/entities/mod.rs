@@ -1,8 +1,13 @@
 pub mod arrow;
 pub mod broken_floor;
+pub mod chest;
+pub mod controller;
+pub mod cover;
 pub mod door;
+pub mod elevator;
 pub mod general;
 pub mod ground;
+pub mod hole;
 pub mod key;
 pub mod ladder;
 pub mod log;

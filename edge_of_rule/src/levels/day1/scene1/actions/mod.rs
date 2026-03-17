@@ -5,14 +5,16 @@ use crate::{
     core::state::GameState,
     entities::{
         key::{Key, spawn_key},
+        player::SpawnPoint,
         screw::{Screw, spawn_screw},
     },
     levels::day1::scene1::{
-        DoorState, Picked,
+        Picked, Scene1DoorState,
         spawner::{
             press_e_to_open_door::PressEtoOpenDoor, press_e_to_pick_key::PressEtoPickKey,
             press_e_to_pick_screw::PressEtoPickScrew, press_e_to_read::PressEtoRead,
             press_e_to_return_key::PressEtoReturnKey, press_e_to_return_screw::PressEtoReturnScrew,
+            press_e_to_sleep::PressEtoSleep,
         },
     },
 };
@@ -35,25 +37,27 @@ pub fn open_door(
     }
 
     if input.just_pressed(KeyCode::KeyE) {
-        commands.insert_resource(DoorState::Opened);
+        commands.insert_resource(Scene1DoorState::Opened);
     }
 }
 
 pub fn enter_door(
+    mut commands: Commands,
     query: Query<&PressEtoOpenDoor>,
     input: Res<ButtonInput<KeyCode>>,
-    door_state: Res<DoorState>,
+    door_state: Res<Scene1DoorState>,
     mut game_state: ResMut<NextState<GameState>>,
 ) {
     if query.iter().len() == 0 {
         return;
     }
 
-    if *door_state != DoorState::Opened {
+    if *door_state != Scene1DoorState::Opened {
         return;
     }
 
     if input.just_pressed(KeyCode::KeyE) {
+        commands.insert_resource(SpawnPoint(Transform::from_xyz(-92.0, -50.0, 0.0)));
         game_state.set(GameState::Day1Scene2);
     }
 }
@@ -90,7 +94,7 @@ pub fn close_small_note(
     input: Res<ButtonInput<KeyCode>>,
     query: Query<Entity, With<OpenedSmallNote>>,
 ) {
-    if input.just_pressed(KeyCode::Escape) {
+    if input.just_pressed(KeyCode::KeyE) {
         for entity in query.iter() {
             commands.entity(entity).despawn();
         }
@@ -184,5 +188,21 @@ pub fn return_screw(
         );
 
         *picked = Picked::None
+    }
+}
+
+pub fn sleep(
+    mut commands: Commands,
+    query: Query<&PressEtoSleep>,
+    input: Res<ButtonInput<KeyCode>>,
+    mut game_state: ResMut<NextState<GameState>>,
+) {
+    if query.iter().len() == 0 {
+        return;
+    }
+
+    if input.just_pressed(KeyCode::KeyE) {
+        commands.insert_resource(SpawnPoint(Transform::from_xyz(-92.0, -50.0, 0.0)));
+        game_state.set(GameState::Day2);
     }
 }

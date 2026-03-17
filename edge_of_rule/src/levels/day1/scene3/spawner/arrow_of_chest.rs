@@ -1,26 +1,26 @@
 use bevy::prelude::*;
 
 use crate::{
-    entities::{arrow::spawn_arrow, door::Door, player::Player},
-    levels::day1::scene3::Scene3CoverState,
+    entities::{arrow::spawn_arrow, chest::Chest, player::Player},
+    levels::day1::scene3::Scene3ChestState,
 };
 
 #[derive(Component)]
-pub struct ArrowOfDoor;
+pub struct ArrowOfChest;
 
 pub fn spawn(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
-    arrows: Query<&ArrowOfDoor>,
+    arrows: Query<&ArrowOfChest>,
     players: Query<&Transform, With<Player>>,
-    doors: Query<&Transform, With<Door>>,
-    picked: Res<Scene3CoverState>,
+    doors: Query<&Transform, With<Chest>>,
+    chest_state: Res<Scene3ChestState>,
 ) {
     if arrows.iter().len() != 0 {
         return;
     }
 
-    if *picked != Scene3CoverState::Picked {
+    if *chest_state == Scene3ChestState::Picked {
         return;
     }
 
@@ -31,9 +31,9 @@ pub fn spawn(
             {
                 spawn_arrow(
                     &mut commands,
-                    Transform::from_xyz(396.0, 268.0, 25.0),
+                    Transform::from_xyz(56.0, -80.0, 25.0),
                     &asset_server,
-                    ArrowOfDoor,
+                    ArrowOfChest,
                 );
             }
         }
@@ -42,13 +42,19 @@ pub fn spawn(
 
 pub fn despawn(
     mut commands: Commands,
-    arrows: Query<Entity, With<ArrowOfDoor>>,
+    arrows: Query<Entity, With<ArrowOfChest>>,
     players: Query<&Transform, With<Player>>,
-    doors: Query<&Transform, With<Door>>,
+    doors: Query<&Transform, With<Chest>>,
+    chest_state: Res<Scene3ChestState>,
 ) {
     for player in &players {
+        if *chest_state == Scene3ChestState::Picked {
+            break;
+        }
         for door in &doors {
-            if (player.translation.x - door.translation.x).abs() < 60.0 {
+            if (player.translation.x - door.translation.x).abs() < 60.0
+                && (player.translation.y - door.translation.y).abs() < 90.0
+            {
                 return;
             }
         }
@@ -59,7 +65,7 @@ pub fn despawn(
     }
 }
 
-pub fn despawn_all(mut commands: Commands, arrows: Query<Entity, With<ArrowOfDoor>>) {
+pub fn despawn_all(mut commands: Commands, arrows: Query<Entity, With<ArrowOfChest>>) {
     for arrow in &arrows {
         commands.entity(arrow).despawn();
     }
