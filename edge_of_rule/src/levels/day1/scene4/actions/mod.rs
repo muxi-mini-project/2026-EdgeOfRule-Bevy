@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 
 use crate::{
+    animation::fade_mask::spawn_mask,
     constants::SCALE,
     core::state::GameState,
     entities::player::{Player, SpawnPoint},
@@ -28,7 +29,6 @@ pub fn back_to_scene3(
     mut commands: Commands,
     query: Query<&PressEtoEnter>,
     input: Res<ButtonInput<KeyCode>>,
-    mut state: ResMut<NextState<GameState>>,
 ) {
     if query.iter().len() == 0 {
         return;
@@ -36,7 +36,7 @@ pub fn back_to_scene3(
 
     if input.just_pressed(KeyCode::KeyE) {
         commands.insert_resource(SpawnPoint(Transform::from_xyz(394.0, 100.0, 0.0)));
-        state.set(GameState::Day1Scene3);
+        spawn_mask(&mut commands, GameState::Day1Scene3);
     }
 }
 

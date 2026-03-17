@@ -3,6 +3,7 @@ mod chest;
 mod cover;
 mod door;
 mod elevator;
+pub mod fade_mask;
 mod player;
 mod trapdoor;
 
@@ -16,6 +17,7 @@ impl Plugin for AnimationPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Update, player::player_animation_system)
             .add_systems(Update, arrow::arrow_animation_system)
+            .add_systems(Update, fade_mask::fade_animation)
             .add_systems(Update, elevator::elevator_animation_system)
             .add_systems(
                 Update,
