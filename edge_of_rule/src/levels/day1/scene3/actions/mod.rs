@@ -118,7 +118,8 @@ pub fn move_elevator_when_chest_picked(
     time: Res<Time>,
     input: Res<ButtonInput<KeyCode>>,
     chest_state: Res<Scene3ChestState>,
-    mut elevators: Query<(&mut Transform, &Elevator)>,
+    mut elevators: Query<(&mut Transform, &Elevator), Without<Player>>,
+    mut players: Query<&mut Transform, With<Player>>,
 ) {
     if *chest_state != Scene3ChestState::Picked {
         return;
@@ -136,10 +137,13 @@ pub fn move_elevator_when_chest_picked(
         return;
     }
 
-    const ELEVATOR_SPEED: f32 = 60.0;
+    const ELEVATOR_SPEED: f32 = 80.0;
     let delta_y = dir * ELEVATOR_SPEED * time.delta_seconds();
     for (mut transform, elevator) in &mut elevators {
         transform.translation.y =
             (transform.translation.y + delta_y).clamp(elevator.min_y, elevator.max_y);
+    }
+    for mut transform in &mut players {
+        transform.translation.y += delta_y;
     }
 }

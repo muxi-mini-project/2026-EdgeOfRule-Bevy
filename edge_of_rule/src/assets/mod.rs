@@ -1,3 +1,6 @@
+pub mod arrow;
+pub mod door;
+pub mod elevator;
 pub mod levels;
 pub mod player;
 pub mod ui_image;
@@ -9,6 +12,9 @@ pub struct AssetsPlugin;
 impl Plugin for AssetsPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, player::load_player_assets)
-            .add_systems(Startup, levels::load_levels_image_assets);
+            .add_systems(Startup, levels::load_levels_image_assets)
+            .add_systems(Startup, door::load_door_assets)
+            .add_systems(Startup, elevator::load_elevator_assets)
+            .add_systems(Startup, arrow::load_arrow_assets);
     }
 }
