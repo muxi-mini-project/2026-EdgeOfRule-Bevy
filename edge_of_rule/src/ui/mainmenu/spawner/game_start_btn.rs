@@ -3,6 +3,8 @@ use bevy::prelude::*;
 #[derive(Component)]
 pub struct GameStartBtn;
 
+
+
 pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands
         .spawn((
@@ -38,15 +40,15 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
                 )
             ).with_children(|root| {
                 root.spawn((
-                TextBundle::from_section(
-                    "Levels",
-                    TextStyle {
-                        font: asset_server.load("font/font/aLiFont.ttf"), 
-                        font_size: 50.0, 
-                        color: Color::WHITE
+                    ImageBundle {
+                        style: Style {
+                            width: Val::Percent(70.0),
+                            height: Val::Percent(45.0),
+                            ..Default::default()
+                        },
+                        image: UiImage::new(asset_server.load("images/mainmenu/game_start.png")),
+                        ..Default::default()
                     },
-                    
-                ),
                 // GameStartBtn,
                 Interaction::None,
             ));

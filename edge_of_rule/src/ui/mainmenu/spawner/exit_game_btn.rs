@@ -19,7 +19,6 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
             background_color: BackgroundColor::from(Color::rgb(82.0 / 255.0, 4.0 / 255.0, 4.0 / 255.0)),
             ..Default::default()
         },
-        // Interaction::None,
         ExitGameBtn,
     ))
     .with_children(|parent| {
