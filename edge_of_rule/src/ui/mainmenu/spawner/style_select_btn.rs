@@ -27,6 +27,7 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
                             width: Val::Percent(19.8),
                             height: Val::Percent(9.52),
                             margin: UiRect::bottom(Val::Percent(27.0)),
+                            
                             align_items: AlignItems::Center,
                             justify_content: JustifyContent::Center,
                             ..Default::default()
@@ -38,15 +39,15 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
                 )
             ).with_children(|root| {
                 root.spawn((
-                TextBundle::from_section(
-                    "Select Style",
-                    TextStyle {
-                        font: asset_server.load("font/font/aLiFont.ttf"), 
-                        font_size: 50.0, 
-                        color: Color::WHITE
+                ImageBundle {
+                    style: Style {
+                        width: Val::Percent(80.0),
+                        height: Val::Percent(60.0),
+                        ..Default::default()
                     },
-                    
-                ),
+                    image: UiImage::new(asset_server.load("images/mainmenu/style_select.png")),
+                    ..Default::default()
+                },
                 Interaction::None,
             ));
             })

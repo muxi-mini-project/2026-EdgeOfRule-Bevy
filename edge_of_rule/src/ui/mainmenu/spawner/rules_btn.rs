@@ -38,15 +38,15 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
                 )
             ).with_children(|root| {
                 root.spawn((
-                TextBundle::from_section(
-                    "the Rules",
-                    TextStyle {
-                        font: asset_server.load("font/font/aLiFont.ttf"), 
-                        font_size: 50.0, 
-                        color: Color::WHITE
+                ImageBundle {
+                    style: Style {
+                        width: Val::Percent(70.0),
+                        height: Val::Percent(45.0),
+                        ..Default::default()
                     },
-                    
-                ),
+                    image: UiImage::new(asset_server.load("images/mainmenu/the_rules.png")),
+                    ..Default::default()
+                },
                 Interaction::None,
             ));
             })
