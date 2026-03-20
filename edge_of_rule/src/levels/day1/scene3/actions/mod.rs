@@ -1,4 +1,5 @@
 use crate::{
+    animation::fade_mask::spawn_mask,
     core::state::GameState,
     entities::{
         elevator::Elevator,
@@ -19,7 +20,6 @@ pub fn enter_hole(
     mut commands: Commands,
     query: Query<&PressEtoEnterHole>,
     input: Res<ButtonInput<KeyCode>>,
-    mut game_state: ResMut<NextState<GameState>>,
 ) {
     if query.iter().len() == 0 {
         return;
@@ -27,7 +27,7 @@ pub fn enter_hole(
 
     if input.just_pressed(KeyCode::KeyE) {
         commands.insert_resource(SpawnPoint(Transform::from_xyz(116.0, -68.0, 0.0)));
-        game_state.set(GameState::Day1Scene2);
+        spawn_mask(&mut commands, GameState::Day1Scene2);
     }
 }
 
@@ -50,7 +50,6 @@ pub fn enter_door(
     query: Query<&PressEtoOpenDoor>,
     input: Res<ButtonInput<KeyCode>>,
     door_state: Res<Scene3DoorState>,
-    mut game_state: ResMut<NextState<GameState>>,
 ) {
     if query.iter().len() == 0 {
         return;
@@ -62,7 +61,7 @@ pub fn enter_door(
 
     if input.just_pressed(KeyCode::KeyE) {
         commands.insert_resource(SpawnPoint(Transform::from_xyz(-92.0, -68.0, 0.0)));
-        game_state.set(GameState::Day1Scene4);
+        spawn_mask(&mut commands, GameState::Day1Scene4);
     }
 }
 
@@ -118,7 +117,8 @@ pub fn move_elevator_when_chest_picked(
     time: Res<Time>,
     input: Res<ButtonInput<KeyCode>>,
     chest_state: Res<Scene3ChestState>,
-    mut elevators: Query<(&mut Transform, &Elevator)>,
+    mut elevators: Query<(&mut Transform, &Elevator), Without<Player>>,
+    mut players: Query<&mut Transform, With<Player>>,
 ) {
     if *chest_state != Scene3ChestState::Picked {
         return;
@@ -136,10 +136,13 @@ pub fn move_elevator_when_chest_picked(
         return;
     }
 
-    const ELEVATOR_SPEED: f32 = 60.0;
+    const ELEVATOR_SPEED: f32 = 80.0;
     let delta_y = dir * ELEVATOR_SPEED * time.delta_seconds();
     for (mut transform, elevator) in &mut elevators {
         transform.translation.y =
             (transform.translation.y + delta_y).clamp(elevator.min_y, elevator.max_y);
+    }
+    for mut transform in &mut players {
+        transform.translation.y += delta_y;
     }
 }

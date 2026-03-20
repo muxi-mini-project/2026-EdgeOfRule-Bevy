@@ -1,3 +1,4 @@
+use crate::core::health::PlayerHealth;
 use crate::entities::{
     ground::Ground,
     player::{FacingDirection, Player, PlayerState},
@@ -10,8 +11,13 @@ const FAST_FALL_ACCELERATION: f32 = 70.0;
 pub fn player_control_system(
     time: Res<Time>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
+    health: Res<PlayerHealth>,
     mut query: Query<(&mut Velocity, &mut Player)>,
 ) {
+    if health.dead {
+        return;
+    }
+
     for (mut velocity, mut player) in &mut query {
         let input = PlayerInput::from(&keyboard_input);
 
@@ -275,6 +281,16 @@ fn update_ground_state(player: &mut Player, horizontal_input: f32, down_without_
 }
 
 fn update_air_state(input: &PlayerInput, player: &mut Player, velocity: &mut Velocity) {
+    if player.in_water() {
+        // Water vertical movement is handled by water_physics_system.
+        player.state = if velocity.linvel.y > 1.0 {
+            PlayerState::Jumping
+        } else {
+            PlayerState::Falling
+        };
+        return;
+    }
+
     if input.down_pressed && !player.ignore_down_input {
         player.state = PlayerState::FastFalling;
         velocity.linvel.y -= FAST_FALL_ACCELERATION;

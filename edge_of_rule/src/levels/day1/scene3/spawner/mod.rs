@@ -18,3 +18,4 @@ pub mod press_e_to_enter_hole;
 pub mod press_e_to_open_chest;
 pub mod press_e_to_open_cover;
 pub mod press_e_to_open_door;
+pub mod sewage;

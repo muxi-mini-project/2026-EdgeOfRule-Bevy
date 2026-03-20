@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 
 use crate::{
+    animation::fade_mask::spawn_mask,
     constants::SCALE,
     core::state::GameState,
     entities::{
@@ -46,7 +47,6 @@ pub fn enter_door(
     query: Query<&PressEtoOpenDoor>,
     input: Res<ButtonInput<KeyCode>>,
     door_state: Res<Scene1DoorState>,
-    mut game_state: ResMut<NextState<GameState>>,
 ) {
     if query.iter().len() == 0 {
         return;
@@ -58,7 +58,7 @@ pub fn enter_door(
 
     if input.just_pressed(KeyCode::KeyE) {
         commands.insert_resource(SpawnPoint(Transform::from_xyz(-92.0, -50.0, 0.0)));
-        game_state.set(GameState::Day1Scene2);
+        spawn_mask(&mut commands, GameState::Day1Scene2);
     }
 }
 

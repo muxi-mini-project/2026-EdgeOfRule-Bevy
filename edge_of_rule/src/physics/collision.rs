@@ -5,6 +5,7 @@ use bevy_rapier2d::prelude::*;
 pub enum CollisionGroup {
     Player = 1,
     Ground = 2,
+    Water = 3,
 }
 
 impl From<CollisionGroup> for Group {

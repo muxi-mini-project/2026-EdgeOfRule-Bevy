@@ -17,6 +17,7 @@ pub mod platform;
 pub mod player;
 pub mod press_e;
 pub mod screw;
+pub mod sewage;
 pub mod small_note;
 pub mod table;
 pub mod trapdoor;

@@ -1,9 +1,12 @@
 use bevy::prelude::*;
 
-use crate::entities::elevator::{Elevator, ElevatorAnimState, ElevatorSprite};
+use crate::{
+    assets::elevator::ElevatorAssets,
+    entities::elevator::{Elevator, ElevatorAnimState, ElevatorSprite},
+};
 
 pub fn elevator_animation_system(
-    asset_server: Res<AssetServer>,
+    asset_server: Res<ElevatorAssets>,
     mut elevators: Query<(&Transform, &mut ElevatorAnimState, &Children), With<Elevator>>,
     mut sprites: Query<&mut Handle<Image>, With<ElevatorSprite>>,
 ) {
@@ -13,14 +16,13 @@ pub fn elevator_animation_system(
         let dy = transform.translation.y - anim_state.last_y;
         anim_state.last_y = transform.translation.y;
 
-        let path = if dy > EPS {
-            "images/animations/elevator/up.png"
+        let next = if dy > EPS {
+            asset_server.up.clone()
         } else if dy < -EPS {
-            "images/animations/elevator/down.png"
+            asset_server.down.clone()
         } else {
-            "images/animations/elevator/stop.png"
+            asset_server.stop.clone()
         };
-        let next = asset_server.load(path);
 
         for &child in children.iter() {
             if let Ok(mut handle) = sprites.get_mut(child) {
