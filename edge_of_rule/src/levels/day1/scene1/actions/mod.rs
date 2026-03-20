@@ -1,4 +1,6 @@
 use bevy::prelude::*;
+use bevy::sprite::Anchor;
+use bevy::text::Text2dBounds;
 
 use crate::{
     animation::fade_mask::spawn_mask,
@@ -78,14 +80,34 @@ pub fn read_small_note(
     }
 
     if input.just_pressed(KeyCode::KeyE) {
-        commands.spawn((
-            SpriteBundle {
-                texture: asset_server.load("images/HUD/small_note.png"),
-                transform: Transform::from_xyz(0.0, 0.0, 5.0).with_scale(Vec3::splat(SCALE)),
-                ..default()
-            },
-            OpenedSmallNote,
-        ));
+        commands
+            .spawn((
+                SpriteBundle {
+                    texture: asset_server.load("images/HUD/small_note.png"),
+                    transform: Transform::from_xyz(0.0, 0.0, 5.0).with_scale(Vec3::splat(SCALE)),
+                    ..default()
+                },
+                OpenedSmallNote,
+            ))
+            .with_children(|parent| {
+                parent.spawn(Text2dBundle {
+                    text: Text::from_section(
+                        "控制室里\n或许有线索",
+                        TextStyle {
+                            font: asset_server.load("font/font/aLiFont.ttf"),
+                            font_size: 12.0,
+                            color: Color::BLACK,
+                        },
+                    )
+                    .with_justify(JustifyText::Center),
+                    text_anchor: Anchor::Center,
+                    text_2d_bounds: Text2dBounds {
+                        size: Vec2::new(200.0, 120.0),
+                    },
+                    transform: Transform::from_xyz(0.0, 0.0, 6.0),
+                    ..default()
+                });
+            });
     }
 }
 
@@ -96,7 +118,7 @@ pub fn close_small_note(
 ) {
     if input.just_pressed(KeyCode::KeyE) {
         for entity in query.iter() {
-            commands.entity(entity).despawn();
+            commands.entity(entity).despawn_recursive();
         }
     }
 }
@@ -195,7 +217,6 @@ pub fn sleep(
     mut commands: Commands,
     query: Query<&PressEtoSleep>,
     input: Res<ButtonInput<KeyCode>>,
-    mut game_state: ResMut<NextState<GameState>>,
 ) {
     if query.iter().len() == 0 {
         return;
@@ -203,6 +224,6 @@ pub fn sleep(
 
     if input.just_pressed(KeyCode::KeyE) {
         commands.insert_resource(SpawnPoint(Transform::from_xyz(-92.0, -50.0, 0.0)));
-        game_state.set(GameState::Day2);
+        spawn_mask(&mut commands, GameState::Day2);
     }
 }

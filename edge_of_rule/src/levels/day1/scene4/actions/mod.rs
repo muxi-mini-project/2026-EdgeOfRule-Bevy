@@ -1,4 +1,6 @@
 use bevy::prelude::*;
+use bevy::sprite::Anchor;
+use bevy::text::Text2dBounds;
 
 use crate::{
     animation::fade_mask::spawn_mask,
@@ -60,14 +62,34 @@ pub fn read_log(
     }
 
     if input.just_pressed(KeyCode::KeyE) {
-        commands.spawn((
-            SpriteBundle {
-                texture: asset_server.load("images/HUD/small_note.png"),
-                transform: Transform::from_xyz(0.0, 0.0, 50.0).with_scale(Vec3::splat(SCALE)),
-                ..default()
-            },
-            OpenedLog,
-        ));
+        commands
+            .spawn((
+                SpriteBundle {
+                    texture: asset_server.load("images/HUD/small_note.png"),
+                    transform: Transform::from_xyz(0.0, 0.0, 50.0).with_scale(Vec3::splat(SCALE)),
+                    ..default()
+                },
+                OpenedLog,
+            ))
+            .with_children(|parent| {
+                parent.spawn(Text2dBundle {
+                    text: Text::from_section(
+                        "好好睡一觉",
+                        TextStyle {
+                            font: asset_server.load("font/font/aLiFont.ttf"),
+                            font_size: 12.0,
+                            color: Color::BLACK,
+                        },
+                    )
+                    .with_justify(JustifyText::Center),
+                    text_anchor: Anchor::Center,
+                    text_2d_bounds: Text2dBounds {
+                        size: Vec2::new(200.0, f32::INFINITY),
+                    },
+                    transform: Transform::from_xyz(0.0, 0.0, 1.0),
+                    ..default()
+                });
+            });
         *finished = Day1Finished::Yes;
     }
 }
@@ -79,7 +101,7 @@ pub fn close_log(
 ) {
     if input.just_pressed(KeyCode::KeyE) {
         for entity in query.iter() {
-            commands.entity(entity).despawn();
+            commands.entity(entity).despawn_recursive();
         }
     }
 }
