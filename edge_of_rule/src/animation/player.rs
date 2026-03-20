@@ -3,18 +3,18 @@ use bevy_rapier2d::prelude::*;
 
 use crate::{
     assets::player::PlayerAssets,
-    entities::player::{FacingDirection, Player, PlayerState},
+    entities::player::{FacingDirection, Player, PlayerSprite, PlayerState},
 };
 
 pub fn player_animation_system(
     time: Res<Time>,
-    mut commands: Commands,
     player_assets: Res<PlayerAssets>,
-    mut player: Query<(Entity, &Velocity, &Player, &mut Handle<Image>)>,
+    players: Query<(&Velocity, &Player, &Children)>,
+    mut sprites: Query<&mut Handle<Image>, With<PlayerSprite>>,
 ) {
     const VELOCITY_THRESHOLD: f32 = 10.0;
 
-    for (entity, velocity, player, mut handle) in &mut player {
+    for (velocity, player, children) in &players {
         let new_texture = match player.state {
             PlayerState::Dashing => Some(match player.facing {
                 FacingDirection::Right => player_assets.side_squat_textures[0].clone(),
@@ -48,11 +48,17 @@ pub fn player_animation_system(
             PlayerState::Idle => Some(player_assets.front_texture.clone()),
         };
 
-        if let Some(new_texture) = new_texture
-            && *handle != new_texture
-        {
-            commands.entity(entity).insert(new_texture.clone());
-            *handle = new_texture;
+        let Some(new_texture) = new_texture else {
+            continue;
+        };
+
+        for &child in children.iter() {
+            if let Ok(mut handle) = sprites.get_mut(child) {
+                if *handle != new_texture {
+                    *handle = new_texture;
+                }
+                break;
+            }
         }
     }
 }

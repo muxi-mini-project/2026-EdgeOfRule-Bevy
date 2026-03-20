@@ -45,57 +45,70 @@ pub struct Player {
     pub water_contacts: u32,
 }
 
+#[derive(Component)]
+pub struct PlayerSprite;
+
 pub fn spawn_player(
     mut commands: Commands,
     player_assets: Res<PlayerAssets>,
     transform: Transform,
 ) {
-    commands.spawn((
-        SpriteBundle {
-            texture: player_assets.front_texture.clone(),
-            transform: transform.with_scale(Vec3::splat(SCALE)),
-            ..Default::default()
-        },
-        RigidBody::Dynamic,
-        Collider::cuboid(PLAYER_WIDTH / 2.0, PLAYER_HEIGHT / 2.0),
-        Velocity::zero(),
-        GravityScale(12.0),
-        Ccd::enabled(),
-        LockedAxes::ROTATION_LOCKED,
-        Friction {
-            coefficient: 0.0,
-            combine_rule: CoefficientCombineRule::Min,
-        },
-        Damping {
-            linear_damping: 0.0,
-            angular_damping: 0.0,
-        },
-        Player {
-            speed: 350.0,
-            jump_force: 400.0,
-            jump_count: 0,
-            max_jumps: 2,
-            is_grounded: false,
-            dash_speed: 800.0,
-            dash_direction: Vec2::ZERO,
-            dash_timer: Timer::from_seconds(0.3, TimerMode::Once),
-            dash_cooldown_timer: {
-                let mut timer = Timer::from_seconds(1.0, TimerMode::Once);
-                timer.set_elapsed(timer.duration());
-                timer
+    commands
+        .spawn((
+            SpatialBundle {
+                transform: transform.with_scale(Vec3::splat(SCALE)),
+                ..default()
             },
-            state: PlayerState::Idle,
-            facing: FacingDirection::Right,
-            ignore_down_input: false,
-            water_contacts: 0,
-        },
-        CollisionGroups::new(
-            CollisionGroup::Player.into(),
-            Group::from(CollisionGroup::Ground) | Group::from(CollisionGroup::Water),
-        ),
-        ActiveEvents::COLLISION_EVENTS,
-        InGameEntity,
-    ));
+            RigidBody::Dynamic,
+            Collider::cuboid(PLAYER_WIDTH / 2.0, PLAYER_HEIGHT / 2.0),
+            Velocity::zero(),
+            GravityScale(12.0),
+            Ccd::enabled(),
+            LockedAxes::ROTATION_LOCKED,
+            Friction {
+                coefficient: 0.0,
+                combine_rule: CoefficientCombineRule::Min,
+            },
+            Damping {
+                linear_damping: 0.0,
+                angular_damping: 0.0,
+            },
+            Player {
+                speed: 350.0,
+                jump_force: 400.0,
+                jump_count: 0,
+                max_jumps: 2,
+                is_grounded: false,
+                dash_speed: 800.0,
+                dash_direction: Vec2::ZERO,
+                dash_timer: Timer::from_seconds(0.3, TimerMode::Once),
+                dash_cooldown_timer: {
+                    let mut timer = Timer::from_seconds(1.0, TimerMode::Once);
+                    timer.set_elapsed(timer.duration());
+                    timer
+                },
+                state: PlayerState::Idle,
+                facing: FacingDirection::Right,
+                ignore_down_input: false,
+                water_contacts: 0,
+            },
+            CollisionGroups::new(
+                CollisionGroup::Player.into(),
+                Group::from(CollisionGroup::Ground) | Group::from(CollisionGroup::Water),
+            ),
+            ActiveEvents::COLLISION_EVENTS,
+            InGameEntity,
+        ))
+        .with_children(|parent| {
+            parent.spawn((
+                SpriteBundle {
+                    texture: player_assets.front_texture.clone(),
+                    transform: Transform::from_xyz(0.0, 0.0, 0.0),
+                    ..default()
+                },
+                PlayerSprite,
+            ));
+        });
 }
 
 impl Player {

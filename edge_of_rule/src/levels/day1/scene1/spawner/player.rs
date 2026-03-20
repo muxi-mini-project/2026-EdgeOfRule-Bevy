@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 use crate::{
     assets::player::PlayerAssets,
-    entities::player::{Player, SpawnPoint, spawn_player},
+    entities::player::{spawn_player, Player, SpawnPoint},
 };
 
 pub fn spawn(commands: Commands, asset: Res<PlayerAssets>, spawn_point: Res<SpawnPoint>) {
@@ -11,6 +11,6 @@ pub fn spawn(commands: Commands, asset: Res<PlayerAssets>, spawn_point: Res<Spaw
 
 pub fn despawn(mut commands: Commands, players: Query<Entity, With<Player>>) {
     for player in &players {
-        commands.entity(player).despawn();
+        commands.entity(player).despawn_recursive();
     }
 }

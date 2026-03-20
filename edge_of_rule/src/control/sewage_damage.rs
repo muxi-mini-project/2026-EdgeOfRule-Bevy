@@ -2,6 +2,7 @@ use bevy::prelude::*;
 
 use crate::{
     animation::fade_mask::spawn_mask,
+    animation::hurt_shake::HurtShake,
     core::{
         health::{PlayerDied, PlayerHealth, SewageDamageAccum},
         state::GameState,
@@ -15,17 +16,18 @@ use crate::{
 };
 
 pub fn sewage_damage_system(
+    mut commands: Commands,
     time: Res<Time>,
     mut accum: ResMut<SewageDamageAccum>,
     mut health: ResMut<PlayerHealth>,
-    players: Query<&Player>,
+    players: Query<(Entity, &Player)>,
     mut died_writer: EventWriter<PlayerDied>,
 ) {
     if health.dead {
         return;
     }
 
-    let in_water = players.iter().any(|p| p.in_water());
+    let in_water = players.iter().any(|(_, p)| p.in_water());
     if !in_water {
         accum.seconds = 0.0;
         return;
@@ -35,6 +37,12 @@ pub fn sewage_damage_system(
     while accum.seconds >= 1.0 {
         accum.seconds -= 1.0;
         health.current = (health.current - 10).max(0);
+
+        for (entity, player) in &players {
+            if player.in_water() {
+                commands.entity(entity).insert(HurtShake::on_damage_tick());
+            }
+        }
 
         if health.current == 0 {
             health.dead = true;
