@@ -42,6 +42,7 @@ pub struct Player {
     pub state: PlayerState,
     pub facing: FacingDirection,
     pub ignore_down_input: bool,
+    pub water_contacts: u32,
 }
 
 pub fn spawn_player(
@@ -86,9 +87,19 @@ pub fn spawn_player(
             state: PlayerState::Idle,
             facing: FacingDirection::Right,
             ignore_down_input: false,
+            water_contacts: 0,
         },
-        CollisionGroups::new(CollisionGroup::Player.into(), CollisionGroup::Ground.into()),
+        CollisionGroups::new(
+            CollisionGroup::Player.into(),
+            Group::from(CollisionGroup::Ground) | Group::from(CollisionGroup::Water),
+        ),
         ActiveEvents::COLLISION_EVENTS,
         InGameEntity,
     ));
+}
+
+impl Player {
+    pub fn in_water(&self) -> bool {
+        self.water_contacts > 0
+    }
 }

@@ -275,6 +275,16 @@ fn update_ground_state(player: &mut Player, horizontal_input: f32, down_without_
 }
 
 fn update_air_state(input: &PlayerInput, player: &mut Player, velocity: &mut Velocity) {
+    if player.in_water() {
+        // Water vertical movement is handled by water_physics_system.
+        player.state = if velocity.linvel.y > 1.0 {
+            PlayerState::Jumping
+        } else {
+            PlayerState::Falling
+        };
+        return;
+    }
+
     if input.down_pressed && !player.ignore_down_input {
         player.state = PlayerState::FastFalling;
         velocity.linvel.y -= FAST_FALL_ACCELERATION;
