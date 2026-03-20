@@ -8,6 +8,6 @@ pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
 
 pub fn despawn(mut commands: Commands, keys: Query<Entity, With<Sewage>>) {
     for key in &keys {
-        commands.entity(key).despawn();
+        commands.entity(key).despawn_recursive();
     }
 }

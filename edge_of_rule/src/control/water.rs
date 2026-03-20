@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 use bevy_rapier2d::prelude::*;
 
+use crate::core::health::PlayerHealth;
 use crate::entities::{player::Player, sewage::Sewage};
 
 pub fn water_intersection_detection(
@@ -41,8 +42,13 @@ pub fn water_intersection_detection(
 pub fn water_physics_system(
     time: Res<Time>,
     input: Res<ButtonInput<KeyCode>>,
+    health: Res<PlayerHealth>,
     mut players: Query<(&Player, &mut Velocity, &mut GravityScale)>,
 ) {
+    if health.dead {
+        return;
+    }
+
     let dt = time.delta_seconds();
 
     for (player, mut velocity, mut gravity_scale) in &mut players {

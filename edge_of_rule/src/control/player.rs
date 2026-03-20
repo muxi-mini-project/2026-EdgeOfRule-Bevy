@@ -1,3 +1,4 @@
+use crate::core::health::PlayerHealth;
 use crate::entities::{
     ground::Ground,
     player::{FacingDirection, Player, PlayerState},
@@ -10,8 +11,13 @@ const FAST_FALL_ACCELERATION: f32 = 70.0;
 pub fn player_control_system(
     time: Res<Time>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
+    health: Res<PlayerHealth>,
     mut query: Query<(&mut Velocity, &mut Player)>,
 ) {
+    if health.dead {
+        return;
+    }
+
     for (mut velocity, mut player) in &mut query {
         let input = PlayerInput::from(&keyboard_input);
 
