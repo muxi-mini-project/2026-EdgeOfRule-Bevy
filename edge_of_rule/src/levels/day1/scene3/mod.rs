@@ -47,6 +47,7 @@ impl Plugin for Scene3Plugin {
                     spawner::elevator::spawn,
                     spawner::hole::spawn,
                     spawner::cover::spawn,
+                    spawner::sewage::spawn,
                 ),
             )
             .add_systems(
@@ -74,6 +75,7 @@ impl Plugin for Scene3Plugin {
                     spawner::press_e_to_open_cover::despawn_all,
                 ),
             )
+            .add_systems(OnExit(GameState::Day1Scene3), (spawner::sewage::despawn,))
             .add_systems(
                 Update,
                 (
