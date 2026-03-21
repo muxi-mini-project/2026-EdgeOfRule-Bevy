@@ -12,7 +12,7 @@ pub fn spawn(mut commands: Commands, assets: Res<UiImageAssets>) {
                 width: Val::Px(26.0),
                 height: Val::Px(43.0),
                 position_type: PositionType::Absolute,
-                bottom: Val::Percent(15.2),
+                bottom: Val::Percent(15.2 - 1.7),
                 left: Val::Percent(35.618),
                 ..Default::default()
             },

@@ -13,12 +13,11 @@ pub struct UnderTip;
 pub struct InGameExitBtn;
 
 #[derive(Component)]
-pub struct InGameOptions;
+pub struct BackToMainMenuBtn;
 
 // 在启动时生成 UI（需要在插件中添加）
 pub fn spawn_ingame_option_area(
     mut commands: Commands,
-    asset_server: Res<AssetServer>,
 ) {
     commands.spawn((
         NodeBundle {
@@ -132,4 +131,42 @@ pub fn spawn_under_tip(mut commands: Commands, asset_server: Res<AssetServer>) {
         },
         UnderTip,
     ));
+}
+
+pub fn spawn_back_to_mainmenu_btn(mut commands: Commands, asset_server: Res<AssetServer>) {
+    commands.spawn((
+        ButtonBundle {
+            style: Style {
+                width: Val::Percent(19.8),
+                height: Val::Percent(8.52),
+                position_type: PositionType::Absolute,
+                justify_content: JustifyContent::Center,
+                align_items: AlignItems::Center,
+                bottom: Val::Percent(30.0),
+                right: Val::Percent(40.1),
+                ..Default::default()
+            },
+            z_index: ZIndex::Global(999),
+            visibility: Visibility::Hidden,
+            background_color: BackgroundColor::from(Color::rgb(82.0 / 255.0, 4.0 / 255.0, 4.0 / 255.0)),
+            ..Default::default()
+        },
+        BackToMainMenuBtn,
+        
+    ))
+    .with_children(|parent| {
+        parent.spawn(
+            TextBundle {
+                text: Text::from_section(
+                    "返回主菜单",
+                    TextStyle {
+                        font: asset_server.load("font/font/aLiFont.ttf"),
+                        font_size: 40.0,
+                        color: Color::WHITE,
+                    },
+                ),
+                ..Default::default()
+            },
+        );
+    });
 }

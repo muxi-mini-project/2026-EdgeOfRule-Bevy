@@ -5,7 +5,6 @@ pub struct OptionsArea;
 
 pub fn spawn(
     mut commands: Commands,
-    asset_server: Res<AssetServer>,
 ) {
     commands
         .spawn((

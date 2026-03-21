@@ -17,12 +17,15 @@ impl Plugin for HudPlugin {
             .add_systems(Startup, spawner::ingame_option_area::spawn_in_game_option_title)
             .add_systems(Startup, spawner::ingame_option_area::spawn_exit_game_btn)
             .add_systems(Startup, spawner::ingame_option_area::spawn_under_tip)
+            .add_systems(Startup, spawner::ingame_option_area::spawn_back_to_mainmenu_btn)
 
             .add_systems(
                 Update,
                     (
                         actions::esc_ingame_option::on_key_esc,
-                        actions::esc_ingame_option::on_click,
+                        actions::esc_ingame_option::on_click_exit,
+                        actions::esc_ingame_option::on_click_menu,
+                        actions::back_to_mainmenu_btn::on_click,
                     ),
             );
     }
