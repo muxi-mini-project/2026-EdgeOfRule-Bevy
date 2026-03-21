@@ -10,7 +10,7 @@ pub fn spawn(mut commands: Commands, assets: Res<LevelsImageAssets>) {
         SpriteBundle {
             sprite: Sprite {
                 color: Color::BLACK,
-                custom_size: Some(Vec2 { x: 320.0, y: 200.0 }),
+                custom_size: Some(Vec2 { x: 640.0, y: 400.0 }),
                 ..Default::default()
             },
             transform: Transform::from_xyz(0.0, 0.0, -20.0).with_scale(Vec3::splat(SCALE)),
