@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::ui::hud::spawner::ingame_option_area::{InGameOptionArea, InGameExitBtn, InGameOptionTitle, UnderTip};
+use crate::ui::hud::spawner::ingame_option_area::{InGameOptionArea, InGameExitBtn, InGameOptionTitle, UnderTip, BackToMainMenuBtn};
 
 #[derive(Resource, Default)]
 pub struct OptionSpawnState {
@@ -14,7 +14,8 @@ pub fn on_key_esc(
         Query<&mut Visibility, With<InGameOptionArea>>,  
         Query<&mut Visibility, With<InGameOptionTitle>>, 
         Query<&mut Visibility, With<InGameExitBtn>>,     
-        Query<&mut Visibility, With<UnderTip>>,          
+        Query<&mut Visibility, With<UnderTip>>, 
+        Query<&mut Visibility, With<BackToMainMenuBtn>>,     
     )>,
 ) {
     if keyboard_input.just_pressed(KeyCode::Escape) {
@@ -43,12 +44,37 @@ pub fn on_key_esc(
         for mut visibility in param_set.p3().iter_mut() {
             *visibility = new_visibility;
         }
+
+        for mut visibility in param_set.p4().iter_mut() {
+            *visibility = new_visibility;
+        }
     }
 }
 
-pub fn on_click(
+pub fn on_click_exit(
     mut exit_game: EventWriter<bevy::app::AppExit>,
     mut btns: Query<(&Interaction,&mut BackgroundColor), With<InGameExitBtn>>,
+) {
+    for (reaction,mut color) in &mut btns {
+        match *reaction {
+            Interaction::Pressed => {
+                *color = BackgroundColor::from(Color::rgba(65.0 / 255.0, 2.0 / 255.0, 2.0 / 255.0, 1.0));
+                exit_game.send(bevy::app::AppExit);
+            }
+            Interaction::Hovered => {
+                *color = BackgroundColor::from(Color::rgb(115.0 / 255.0, 7.0 / 255.0, 7.0 / 255.0));
+                
+            }
+            Interaction::None => {
+                *color = BackgroundColor::from(Color::rgba(82.0 / 255.0, 4.0 / 255.0, 4.0 / 255.0, 1.0));
+            }
+        }
+    }
+}
+
+pub fn on_click_menu(
+    mut exit_game: EventWriter<bevy::app::AppExit>,
+    mut btns: Query<(&Interaction,&mut BackgroundColor), With<BackToMainMenuBtn>>,
 ) {
     for (reaction,mut color) in &mut btns {
         match *reaction {

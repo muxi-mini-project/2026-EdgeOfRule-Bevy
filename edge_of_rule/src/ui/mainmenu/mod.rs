@@ -9,6 +9,12 @@ pub struct MainMenuPlugin;
 
 impl Plugin for MainMenuPlugin {
     fn build(&self, app: &mut App) {
+        app.insert_resource(actions::volumn_slider::DraggingState {
+            handle_entity: Entity::from_raw(0),
+            min_left: 0.0,
+            max_left: 0.0,
+        });
+
         app.add_systems(
             OnEnter(GameState::MainMenu),
             (
