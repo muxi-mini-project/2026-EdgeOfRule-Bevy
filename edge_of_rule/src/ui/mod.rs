@@ -1,5 +1,5 @@
-mod mainmenu;
-mod hud;
+pub mod mainmenu;
+pub mod hud;
 
 use crate::{assets::ui_image::load_ui_image_assets, ui::mainmenu::MainMenuPlugin, ui::hud::HudPlugin};
 

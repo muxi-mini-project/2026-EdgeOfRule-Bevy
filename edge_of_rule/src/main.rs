@@ -12,6 +12,7 @@ mod utils;
 use crate::animation::AnimationPlugin;
 use crate::assets::AssetsPlugin;
 use crate::control::ControlPlugin;
+use ui::mainmenu::spawner::styles_keys::ButtonSelectionState;
 use crate::core::CorePlugin;
 use crate::levels::LevelsPlugin;
 use crate::ui::UiPlugin;
@@ -33,6 +34,7 @@ fn main() {
 
     App::new()
         .insert_resource(Msaa::Off)
+        .init_resource::<ButtonSelectionState>()
         .add_plugins(default_plugin)
         .add_systems(Startup, start_fullscreen)
         .add_plugins(RapierPhysicsPlugin::<NoUserData>::default())

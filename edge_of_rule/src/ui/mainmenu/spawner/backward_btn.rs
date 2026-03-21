@@ -15,7 +15,7 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
                 ..Default::default()
             },
             image: UiImage::new(asset_server.load("images/mainmenu/backward_btn.png")),
-            z_index: ZIndex::Global(0),
+            z_index: ZIndex::Global(4),
             ..Default::default()
         },
         BackwardBtn,
