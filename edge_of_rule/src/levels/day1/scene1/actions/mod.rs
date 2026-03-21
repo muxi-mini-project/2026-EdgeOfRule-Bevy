@@ -203,6 +203,6 @@ pub fn sleep(
 
     if input.just_pressed(KeyCode::KeyE) {
         commands.insert_resource(SpawnPoint(Transform::from_xyz(-92.0, -50.0, 0.0)));
-        game_state.set(GameState::Day2Scene1);
+        spawn_mask(&mut commands, GameState::Day2);
     }
 }
