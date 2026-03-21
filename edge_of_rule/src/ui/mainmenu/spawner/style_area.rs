@@ -1,9 +1,11 @@
 use bevy::prelude::*;
 
+use crate::assets::ui_image::UiImageAssets;
+
 #[derive(Component)]
 pub struct StyleArea;
 
-pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
+pub fn spawn(mut commands: Commands, asset_server: Res<UiImageAssets>) {
     commands.spawn((
         NodeBundle {
             style: Style {
@@ -22,7 +24,7 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
                     height: Val::Percent(100.0),
                     ..Default::default()
                 },
-                image: UiImage::new(asset_server.load("images/mainmenu/style_area.png")),
+                image: UiImage::new(asset_server.style_area.clone()),
                 ..Default::default()
             },
             StyleArea,
