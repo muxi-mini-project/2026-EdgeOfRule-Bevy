@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 use crate::{
-    core::state::GameState::{self, Day1Scene1, Day2, Day3, Day4, Day5, Day6, Day7},
+    core::state::GameState::{self, Day1Scene1, Day2Scene1, Day3, Day4, Day5, Day6, Day7},
     ui::mainmenu::spawner::levels::{
         LevelDay1, LevelDay2, LevelDay3, LevelDay4, LevelDay5, LevelDay6, LevelDay7,
     },
@@ -24,7 +24,7 @@ pub fn on_click_day2(
 ) {
     for (reaction, _) in &mut btns {
         if *reaction == Interaction::Pressed {
-            next_state.set(Day2);
+            next_state.set(Day2Scene1);
         }
     }
 }

@@ -53,23 +53,19 @@ impl Plugin for MainMenuPlugin {
         .add_systems(
             OnEnter(GameState::StyleSelect),
             (
-                spawner::options_btn::spawn,
-                spawner::background::spawn,
                 spawner::style_area::spawn,
-                spawner::styles_introduct::spawn,
-                spawner::styles_btn::spawn,
+                spawner::styles_keys::spawn,
                 spawner::backward_btn::spawn,
+                spawner::options_btn::spawn,
             ),
         )
         .add_systems(
             OnExit(GameState::StyleSelect),
             (
-                spawner::options_btn::despawn,
-                spawner::background::despawn,
                 spawner::style_area::despawn,
-                spawner::styles_introduct::despawn,
-                spawner::styles_btn::despawn,
+                spawner::styles_keys::despawn,
                 spawner::backward_btn::despawn,
+                spawner::options_btn::despawn,
             ),
         )
         .add_systems(
@@ -124,7 +120,9 @@ impl Plugin for MainMenuPlugin {
                 actions::volumn_slider::on_drag,
 
                 actions::style_select_btn::on_click,
-                actions::styles_btn::on_click,
+                actions::styles_btn::on_click_easy, 
+                actions::styles_btn::on_click_mid, 
+                actions::styles_btn::on_click_hard,
 
                 actions::game_start_btn::on_click,
                 actions::levels::on_click_day1,

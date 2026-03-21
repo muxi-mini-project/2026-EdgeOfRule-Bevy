@@ -3,23 +3,31 @@ use bevy::prelude::*;
 #[derive(Component)]
 pub struct StyleArea;
 
-pub fn spawn(mut commands: Commands) {
+pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn((
         NodeBundle {
             style: Style {
-                width: Val::Percent(80.0),
-                height: Val::Percent(70.0),
-                position_type: PositionType::Absolute,
-                top: Val::Percent(15.0),
-                left: Val::Percent(10.0),
+                width: Val::Percent(100.0),
+                height: Val::Percent(100.0),
                 ..Default::default()
             },
-            z_index: ZIndex::Global(0),
-            background_color: BackgroundColor::from(Color::rgb(0.2, 0.2, 0.3)),
             ..Default::default()
         },
-        StyleArea,
-    ));
+    ))
+    .with_children(|root| {
+        root.spawn((
+            ImageBundle {
+                style: Style {
+                    width: Val::Percent(100.0),
+                    height: Val::Percent(100.0),
+                    ..Default::default()
+                },
+                image: UiImage::new(asset_server.load("images/mainmenu/style_area.png")),
+                ..Default::default()
+            },
+            StyleArea,
+        ));
+    });
 }
 
 pub fn despawn(mut commands: Commands, btns: Query<Entity, With<StyleArea>>) {
