@@ -80,7 +80,6 @@ pub fn on_click_menu(
         match *reaction {
             Interaction::Pressed => {
                 *color = BackgroundColor::from(Color::rgba(65.0 / 255.0, 2.0 / 255.0, 2.0 / 255.0, 1.0));
-                exit_game.send(bevy::app::AppExit);
             }
             Interaction::Hovered => {
                 *color = BackgroundColor::from(Color::rgb(115.0 / 255.0, 7.0 / 255.0, 7.0 / 255.0));
