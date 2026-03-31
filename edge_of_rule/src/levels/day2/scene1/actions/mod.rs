@@ -6,7 +6,7 @@ use crate::{
     animation::fade_mask::{FadeMask, spawn_mask},
     constants::SCALE,
     core::state::GameState,
-    entities::player::Player,
+    entities::player::{Player, SpawnPoint},
     levels::day2::scene1::spawner::notice_of_notice_board::NoticeOfNoticeBoard,
 };
 
@@ -86,7 +86,8 @@ pub fn enter_scene3(
     }
     for player in &players {
         if player.translation.x > 350.0 {
-            spawn_mask(&mut commands, GameState::Day1Scene1);
+            commands.insert_resource(SpawnPoint(Transform::from_xyz(-104.0, -68.0, 0.0)));
+            spawn_mask(&mut commands, GameState::Day2Scene3);
         }
     }
 }
