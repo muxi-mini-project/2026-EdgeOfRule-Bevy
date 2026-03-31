@@ -5,7 +5,12 @@ use crate::entities::door::{Door, spawn_door};
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_door(
         &mut commands,
-        Transform::from_xyz(396.0, 168.0, -5.0),
+        Transform::from_xyz(-144.0, 16.0, -5.0),
+        &asset,
+    );
+    spawn_door(
+        &mut commands,
+        Transform::from_xyz(280.0, 16.0, -5.0),
         &asset,
     );
 }
