@@ -6,4 +6,5 @@ pub mod lift;
 pub mod mask;
 pub mod notice_of_circuit;
 pub mod notice_of_hole;
+pub mod notice_of_lift;
 pub mod player;

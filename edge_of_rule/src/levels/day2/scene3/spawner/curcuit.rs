@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::entities::circuit::{Circuit, spawn_curcuit};
+use crate::entities::circuit::{spawn_curcuit, Circuit};
 
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_curcuit(

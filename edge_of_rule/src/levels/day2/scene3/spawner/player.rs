@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 use crate::{
     assets::player::PlayerAssets,
-    entities::player::{Player, SpawnPoint, spawn_player},
+    entities::player::{spawn_player, Player, SpawnPoint},
 };
 
 pub fn spawn(commands: Commands, asset: Res<PlayerAssets>, spawn_point: Res<SpawnPoint>) {

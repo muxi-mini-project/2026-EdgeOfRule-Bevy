@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::entities::hole::{Hole, spawn_hole};
+use crate::entities::hole::{spawn_hole, Hole};
 
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_hole(

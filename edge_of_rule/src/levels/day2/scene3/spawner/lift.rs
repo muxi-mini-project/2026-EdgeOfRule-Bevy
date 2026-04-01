@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::entities::lift::{Lift, spawn_lift};
+use crate::entities::lift::{spawn_lift, Lift};
 
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_lift(

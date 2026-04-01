@@ -3,13 +3,17 @@ pub mod spawner;
 
 use bevy::prelude::*;
 
-use crate::{core::state::GameState, levels::day2::scene3::actions::Buttons};
+use crate::{
+    core::state::GameState,
+    levels::day2::scene3::actions::{Buttons, LiftState},
+};
 
 pub struct Scene3Plugin;
 
 impl Plugin for Scene3Plugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(Buttons::default())
+            .insert_resource(LiftState::Broken)
             .add_systems(
                 OnEnter(GameState::Day2Scene3),
                 (
@@ -41,6 +45,8 @@ impl Plugin for Scene3Plugin {
                     spawner::notice_of_hole::despawn.run_if(in_state(GameState::Day2Scene3)),
                     spawner::notice_of_circuit::spawn.run_if(in_state(GameState::Day2Scene3)),
                     spawner::notice_of_circuit::despawn.run_if(in_state(GameState::Day2Scene3)),
+                    spawner::notice_of_lift::spawn.run_if(in_state(GameState::Day2Scene3)),
+                    spawner::notice_of_lift::despawn.run_if(in_state(GameState::Day2Scene3)),
                 ),
             )
             .add_systems(
@@ -48,6 +54,7 @@ impl Plugin for Scene3Plugin {
                 (
                     spawner::notice_of_hole::despawn_all,
                     spawner::notice_of_circuit::despawn_all,
+                    spawner::notice_of_lift::despawn_all,
                 ),
             )
             .add_systems(
@@ -57,6 +64,9 @@ impl Plugin for Scene3Plugin {
                     actions::enter_hole.run_if(in_state(GameState::Day2Scene3)),
                     actions::check_circuit.run_if(in_state(GameState::Day2Scene3)),
                     actions::close_circuit.run_if(in_state(GameState::Day2Scene3)),
+                    actions::toggle_button.run_if(in_state(GameState::Day2Scene3)),
+                    actions::update_lift.run_if(in_state(GameState::Day2Scene3)),
+                    actions::update_button.run_if(in_state(GameState::Day2Scene3)),
                 ),
             );
     }

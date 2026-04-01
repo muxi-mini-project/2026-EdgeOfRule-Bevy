@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use bevy::window::PrimaryWindow;
 
 use crate::{
     animation::fade_mask::{FadeMask, spawn_mask},
@@ -45,6 +46,12 @@ pub fn enter_hole(
     }
 }
 
+#[derive(Resource, Eq, PartialEq)]
+pub enum LiftState {
+    Broken,
+    Fixed,
+}
+
 #[derive(Resource, Eq, PartialEq, Default)]
 pub struct Buttons(pub [[bool; 5]; 5]);
 
@@ -60,6 +67,7 @@ pub fn check_circuit(
     query: Query<&NoticeOfCircuit>,
     input: Res<ButtonInput<KeyCode>>,
     note: Query<&OpenedCircuit>,
+    buttons: Res<Buttons>,
 ) {
     if query.iter().len() == 0 {
         return;
@@ -84,7 +92,11 @@ pub fn check_circuit(
                 commands.spawn((
                     SpriteBundle {
                         sprite: Sprite {
-                            color: Color::GRAY,
+                            color: if buttons.0[i][j] {
+                                Color::WHITE
+                            } else {
+                                Color::GRAY
+                            },
                             custom_size: Some(Vec2::new(10.0, 10.0)),
                             ..Default::default()
                         },
@@ -113,5 +125,87 @@ pub fn close_circuit(
         for entity in query.iter() {
             commands.entity(entity).despawn_recursive();
         }
+    }
+}
+
+pub fn toggle_button(
+    mouse: Res<ButtonInput<MouseButton>>,
+    windows: Query<&Window, With<PrimaryWindow>>,
+    camera_query: Query<(&Camera, &GlobalTransform)>,
+    mut buttons: ResMut<Buttons>,
+    button_query: Query<(&Transform, &Sprite, &Button), With<OpenedCircuit>>,
+) {
+    if !mouse.just_pressed(MouseButton::Left) {
+        return;
+    }
+
+    let window = windows.single();
+    let Some(cursor_position) = window.cursor_position() else {
+        return;
+    };
+
+    let (camera, camera_transform) = camera_query.single();
+    let Some(world_pos) = camera.viewport_to_world_2d(camera_transform, cursor_position) else {
+        return;
+    };
+
+    for (transform, sprite, button) in &button_query {
+        let size = sprite.custom_size.unwrap_or(Vec2::ZERO);
+        let scale = Vec2::new(transform.scale.x, transform.scale.y);
+        let half = (size * scale) * 0.5;
+        let center = transform.translation.truncate();
+
+        let hit =
+            (world_pos.x - center.x).abs() <= half.x && (world_pos.y - center.y).abs() <= half.y;
+        if !hit {
+            continue;
+        }
+
+        let i = button.0;
+        let j = button.1;
+        buttons.0[i][j] = !buttons.0[i][j];
+        break;
+    }
+}
+
+pub fn update_button(
+    buttons: Res<Buttons>,
+    mut button_query: Query<(&Button, &mut Sprite), With<OpenedCircuit>>,
+) {
+    if !buttons.is_changed() {
+        return;
+    }
+
+    for (button, mut sprite) in &mut button_query {
+        let i = button.0;
+        let j = button.1;
+        sprite.color = if buttons.0[i][j] {
+            Color::WHITE
+        } else {
+            Color::GRAY
+        };
+    }
+}
+
+pub fn update_lift(buttons: Res<Buttons>, mut lift_state: ResMut<LiftState>) {
+    if !buttons.is_changed() {
+        return;
+    }
+
+    const TARGET: [[bool; 5]; 5] = [
+        [true, true, true, false, true],
+        [false, false, true, true, false],
+        [true, true, true, true, true],
+        [true, true, false, false, true],
+        [false, true, false, true, false],
+    ];
+
+    let fixed = buttons.0 == TARGET;
+    if fixed {
+        if *lift_state != LiftState::Fixed {
+            *lift_state = LiftState::Fixed;
+        }
+    } else if *lift_state != LiftState::Broken {
+        *lift_state = LiftState::Broken;
     }
 }
