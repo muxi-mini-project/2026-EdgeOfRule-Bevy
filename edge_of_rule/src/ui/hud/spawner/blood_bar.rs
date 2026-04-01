@@ -26,7 +26,7 @@ pub fn spawn_blood_bar(
                 ..default()
             },
             transform: Transform {
-                translation: Vec3::new(-(2560.0/2.0) + 170.0, (1600.0/2.0) - 120.0, 99.0),
+                translation: Vec3::new(-(1550.0/2.0) + 170.0, (950.0/2.0) - 120.0, 99.0),
                 scale: Vec3::new(health_percent, 1.0, 1.0),
                 ..Default::default()
             },
