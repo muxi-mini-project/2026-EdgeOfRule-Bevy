@@ -1,6 +1,9 @@
 pub mod background;
+pub mod curcuit;
 pub mod ground_and_wall;
 pub mod hole;
+pub mod lift;
 pub mod mask;
+pub mod notice_of_circuit;
 pub mod notice_of_hole;
 pub mod player;
