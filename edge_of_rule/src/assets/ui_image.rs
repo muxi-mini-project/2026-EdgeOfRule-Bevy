@@ -7,6 +7,8 @@ pub struct UiImageAssets {
     pub rules: Handle<Image>,
     pub choise_triangle: Handle<Image>,
     pub style_area: Handle<Image>,
+    pub key_grey: Handle<Image>,
+    pub key_red: Handle<Image>,
 }
 
 pub fn load_ui_image_assets(mut commands: Commands, asset_server: Res<AssetServer>) {
@@ -16,5 +18,7 @@ pub fn load_ui_image_assets(mut commands: Commands, asset_server: Res<AssetServe
         rules: asset_server.load("images/mainmenu/rules.png"),
         choise_triangle: asset_server.load("images/mainmenu/choise_triangle.png"),
         style_area: asset_server.load("images/mainmenu/style_area.png"),
+        key_grey: asset_server.load("images/mainmenu/key_grey.png"),
+        key_red: asset_server.load("images/mainmenu/key_red.png"),
     });
 }

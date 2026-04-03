@@ -18,6 +18,8 @@ impl Plugin for HudPlugin {
             .add_systems(Startup, spawner::ingame_option_area::spawn_exit_game_btn)
             .add_systems(Startup, spawner::ingame_option_area::spawn_under_tip)
             .add_systems(Startup, spawner::ingame_option_area::spawn_back_to_mainmenu_btn)
+            .add_systems(Startup, spawner::ingame_option_area::spawn_keys_tip)
+            .add_systems(Startup, spawner::ingame_option_area::spawn_keys_words)
 
 
             .add_systems(OnEnter(GameState::Day1Scene1), spawner::blood_bar::spawn_blood_bar)
@@ -47,6 +49,7 @@ impl Plugin for HudPlugin {
                         actions::esc_ingame_option::on_key_esc,
                         actions::esc_ingame_option::on_click_exit,
                         actions::esc_ingame_option::on_click_menu,
+                        actions::esc_ingame_option::on_click_keys_tip,
                         actions::back_to_mainmenu_btn::on_click,
                     ),
             );

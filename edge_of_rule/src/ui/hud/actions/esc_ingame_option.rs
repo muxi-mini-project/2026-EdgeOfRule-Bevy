@@ -1,6 +1,8 @@
 use bevy::prelude::*;
 
-use crate::ui::hud::spawner::ingame_option_area::{InGameOptionArea, InGameExitBtn, InGameOptionTitle, UnderTip, BackToMainMenuBtn};
+use crate::{entities::key::Key, ui::hud::spawner::ingame_option_area::{
+    BackToMainMenuBtn, InGameExitBtn, InGameOptionArea, InGameOptionTitle, KeysTip, KeysWords, UnderTip
+}};
 
 #[derive(Resource, Default)]
 pub struct OptionSpawnState {
@@ -15,11 +17,16 @@ pub fn on_key_esc(
         Query<&mut Visibility, With<InGameOptionTitle>>, 
         Query<&mut Visibility, With<InGameExitBtn>>,     
         Query<&mut Visibility, With<UnderTip>>, 
-        Query<&mut Visibility, With<BackToMainMenuBtn>>,     
+        Query<&mut Visibility, With<BackToMainMenuBtn>>, 
+        Query<&mut Visibility, With<KeysTip>>,    
+        Query<&mut Visibility, With<KeysWords>>,
     )>,
 ) {
     if keyboard_input.just_pressed(KeyCode::Escape) {
         menu_state.is_visible = !menu_state.is_visible;
+        for mut visibility in param_set.p6().iter_mut() {
+            *visibility = Visibility::Hidden;
+        }
         
         let new_visibility = if menu_state.is_visible {
             info!("显示菜单");
@@ -46,6 +53,9 @@ pub fn on_key_esc(
         }
 
         for mut visibility in param_set.p4().iter_mut() {
+            *visibility = new_visibility;
+        }
+        for mut visibility in param_set.p5().iter_mut() {
             *visibility = new_visibility;
         }
     }
@@ -80,6 +90,52 @@ pub fn on_click_menu(
         match *reaction {
             Interaction::Pressed => {
                 *color = BackgroundColor::from(Color::rgba(65.0 / 255.0, 2.0 / 255.0, 2.0 / 255.0, 1.0));
+            }
+            Interaction::Hovered => {
+                *color = BackgroundColor::from(Color::rgb(115.0 / 255.0, 7.0 / 255.0, 7.0 / 255.0));
+                
+            }
+            Interaction::None => {
+                *color = BackgroundColor::from(Color::rgba(82.0 / 255.0, 4.0 / 255.0, 4.0 / 255.0, 1.0));
+            }
+        }
+    }
+}
+
+pub fn on_click_keys_tip(
+    mut exit_game: EventWriter<bevy::app::AppExit>,
+    mut btns: Query<(&Interaction,&mut BackgroundColor), With<KeysTip>>,
+    mut param_set: ParamSet<(  
+        Query<&mut Visibility, With<InGameOptionTitle>>, 
+        Query<&mut Visibility, With<InGameExitBtn>>,     
+        Query<&mut Visibility, With<UnderTip>>, 
+        Query<&mut Visibility, With<BackToMainMenuBtn>>,
+        Query<&mut Visibility, With<KeysTip>>,     
+        Query<&mut Visibility, With<KeysWords>>,
+    )>,
+) {
+    for (reaction,mut color) in &mut btns {
+        match *reaction {
+            Interaction::Pressed => {
+                *color = BackgroundColor::from(Color::rgba(65.0 / 255.0, 2.0 / 255.0, 2.0 / 255.0, 1.0));
+                for mut visibility in param_set.p0().iter_mut() {
+                    *visibility = Visibility::Hidden;
+                }
+                for mut visibility in param_set.p1().iter_mut() {
+                    *visibility = Visibility::Hidden;
+                }
+                for mut visibility in param_set.p2().iter_mut() {
+                    *visibility = Visibility::Hidden;
+                }
+                for mut visibility in param_set.p3().iter_mut() {
+                    *visibility = Visibility::Hidden;
+                }
+                for mut visibility in param_set.p4().iter_mut() {
+                    *visibility = Visibility::Hidden;
+                }
+                for mut visibility in param_set.p5().iter_mut() {
+                    *visibility = Visibility::Visible;
+                }
             }
             Interaction::Hovered => {
                 *color = BackgroundColor::from(Color::rgb(115.0 / 255.0, 7.0 / 255.0, 7.0 / 255.0));

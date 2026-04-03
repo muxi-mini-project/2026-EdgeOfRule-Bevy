@@ -15,6 +15,12 @@ pub struct InGameExitBtn;
 #[derive(Component)]
 pub struct BackToMainMenuBtn;
 
+#[derive(Component)]
+pub struct KeysTip;
+
+#[derive(Component)]
+pub struct KeysWords;
+
 // 在启动时生成 UI（需要在插件中添加）
 pub fn spawn_ingame_option_area(
     mut commands: Commands,
@@ -169,4 +175,76 @@ pub fn spawn_back_to_mainmenu_btn(mut commands: Commands, asset_server: Res<Asse
             },
         );
     });
+}
+
+pub fn spawn_keys_tip(mut commands: Commands, asset_server: Res<AssetServer>) {
+    commands.spawn((
+        ButtonBundle {
+            style: Style {
+                width: Val::Percent(19.8),
+                height: Val::Percent(8.52),
+                position_type: PositionType::Absolute,
+                justify_content: JustifyContent::Center,
+                align_items: AlignItems::Center,
+                bottom: Val::Percent(40.0),
+                right: Val::Percent(40.1),
+                ..Default::default()
+            },
+            z_index: ZIndex::Global(999),
+            visibility: Visibility::Hidden,
+            background_color: BackgroundColor::from(Color::rgb(82.0 / 255.0, 4.0 / 255.0, 4.0 / 255.0)),
+            ..Default::default()
+        },
+        KeysTip,
+    ))
+    .with_children(|parent| {
+        parent.spawn(
+            TextBundle {
+                text: Text::from_section(
+                    "按键说明",
+                    TextStyle {
+                        font: asset_server.load("font/font/aLiFont.ttf"),
+                        font_size: 40.0,
+                        color: Color::WHITE,
+                    },
+                ),
+                ..Default::default()
+            },
+        );
+    });
+}
+
+pub fn spawn_keys_words(mut commands: Commands, asset_server: Res<AssetServer>) {
+    let words = [
+        "WASD: 移动",
+        "shift: 冲刺",
+        "空格: 跳跃",
+        "s + d/a: 滑铲",
+        "空中shift + s + d/a: 空中斜冲",
+    ];
+    for i in 0..5 {
+        commands.spawn((
+            TextBundle {
+                text: Text::from_section(
+                    words[i],
+                    TextStyle {
+                        font: asset_server.load("font/font/aLiFont.ttf"),
+                        font_size: 30.0,
+                        color: Color::WHITE,
+                    },
+                ),
+                style: Style {
+                    width: Val::Percent(15.0),
+                    position_type: PositionType::Absolute,
+                    bottom: Val::Percent(37.0 + i as f32 * 5.0),
+                    left: Val::Percent(41.0),
+                    ..Default::default()
+                },
+                z_index: ZIndex::Global(999),
+                visibility: Visibility::Hidden,
+                ..Default::default()
+            },
+            KeysWords,
+        ));
+    }
 }
