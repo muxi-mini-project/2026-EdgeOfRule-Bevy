@@ -9,19 +9,22 @@ pub struct MediumBtn;
 #[derive(Component)]    
 pub struct HardBtn;
 
-#[derive(Component, Default)]
-pub struct StyleBtnState {
+#[derive(Resource, Default)]
+pub struct HardBtnState {
     pub pressed: bool,
 }
 
 #[derive(Resource, Default)]
-pub struct ButtonSelectionState {
-    pub is_selected: bool,
-    pub selected_btn: Option<String>,
+pub struct MidBtnState {
+    pub pressed: bool,
+}
+
+#[derive(Resource, Default)]
+pub struct EasyBtnState {
+    pub pressed: bool,
 }
 
 pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
-    commands.insert_resource(ButtonSelectionState::default());
 
     commands.spawn((
         ImageBundle {
@@ -38,7 +41,6 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
             ..Default::default()
         },
         EasyBtn,
-        StyleBtnState { pressed: false },
         Interaction::None,
     ));
 
@@ -57,7 +59,6 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
             ..Default::default()
         },
         MediumBtn,
-        StyleBtnState { pressed: false },
         Interaction::None,
     ));
 
@@ -76,7 +77,6 @@ pub fn spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
             ..Default::default()
         },
         HardBtn,
-        StyleBtnState { pressed: false },
         Interaction::None,
     ));
 }
