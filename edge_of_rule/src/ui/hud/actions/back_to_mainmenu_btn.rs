@@ -5,6 +5,8 @@ use crate::ui::hud::spawner::ingame_option_area::{
     InGameOptionTitle, 
     InGameExitBtn, 
     UnderTip, 
+    KeysTip,
+    KeysWords,
     BackToMainMenuBtn,
 };
 
@@ -16,7 +18,9 @@ pub fn on_click(
         Query<&mut Visibility, With<InGameOptionTitle>>, 
         Query<&mut Visibility, With<InGameExitBtn>>,     
         Query<&mut Visibility, With<UnderTip>>, 
-        Query<&mut Visibility, With<BackToMainMenuBtn>>,     
+        Query<&mut Visibility, With<BackToMainMenuBtn>>,  
+        Query<&mut Visibility, With<KeysTip>>,    
+        Query<&mut Visibility, With<KeysWords>>,   
     )>,
 ) {
     for interaction in interaction_query.iter() {
@@ -35,6 +39,12 @@ pub fn on_click(
                 *visibility = Visibility::Hidden;
             }
             for mut visibility in param_set.p4().iter_mut() {
+                *visibility = Visibility::Hidden;
+            }
+            for mut visibility in param_set.p5().iter_mut() {
+                *visibility = Visibility::Hidden;
+            }
+            for mut visibility in param_set.p6().iter_mut() {
                 *visibility = Visibility::Hidden;
             }
 
