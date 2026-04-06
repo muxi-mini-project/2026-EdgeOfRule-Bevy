@@ -1,108 +1,96 @@
 use bevy::prelude::*;
 
-use crate::{core::state::GameState, ui::mainmenu::spawner::styles_keys::{EasyBtn, HardBtn, MediumBtn, StyleBtnState, ButtonSelectionState}};
+use crate::{ui::mainmenu::spawner::styles_keys::{EasyBtn, HardBtn, MediumBtn, HardBtnState, EasyBtnState, MidBtnState}};
 
 
 
 pub fn on_click_easy(
-    mut btns: Query<(&Interaction,&mut BackgroundColor, &mut StyleBtnState), With<EasyBtn>>,
-    mut selection_state: ResMut<ButtonSelectionState>,
+    mut btns: Query<(&Interaction,&mut BackgroundColor), With<EasyBtn>>,
+    mut easy_state: ResMut<EasyBtnState>,
+    mut mid_state: ResMut<MidBtnState>,
+    mut hard_state: ResMut<HardBtnState>,
 ) {
-    for (reaction,mut color, mut state) in &mut btns {
-        if selection_state.is_selected && !state.pressed {
-            continue;
-        }
-
-        if state.pressed {
-            *color = BackgroundColor::from(Color::RED);
-            continue;
-        }
-
+    for (reaction,mut color) in &mut btns {
+        
         match *reaction {
             Interaction::Pressed => {
-                    if !selection_state.is_selected {
                     *color = BackgroundColor::from(Color::RED);
-                    state.pressed = true;
-                    selection_state.is_selected = true;
-                    selection_state.selected_btn = Some("easy".to_string());
-                }
+                       
+                    mid_state.pressed = false;
+                    hard_state.pressed = false;
+                    easy_state.pressed = true; 
             }
             Interaction::Hovered => {
-                if !selection_state.is_selected {
                     *color = BackgroundColor::from(Color::rgb(31.0 / 255.0, 56.0 / 255.0, 72.0 / 255.0));
                 }
-            }
             Interaction::None => {
                 *color = BackgroundColor::from(Color::WHITE);
             }
+        }
+        if easy_state.pressed {
+            *color = BackgroundColor::from(Color::RED);
+            continue;
         }
     }
 }
 
 pub fn on_click_mid(
-    mut btns: Query<(&Interaction,&mut BackgroundColor, &mut StyleBtnState), With<MediumBtn>>,
-    mut selection_state: ResMut<ButtonSelectionState>,
+    mut btns: Query<(&Interaction,&mut BackgroundColor), With<MediumBtn>>,
+    mut easy_state: ResMut<EasyBtnState>,
+    mut mid_state: ResMut<MidBtnState>,
+    mut hard_state: ResMut<HardBtnState>,
 ) {
-    for (reaction,mut color, mut state) in &mut btns {
-        if selection_state.is_selected && !state.pressed {
-            continue;
-        }
-        if state.pressed {
-            *color = BackgroundColor::from(Color::RED);
-            continue;
-        }
+    for (reaction,mut color) in &mut btns {
 
         match *reaction {
             Interaction::Pressed => {
-                    if !selection_state.is_selected {
                     *color = BackgroundColor::from(Color::rgb(16.0 / 255.0, 30.0 / 255.0, 39.0 / 255.0));
-                    state.pressed = true;
-                    selection_state.is_selected = true;
-                    selection_state.selected_btn = Some("medium".to_string());
+                    easy_state.pressed = false;
+                    hard_state.pressed = false;
+                    mid_state.pressed = true;
                 }
-            }
+            
             Interaction::Hovered => {
-                if !selection_state.is_selected {
                     *color = BackgroundColor::from(Color::rgb(31.0 / 255.0, 56.0 / 255.0, 72.0 / 255.0));
-                }
             }
             Interaction::None => {
                 *color = BackgroundColor::from(Color::WHITE);
             }
+        }
+
+        if  mid_state.pressed {
+            *color = BackgroundColor::from(Color::RED);
+            continue;
         }
     }
 }
 
 pub fn on_click_hard(
-    mut btns: Query<(&Interaction,&mut BackgroundColor, &mut StyleBtnState), With<HardBtn>>,
-    mut selection_state: ResMut<ButtonSelectionState>,
+    mut btns: Query<(&Interaction,&mut BackgroundColor), With<HardBtn>>,
+    mut easy_state: ResMut<EasyBtnState>,
+    mut mid_state: ResMut<MidBtnState>,
+    mut hard_state: ResMut<HardBtnState>,
 ) {
-    for (reaction,mut color, mut state) in &mut btns {
-        if selection_state.is_selected && !state.pressed {
-            continue;
-        }
-        if state.pressed {
-            *color = BackgroundColor::from(Color::RED);
-            continue;
-        }
+    for (reaction,mut color) in &mut btns {
 
         match *reaction {
             Interaction::Pressed => {
-                if !selection_state.is_selected {
                     *color = BackgroundColor::from(Color::rgb(16.0 / 255.0, 30.0 / 255.0, 39.0 / 255.0));
-                    state.pressed = true;
-                    selection_state.is_selected = true;
-                    selection_state.selected_btn = Some("hard".to_string());
-                }
+                    easy_state.pressed = false;
+                    mid_state.pressed = false;
+                    hard_state.pressed = true;
             }
             Interaction::Hovered => {
-                if !selection_state.is_selected {
                     *color = BackgroundColor::from(Color::rgb(31.0 / 255.0, 56.0 / 255.0, 72.0 / 255.0));
-                }
             }
             Interaction::None => {
                 *color = BackgroundColor::from(Color::WHITE);
             }
+        }
+
+        if hard_state.pressed {
+            *color = BackgroundColor::from(Color::RED);
+            continue;
         }
     }
 }
