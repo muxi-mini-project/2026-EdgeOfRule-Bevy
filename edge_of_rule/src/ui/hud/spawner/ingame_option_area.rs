@@ -216,11 +216,11 @@ pub fn spawn_keys_tip(mut commands: Commands, asset_server: Res<AssetServer>) {
 
 pub fn spawn_keys_words(mut commands: Commands, asset_server: Res<AssetServer>) {
     let words = [
-        "WASD: 移动",
-        "shift: 冲刺",
+        "空中shift + S + D/A: 空中斜冲",
+        "S + D/A: 滑铲",
         "空格: 跳跃",
-        "s + d/a: 滑铲",
-        "空中shift + s + d/a: 空中斜冲",
+        "shift: 冲刺",
+        "WASD: 移动",
     ];
     for i in 0..5 {
         commands.spawn((
@@ -234,7 +234,7 @@ pub fn spawn_keys_words(mut commands: Commands, asset_server: Res<AssetServer>) 
                     },
                 ),
                 style: Style {
-                    width: Val::Percent(15.0),
+                    width: Val::Percent(25.0),
                     position_type: PositionType::Absolute,
                     bottom: Val::Percent(37.0 + i as f32 * 5.0),
                     left: Val::Percent(41.0),
