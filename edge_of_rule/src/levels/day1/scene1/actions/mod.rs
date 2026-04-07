@@ -20,6 +20,9 @@ use crate::{
             press_e_to_sleep::PressEtoSleep,
         },
     },
+    ui::mainmenu::spawner::lock_levels::{
+        LevelTwoLock,    
+    },
 };
 
 #[derive(Component)]
@@ -217,6 +220,7 @@ pub fn sleep(
     mut commands: Commands,
     query: Query<&PressEtoSleep>,
     input: Res<ButtonInput<KeyCode>>,
+    mut unlock: ResMut<LevelTwoLock>,
 ) {
     if query.iter().len() == 0 {
         return;
@@ -225,5 +229,6 @@ pub fn sleep(
     if input.just_pressed(KeyCode::KeyE) {
         commands.insert_resource(SpawnPoint(Transform::from_xyz(-92.0, -50.0, 0.0)));
         spawn_mask(&mut commands, GameState::Day2Scene1);
+        unlock.locked = false;
     }
 }

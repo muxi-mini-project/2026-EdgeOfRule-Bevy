@@ -12,7 +12,7 @@ mod utils;
 use crate::animation::AnimationPlugin;
 use crate::assets::AssetsPlugin;
 use crate::control::ControlPlugin;
-use ui::mainmenu::spawner::styles_keys::{ EasyBtnState, HardBtnState, MidBtnState};
+use ui::mainmenu::spawner::{styles_keys::{ EasyBtnState, HardBtnState, MidBtnState}, lock_levels::{LevelOneLock, LevelTwoLock, LevelThreeLock, LevelFourLock, LevelFiveLock, LevelSixLock, LevelSevenLock}};
 use crate::core::CorePlugin;
 use crate::levels::LevelsPlugin;
 use crate::ui::UiPlugin;
@@ -34,6 +34,13 @@ fn main() {
 
     App::new()
         .insert_resource(Msaa::Off)
+        .insert_resource(LevelOneLock { locked: false })
+        .insert_resource(LevelTwoLock { locked: true })
+        .insert_resource(LevelThreeLock { locked: true })
+        .insert_resource(LevelFourLock { locked: true })
+        .insert_resource(LevelFiveLock { locked: true })
+        .insert_resource(LevelSixLock { locked: true })
+        .insert_resource(LevelSevenLock { locked: true })
         .init_resource::<EasyBtnState>()
         .init_resource::<MidBtnState>() 
         .init_resource::<HardBtnState>()

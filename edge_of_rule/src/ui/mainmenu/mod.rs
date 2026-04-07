@@ -81,6 +81,13 @@ impl Plugin for MainMenuPlugin {
                 spawner::background::spawn,
                 spawner::backward_btn::spawn,
                 spawner::levels::spawn,
+                spawner::lock_levels::spawner_level_one_lock,
+                spawner::lock_levels::spawner_level_two_lock,
+                spawner::lock_levels::spawner_level_three_lock,
+                spawner::lock_levels::spawner_level_four_lock,
+                spawner::lock_levels::spawner_level_five_lock,
+                spawner::lock_levels::spawner_level_six_lock,
+                spawner::lock_levels::spawner_level_seven_lock,
             ),
         )
         .add_systems(
@@ -90,6 +97,7 @@ impl Plugin for MainMenuPlugin {
                 spawner::background::despawn,
                 spawner::backward_btn::despawn,
                 spawner::levels::despawn,
+                spawner::lock_levels::despawn,
             ),
         )
         .add_systems(
@@ -138,6 +146,7 @@ impl Plugin for MainMenuPlugin {
                 actions::levels::on_click_day5,
                 actions::levels::on_click_day6,
                 actions::levels::on_click_day7,
+
                 actions::rules_btn::on_click,
 
                 actions::backward_btn::on_click,
@@ -145,6 +154,19 @@ impl Plugin for MainMenuPlugin {
                 actions::arrow_levels::on_hover,
                 actions::arrow_rules::on_hover,
                 actions::arrow_styles::on_hover,
+            ),
+        )
+        .add_systems(
+            Update,
+            (
+                actions::lock_levels::unlock_levels_one,
+                actions::lock_levels::unlock_levels_two,
+                actions::lock_levels::unlock_levels_three,
+                actions::lock_levels::unlock_levels_four,
+                actions::lock_levels::unlock_levels_five,
+                actions::lock_levels::unlock_levels_six,
+                actions::lock_levels::unlock_levels_seven,
+
             ),
         );
     }

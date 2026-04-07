@@ -15,4 +15,5 @@ pub mod styles_btn;
 pub mod arrow_levels;
 pub mod arrow_rules;
 pub mod arrow_styles;
+pub mod lock_levels;
 

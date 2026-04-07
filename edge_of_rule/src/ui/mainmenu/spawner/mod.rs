@@ -4,6 +4,7 @@ pub mod titled_background;
 
 pub mod game_start_btn;
 pub mod levels;
+pub mod lock_levels;
 pub mod arrow_levels;
 
 pub mod options_btn;
