@@ -6,6 +6,7 @@ mod elevator;
 pub mod fade_mask;
 pub mod hurt_shake;
 mod lift;
+pub mod lift_door;
 mod player;
 mod trapdoor;
 

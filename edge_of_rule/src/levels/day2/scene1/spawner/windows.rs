@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::entities::windows::{Windows, spawn_windows};
+use crate::entities::windows::{spawn_windows, Windows};
 
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_windows(

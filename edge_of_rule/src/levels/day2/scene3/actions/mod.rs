@@ -3,6 +3,7 @@ use bevy::window::PrimaryWindow;
 
 use crate::{
     animation::fade_mask::{spawn_mask, FadeMask},
+    animation::lift_door::LiftDoorAnim,
     constants::SCALE,
     core::state::GameState,
     entities::player::{Player, SpawnPoint},
@@ -11,23 +12,6 @@ use crate::{
         notice_of_lift::NoticeOfLift,
     },
 };
-
-#[derive(Resource)]
-pub struct LiftOpenAnim {
-    pub active: bool,
-    pub frame: usize,
-    pub timer: Timer,
-}
-
-impl Default for LiftOpenAnim {
-    fn default() -> Self {
-        Self {
-            active: false,
-            frame: 0,
-            timer: Timer::from_seconds(0.12, TimerMode::Repeating),
-        }
-    }
-}
 
 pub fn enter_scene1(
     mut commands: Commands,
@@ -228,31 +212,18 @@ pub fn update_lift(buttons: Res<Buttons>, mut lift_state: ResMut<LiftState>) {
     }
 }
 
-pub fn tick_lift_open_anim(time: Res<Time>, mut lift_open: ResMut<LiftOpenAnim>) {
-    if !lift_open.active {
-        return;
-    }
-
-    lift_open.timer.tick(time.delta());
-    if lift_open.timer.just_finished() {
-        lift_open.frame = (lift_open.frame + 1).min(2);
-    }
-}
-
 pub fn enter_lift(
     mut commands: Commands,
     query: Query<&NoticeOfLift>,
     input: Res<ButtonInput<KeyCode>>,
-    mut lift_open: ResMut<LiftOpenAnim>,
+    mut lift_door: ResMut<LiftDoorAnim>,
 ) {
     if query.iter().len() == 0 {
         return;
     }
 
     if input.just_pressed(KeyCode::KeyE) {
-        lift_open.active = true;
-        lift_open.frame = 0;
-        lift_open.timer = Timer::from_seconds(0.12, TimerMode::Repeating);
+        lift_door.start_open();
         commands.insert_resource(SpawnPoint(Transform::from_xyz(-450.0, -250.0, 0.0)));
         spawn_mask(&mut commands, GameState::Day2Scene5);
     }

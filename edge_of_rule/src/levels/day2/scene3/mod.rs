@@ -4,8 +4,9 @@ pub mod spawner;
 use bevy::prelude::*;
 
 use crate::{
+    animation::lift_door::{LiftDoorAnim, tick_lift_door_anim},
     core::state::GameState,
-    levels::day2::scene3::actions::{Buttons, LiftOpenAnim, LiftState},
+    levels::day2::scene3::actions::{Buttons, LiftState},
 };
 
 pub struct Scene3Plugin;
@@ -14,7 +15,7 @@ impl Plugin for Scene3Plugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(Buttons::default())
             .insert_resource(LiftState::Broken)
-            .insert_resource(LiftOpenAnim::default())
+            .insert_resource(LiftDoorAnim::default())
             .add_systems(
                 OnEnter(GameState::Day2Scene3),
                 (
@@ -68,7 +69,7 @@ impl Plugin for Scene3Plugin {
                     actions::toggle_button.run_if(in_state(GameState::Day2Scene3)),
                     actions::update_lift.run_if(in_state(GameState::Day2Scene3)),
                     actions::update_button.run_if(in_state(GameState::Day2Scene3)),
-                    actions::tick_lift_open_anim.run_if(in_state(GameState::Day2Scene3)),
+                    tick_lift_door_anim.run_if(in_state(GameState::Day2Scene3)),
                     actions::enter_lift.run_if(in_state(GameState::Day2Scene3)),
                 ),
             );

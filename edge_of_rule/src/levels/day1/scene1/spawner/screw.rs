@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 use crate::{
-    entities::screw::{Screw, spawn_screw},
+    entities::screw::{spawn_screw, Screw},
     levels::day1::scene1::Picked,
 };
 

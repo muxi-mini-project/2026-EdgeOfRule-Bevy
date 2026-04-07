@@ -3,7 +3,7 @@ use bevy::sprite::Anchor;
 use bevy::text::Text2dBounds;
 
 use crate::{
-    animation::fade_mask::{FadeMask, spawn_mask},
+    animation::fade_mask::{spawn_mask, FadeMask},
     constants::SCALE,
     core::state::GameState,
     entities::player::{Player, SpawnPoint},

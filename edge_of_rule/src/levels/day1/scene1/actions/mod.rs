@@ -7,18 +7,18 @@ use crate::{
     constants::SCALE,
     core::state::GameState,
     entities::{
-        key::{Key, spawn_key},
+        key::{spawn_key, Key},
         player::SpawnPoint,
-        screw::{Screw, spawn_screw},
+        screw::{spawn_screw, Screw},
     },
     levels::day1::scene1::{
-        Picked, Scene1DoorState,
         spawner::{
             press_e_to_open_door::PressEtoOpenDoor, press_e_to_pick_key::PressEtoPickKey,
             press_e_to_pick_screw::PressEtoPickScrew, press_e_to_read::PressEtoRead,
             press_e_to_return_key::PressEtoReturnKey, press_e_to_return_screw::PressEtoReturnScrew,
             press_e_to_sleep::PressEtoSleep,
         },
+        Picked, Scene1DoorState,
     },
 };
 
