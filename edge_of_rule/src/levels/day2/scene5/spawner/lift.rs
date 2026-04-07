@@ -8,7 +8,7 @@ use crate::{
 pub fn spawn(mut commands: Commands, assets: Res<LiftAssets>) {
     spawn_lift(
         &mut commands,
-        Transform::from_xyz(-48.0, 26.0, -5.0),
+        Transform::from_xyz(-268.0, 26.0, -5.0),
         &assets,
     );
 }

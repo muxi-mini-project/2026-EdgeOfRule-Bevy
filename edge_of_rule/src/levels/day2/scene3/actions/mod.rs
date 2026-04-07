@@ -2,7 +2,7 @@ use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 
 use crate::{
-    animation::fade_mask::{spawn_mask, FadeMask},
+    animation::fade_mask::{FadeMask, spawn_mask},
     animation::lift_door::LiftDoorAnim,
     constants::SCALE,
     core::state::GameState,
@@ -224,7 +224,7 @@ pub fn enter_lift(
 
     if input.just_pressed(KeyCode::KeyE) {
         lift_door.start_open();
-        commands.insert_resource(SpawnPoint(Transform::from_xyz(-450.0, -250.0, 0.0)));
+        commands.insert_resource(SpawnPoint(Transform::from_xyz(-268.0, -68.0, 0.0)));
         spawn_mask(&mut commands, GameState::Day2Scene5);
     }
 }
