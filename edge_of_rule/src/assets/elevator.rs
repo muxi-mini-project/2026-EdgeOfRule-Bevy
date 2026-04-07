@@ -14,4 +14,3 @@ pub fn load_elevator_assets(mut commands: Commands, asset_server: Res<AssetServe
         down: asset_server.load("images/animations/elevator/down.png"),
     });
 }
-
