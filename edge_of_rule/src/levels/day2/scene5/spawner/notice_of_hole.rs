@@ -1,25 +1,18 @@
 use bevy::prelude::*;
 
-use crate::{
-    entities::{arrow::spawn_arrow, lift::Lift, player::Player, press_e::spawn_press_e},
-    levels::day2::scene3::actions::LiftState,
-};
+use crate::entities::{arrow::spawn_arrow, hole::Hole, player::Player, press_e::spawn_press_e};
 
 #[derive(Component)]
-pub struct NoticeOfLift;
+pub struct NoticeOfHole;
 
 pub fn spawn(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
-    notices: Query<&NoticeOfLift>,
+    notices: Query<&NoticeOfHole>,
     players: Query<&Transform, With<Player>>,
-    lifts: Query<&Transform, With<Lift>>,
-    lift_state: Res<LiftState>,
+    lifts: Query<&Transform, With<Hole>>,
 ) {
     if notices.iter().len() != 0 {
-        return;
-    }
-    if *lift_state == LiftState::Broken {
         return;
     }
 
@@ -27,15 +20,15 @@ pub fn spawn(
         for lift in &lifts {
             if (player.translation.x - lift.translation.x).abs() < 60.0 {
                 // Keep the same UI offset pattern as Day2Scene3.
-                let arrow_pos = Transform::from_xyz(lift.translation.x, 160.0, 1.0);
-                let press_e_pos = Transform::from_xyz(lift.translation.x + 76.0, 160.0, 1.0);
-                spawn_arrow(&mut commands, arrow_pos, &asset_server, NoticeOfLift);
+                let arrow_pos = Transform::from_xyz(lift.translation.x, 60.0, 1.0);
+                let press_e_pos = Transform::from_xyz(lift.translation.x + 76.0, 60.0, 1.0);
+                spawn_arrow(&mut commands, arrow_pos, &asset_server, NoticeOfHole);
                 spawn_press_e(
                     &mut commands,
                     press_e_pos,
                     &asset_server,
                     "离开",
-                    NoticeOfLift,
+                    NoticeOfHole,
                 );
                 return;
             }
@@ -45,9 +38,9 @@ pub fn spawn(
 
 pub fn despawn(
     mut commands: Commands,
-    notices: Query<Entity, With<NoticeOfLift>>,
+    notices: Query<Entity, With<NoticeOfHole>>,
     players: Query<&Transform, With<Player>>,
-    lifts: Query<&Transform, With<Lift>>,
+    lifts: Query<&Transform, With<Hole>>,
 ) {
     for player in &players {
         for lift in &lifts {
@@ -62,7 +55,7 @@ pub fn despawn(
     }
 }
 
-pub fn despawn_all(mut commands: Commands, notices: Query<Entity, With<NoticeOfLift>>) {
+pub fn despawn_all(mut commands: Commands, notices: Query<Entity, With<NoticeOfHole>>) {
     for notice in &notices {
         commands.entity(notice).despawn_recursive();
     }

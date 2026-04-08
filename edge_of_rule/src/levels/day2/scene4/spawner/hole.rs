@@ -6,7 +6,12 @@ pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_hole(
         &mut commands,
         Transform::from_xyz(-450.0, -250.0, -5.0),
-        asset,
+        &asset,
+    );
+    spawn_hole(
+        &mut commands,
+        Transform::from_xyz(450.0, 250.0, -5.0),
+        &asset,
     );
 }
 

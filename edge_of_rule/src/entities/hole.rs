@@ -5,7 +5,7 @@ use crate::constants::SCALE;
 #[derive(Component)]
 pub struct Hole;
 
-pub fn spawn_hole(commands: &mut Commands, transform: Transform, asset_server: Res<AssetServer>) {
+pub fn spawn_hole(commands: &mut Commands, transform: Transform, asset_server: &Res<AssetServer>) {
     commands.spawn((
         SpriteBundle {
             texture: asset_server.load("images/animations/hole.png"),

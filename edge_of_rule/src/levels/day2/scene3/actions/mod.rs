@@ -2,16 +2,25 @@ use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 
 use crate::{
-    animation::fade_mask::{FadeMask, spawn_mask},
-    animation::lift_door::LiftDoorAnim,
+    animation::{
+        fade_mask::{spawn_mask, FadeMask},
+        lift_door::LiftDoorAnim,
+    },
     constants::SCALE,
     core::state::GameState,
     entities::player::{Player, SpawnPoint},
-    levels::day2::scene3::spawner::{
-        notice_of_circuit::NoticeOfCircuit, notice_of_hole::NoticeOfHole,
-        notice_of_lift::NoticeOfLift,
+    levels::day2::scene3::{
+        spawner::{
+            notice_of_circuit::NoticeOfCircuit, notice_of_hole::NoticeOfHole,
+            notice_of_lift::NoticeOfLift,
+        },
+        ExitOn,
     },
 };
+
+pub fn start_close_lift_on_enter(mut lift_door: ResMut<LiftDoorAnim>) {
+    lift_door.start_close();
+}
 
 pub fn enter_scene1(
     mut commands: Commands,
@@ -225,6 +234,7 @@ pub fn enter_lift(
     if input.just_pressed(KeyCode::KeyE) {
         lift_door.start_open();
         commands.insert_resource(SpawnPoint(Transform::from_xyz(-268.0, -68.0, 0.0)));
+        commands.insert_resource(ExitOn::Lift);
         spawn_mask(&mut commands, GameState::Day2Scene5);
     }
 }

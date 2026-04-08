@@ -13,10 +13,10 @@ pub enum GameState {
     Day1Scene3,
     Day1Scene4,
 
-    #[default]
     Day2Scene1,
     Day2Scene2,
     Day2Scene3,
+    #[default]
     Day2Scene4,
     Day2Scene5,
 

@@ -4,10 +4,16 @@ pub mod spawner;
 use bevy::prelude::*;
 
 use crate::{
-    animation::lift_door::{LiftDoorAnim, tick_lift_door_anim},
+    animation::lift_door::{tick_lift_door_anim, LiftDoorAnim},
     core::state::GameState,
     levels::day2::scene3::actions::{Buttons, LiftState},
 };
+
+#[derive(Resource, PartialEq, Eq)]
+pub enum ExitOn {
+    Lift,
+    Hole,
+}
 
 pub struct Scene3Plugin;
 
@@ -15,6 +21,9 @@ impl Plugin for Scene3Plugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(Buttons::default())
             .insert_resource(LiftState::Broken)
+            // Default to Hole so the initial Day2Scene3 entry doesn't
+            // accidentally play lift door animations.
+            .insert_resource(ExitOn::Hole)
             .insert_resource(LiftDoorAnim::default())
             .add_systems(
                 OnEnter(GameState::Day2Scene3),
@@ -26,6 +35,8 @@ impl Plugin for Scene3Plugin {
                     spawner::hole::spawn,
                     spawner::lift::spawn,
                     spawner::curcuit::spawn,
+                    actions::start_close_lift_on_enter
+                        .run_if(|exit_on: Res<ExitOn>| *exit_on == ExitOn::Lift),
                 ),
             )
             .add_systems(

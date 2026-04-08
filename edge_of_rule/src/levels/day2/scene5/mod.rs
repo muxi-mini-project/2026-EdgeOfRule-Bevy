@@ -3,7 +3,7 @@ pub mod spawner;
 
 use bevy::prelude::*;
 
-use crate::core::state::GameState;
+use crate::{core::state::GameState, levels::day2::scene3::ExitOn};
 
 pub struct Scene5Plugin;
 
@@ -16,7 +16,11 @@ impl Plugin for Scene5Plugin {
                 spawner::ground_and_wall::spawn,
                 spawner::player::spawn,
                 spawner::lift::spawn,
-                actions::start_close_lift_on_enter,
+                spawner::hole::spawn,
+                actions::reset_lift_door_on_enter
+                    .run_if(|exit_on: Res<ExitOn>| *exit_on == ExitOn::Hole),
+                actions::start_close_lift_on_enter
+                    .run_if(|exit_on: Res<ExitOn>| *exit_on == ExitOn::Lift),
             ),
         )
         .add_systems(
@@ -26,7 +30,7 @@ impl Plugin for Scene5Plugin {
                 spawner::ground_and_wall::despawn,
                 spawner::player::despawn,
                 spawner::lift::despawn,
-                actions::start_close_lift_on_enter,
+                spawner::hole::despawn,
             ),
         )
         .add_systems(
@@ -34,7 +38,10 @@ impl Plugin for Scene5Plugin {
             (
                 spawner::notice_of_lift::spawn.run_if(in_state(GameState::Day2Scene5)),
                 spawner::notice_of_lift::despawn.run_if(in_state(GameState::Day2Scene5)),
+                spawner::notice_of_hole::spawn.run_if(in_state(GameState::Day2Scene5)),
+                spawner::notice_of_hole::despawn.run_if(in_state(GameState::Day2Scene5)),
                 actions::enter_lift.run_if(in_state(GameState::Day2Scene5)),
+                actions::back_to_scene4.run_if(in_state(GameState::Day2Scene5)),
                 crate::animation::lift_door::tick_lift_door_anim
                     .run_if(in_state(GameState::Day2Scene5)),
             ),
@@ -42,7 +49,10 @@ impl Plugin for Scene5Plugin {
 
         app.add_systems(
             OnExit(GameState::Day2Scene5),
-            spawner::notice_of_lift::despawn_all,
+            (
+                spawner::notice_of_lift::despawn_all,
+                spawner::notice_of_hole::despawn_all,
+            ),
         );
     }
 }

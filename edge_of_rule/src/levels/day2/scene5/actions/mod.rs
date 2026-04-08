@@ -1,12 +1,22 @@
 use bevy::prelude::*;
 
 use crate::{
-    animation::fade_mask::spawn_mask, animation::lift_door::LiftDoorAnim, core::state::GameState,
-    entities::player::SpawnPoint, levels::day2::scene5::spawner::notice_of_lift::NoticeOfLift,
+    animation::{fade_mask::spawn_mask, lift_door::LiftDoorAnim},
+    core::state::GameState,
+    entities::player::SpawnPoint,
+    levels::day2::{
+        scene3::ExitOn,
+        scene5::spawner::{notice_of_hole::NoticeOfHole, notice_of_lift::NoticeOfLift},
+    },
 };
 
 pub fn start_close_lift_on_enter(mut lift_door: ResMut<LiftDoorAnim>) {
     lift_door.start_close();
+}
+
+pub fn reset_lift_door_on_enter(mut lift_door: ResMut<LiftDoorAnim>) {
+    // Entering from the hole should not trigger any lift door animation.
+    *lift_door = LiftDoorAnim::default();
 }
 
 pub fn enter_lift(
@@ -23,6 +33,22 @@ pub fn enter_lift(
         // Back to Day2Scene3 and spawn right in front of its lift.
         lift_door.start_open();
         commands.insert_resource(SpawnPoint(Transform::from_xyz(-48.0, -68.0, 0.0)));
+        commands.insert_resource(ExitOn::Lift);
         spawn_mask(&mut commands, GameState::Day2Scene3);
+    }
+}
+
+pub fn back_to_scene4(
+    mut commands: Commands,
+    notice: Query<&NoticeOfHole>,
+    input: Res<ButtonInput<KeyCode>>,
+) {
+    if notice.iter().len() == 0 {
+        return;
+    }
+
+    if input.just_pressed(KeyCode::KeyE) {
+        commands.insert_resource(SpawnPoint(Transform::from_xyz(450.0, 250.0, 0.0)));
+        spawn_mask(&mut commands, GameState::Day2Scene4);
     }
 }

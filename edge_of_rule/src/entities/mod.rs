@@ -22,6 +22,8 @@ pub mod press_e;
 pub mod screw;
 pub mod sewage;
 pub mod small_note;
+pub mod small_platform;
+pub mod small_wall;
 pub mod table;
 pub mod trapdoor;
 pub mod wall;

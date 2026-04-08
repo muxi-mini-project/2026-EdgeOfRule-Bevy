@@ -5,7 +5,7 @@ use crate::entities::hole::{spawn_hole, Hole};
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_hole(
         &mut commands,
-        Transform::from_xyz(104.0, -24.0, -5.0),
+        Transform::from_xyz(-116.0, -24.0, -5.0),
         &asset,
     );
 }
