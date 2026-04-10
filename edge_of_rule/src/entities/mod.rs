@@ -8,6 +8,7 @@ pub mod desk;
 pub mod door;
 pub mod elevator;
 pub mod general;
+pub mod ghost;
 pub mod ground;
 pub mod hole;
 pub mod key;
