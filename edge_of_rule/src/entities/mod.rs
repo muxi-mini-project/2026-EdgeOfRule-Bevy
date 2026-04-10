@@ -17,6 +17,7 @@ pub mod lift;
 pub mod log;
 pub mod mirror;
 pub mod notice_board;
+pub mod office_desk;
 pub mod pipe;
 pub mod platform;
 pub mod player;

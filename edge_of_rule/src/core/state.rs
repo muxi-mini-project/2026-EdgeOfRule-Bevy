@@ -2,6 +2,7 @@ use bevy::prelude::*;
 
 #[derive(States, Clone, Copy, PartialEq, Eq, Hash, Debug, Default)]
 pub enum GameState {
+    #[default]
     MainMenu,
     Options,
     StyleSelect,
@@ -16,7 +17,6 @@ pub enum GameState {
     Day2Scene1,
     Day2Scene2,
     Day2Scene3,
-    #[default]
     Day2Scene4,
     Day2Scene5,
 
