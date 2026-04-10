@@ -5,6 +5,8 @@ mod door;
 mod elevator;
 pub mod fade_mask;
 pub mod hurt_shake;
+mod lift;
+pub mod lift_door;
 mod player;
 mod trapdoor;
 
@@ -21,6 +23,7 @@ impl Plugin for AnimationPlugin {
             .add_systems(Update, hurt_shake::hurt_shake_system)
             .add_systems(Update, fade_mask::fade_animation)
             .add_systems(Update, elevator::elevator_animation_system)
+            .add_systems(PostUpdate, lift::lift_animation_system)
             .add_systems(
                 Update,
                 door::scene1_door_animation_system.run_if(in_state(GameState::Day1Scene1)),

@@ -7,18 +7,18 @@ use crate::{
     constants::SCALE,
     core::state::GameState,
     entities::{
-        key::{Key, spawn_key},
+        key::{spawn_key, Key},
         player::SpawnPoint,
-        screw::{Screw, spawn_screw},
+        screw::{spawn_screw, Screw},
     },
     levels::day1::scene1::{
-        Picked, Scene1DoorState,
         spawner::{
             press_e_to_open_door::PressEtoOpenDoor, press_e_to_pick_key::PressEtoPickKey,
             press_e_to_pick_screw::PressEtoPickScrew, press_e_to_read::PressEtoRead,
             press_e_to_return_key::PressEtoReturnKey, press_e_to_return_screw::PressEtoReturnScrew,
             press_e_to_sleep::PressEtoSleep,
         },
+        Picked, Scene1DoorState,
     },
     ui::mainmenu::spawner::lock_levels::{
         LevelTwoLock,    
@@ -227,7 +227,7 @@ pub fn sleep(
     }
 
     if input.just_pressed(KeyCode::KeyE) {
-        commands.insert_resource(SpawnPoint(Transform::from_xyz(-92.0, -50.0, 0.0)));
+        commands.insert_resource(SpawnPoint(Transform::from_xyz(-292.0, -50.0, 0.0)));
         spawn_mask(&mut commands, GameState::Day2Scene1);
         unlock.locked = false;
     }

@@ -3,10 +3,8 @@ use bevy::prelude::*;
 use crate::{
     animation::fade_mask::spawn_mask,
     animation::hurt_shake::HurtShake,
-    core::{
-        health::{PlayerDied, PlayerHealth, SewageDamageAccum},
-        state::GameState,
-    },
+    control::ghost::Day2GhostManager,
+    core::{health::PlayerDied, health::PlayerHealth, health::SewageDamageAccum, state::GameState},
     entities::player::{Player, SpawnPoint},
     levels::day1::{
         scene1::{Day1Finished, Picked, Scene1DoorState},
@@ -14,6 +12,8 @@ use crate::{
         scene3::{Scene3ChestState, Scene3CoverState, Scene3DoorState},
     },
 };
+
+const DAY2_SCENE1_RESPAWN: Vec3 = Vec3::new(-268.0, -68.0, 0.0);
 
 pub fn sewage_damage_system(
     mut commands: Commands,
@@ -55,6 +55,7 @@ pub fn sewage_damage_system(
 pub fn on_player_died(
     mut events: EventReader<PlayerDied>,
     mut commands: Commands,
+    state: Res<State<GameState>>,
     mut picked: ResMut<Picked>,
     mut scene1_door_state: ResMut<Scene1DoorState>,
     mut day1_finished: ResMut<Day1Finished>,
@@ -63,7 +64,9 @@ pub fn on_player_died(
     mut scene3_chest_state: ResMut<Scene3ChestState>,
     mut scene3_cover_state: ResMut<Scene3CoverState>,
     mut spawn_point: ResMut<SpawnPoint>,
+    mut health: ResMut<PlayerHealth>,
     mut accum: ResMut<SewageDamageAccum>,
+    ghost_manager: Option<ResMut<Day2GhostManager>>,
 ) {
     if events.read().next().is_none() {
         return;
@@ -82,7 +85,25 @@ pub fn on_player_died(
     spawn_point.0 = Transform::from_xyz(-100.0, -68.0, 0.0);
     accum.seconds = 0.0;
 
-    spawn_mask(&mut commands, GameState::Day1Scene1);
+    let s = *state.get();
+    if matches!(
+        s,
+        GameState::Day2Scene1
+            | GameState::Day2Scene2
+            | GameState::Day2Scene3
+            | GameState::Day2Scene4
+            | GameState::Day2Scene5
+    ) {
+        spawn_point.0 = Transform::from_translation(DAY2_SCENE1_RESPAWN);
+        health.current = health.max;
+        health.dead = false;
+        if let Some(mut gm) = ghost_manager {
+            *gm = Day2GhostManager::default();
+        }
+        spawn_mask(&mut commands, GameState::Day2Scene1);
+    } else {
+        spawn_mask(&mut commands, GameState::Day1Scene1);
+    }
 }
 
 pub fn reset_health_on_scene1_enter(

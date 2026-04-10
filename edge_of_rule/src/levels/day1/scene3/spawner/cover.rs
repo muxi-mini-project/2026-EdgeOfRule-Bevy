@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::entities::cover::{Cover, spawn_cover};
+use crate::entities::cover::{spawn_cover, Cover};
 
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_cover(

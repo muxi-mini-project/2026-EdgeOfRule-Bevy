@@ -1,0 +1,9 @@
+pub mod background;
+pub mod door;
+pub mod ground_and_wall;
+pub mod mask;
+pub mod notice_board;
+pub mod notice_of_notice_board;
+pub mod notice_of_windows;
+pub mod player;
+pub mod windows;

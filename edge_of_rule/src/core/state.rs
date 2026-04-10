@@ -8,7 +8,7 @@ pub enum GameState {
     StyleSelect,
     LevelSelect,
     RulesView,
-    
+
     Day1Scene1,
     Day1Scene2,
     Day1Scene3,
@@ -18,6 +18,7 @@ pub enum GameState {
     Day2Scene2,
     Day2Scene3,
     Day2Scene4,
+    Day2Scene5,
 
     Day3,
     Day4,

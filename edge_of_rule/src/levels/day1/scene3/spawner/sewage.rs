@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::entities::sewage::{Sewage, spawn_sewage};
+use crate::entities::sewage::{spawn_sewage, Sewage};
 
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_sewage(&mut commands, Transform::from_xyz(0.0, -248.0, 1.0), &asset);

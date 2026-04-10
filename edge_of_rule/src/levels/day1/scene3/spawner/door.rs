@@ -6,7 +6,7 @@ pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_door(
         &mut commands,
         Transform::from_xyz(396.0, 168.0, -5.0),
-        asset,
+        &asset,
     );
 }
 

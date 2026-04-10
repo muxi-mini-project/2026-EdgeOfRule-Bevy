@@ -1,0 +1,12 @@
+pub mod background;
+pub mod ground_and_wall;
+pub mod hole;
+pub mod lift;
+pub mod notice_of_hole;
+pub mod notice_of_lift;
+pub mod notice_of_office_log;
+pub mod notice_of_office_windows;
+pub mod office_desk;
+pub mod office_log;
+pub mod office_windows;
+pub mod player;

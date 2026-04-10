@@ -6,12 +6,12 @@ use crate::{
         player::{Player, SpawnPoint},
     },
     levels::day1::scene3::{
-        Scene3ChestState, Scene3CoverState, Scene3DoorState,
         spawner::{
             fog::Day1Scene3Fog, press_e_to_enter_hole::PressEtoEnterHole,
             press_e_to_open_chest::PressEtoOpenChest, press_e_to_open_cover::PressEtoOpenCover,
             press_e_to_open_door::PressEtoOpenDoor,
         },
+        Scene3ChestState, Scene3CoverState, Scene3DoorState,
     },
 };
 use bevy::prelude::*;

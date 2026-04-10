@@ -7,11 +7,11 @@ use crate::{
     levels::day1::{
         scene1::Picked,
         scene2::{
-            TrapdoorState,
             spawner::{
                 press_e_to_back_scene1::PressEtoBackScene1,
                 press_e_to_enter_trapdoor::PressEtoEnterTrapdoor,
             },
+            TrapdoorState,
         },
     },
 };

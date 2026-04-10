@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::entities::elevator::{Elevator, spawn_elevator};
+use crate::entities::elevator::{spawn_elevator, Elevator};
 
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_elevator(

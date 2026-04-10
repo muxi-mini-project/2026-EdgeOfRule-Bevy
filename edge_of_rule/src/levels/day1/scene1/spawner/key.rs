@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 use crate::{
-    entities::key::{Key, spawn_key},
+    entities::key::{spawn_key, Key},
     levels::day1::scene1::Picked,
 };
 

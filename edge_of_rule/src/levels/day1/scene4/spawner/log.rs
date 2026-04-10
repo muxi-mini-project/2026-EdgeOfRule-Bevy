@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::entities::log::{Log, spawn_log};
+use crate::entities::log::{spawn_log, Log};
 
 pub fn spawn(mut commands: Commands, asset: Res<AssetServer>) {
     spawn_log(&mut commands, Transform::from_xyz(24.0, -18.0, -4.0), asset);
