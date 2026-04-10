@@ -4,6 +4,7 @@ pub mod chest;
 pub mod circuit;
 pub mod controller;
 pub mod cover;
+pub mod desk;
 pub mod door;
 pub mod elevator;
 pub mod general;

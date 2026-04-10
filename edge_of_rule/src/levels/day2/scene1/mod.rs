@@ -38,6 +38,10 @@ impl Plugin for Scene1Plugin {
             spawner::notice_of_notice_board::despawn_all,
         )
         .add_systems(
+            OnExit(GameState::Day2Scene1),
+            spawner::notice_of_windows::despawn_all,
+        )
+        .add_systems(
             Update,
             (
                 spawner::notice_of_notice_board::spawn,
@@ -47,9 +51,17 @@ impl Plugin for Scene1Plugin {
         .add_systems(
             Update,
             (
+                spawner::notice_of_windows::spawn.run_if(in_state(GameState::Day2Scene1)),
+                spawner::notice_of_windows::despawn.run_if(in_state(GameState::Day2Scene1)),
+            ),
+        )
+        .add_systems(
+            Update,
+            (
                 actions::read_small_note,
                 actions::close_small_note,
                 actions::enter_scene3,
+                actions::enter_scene2,
             ),
         );
     }
