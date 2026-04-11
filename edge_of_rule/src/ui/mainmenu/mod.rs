@@ -81,6 +81,7 @@ impl Plugin for MainMenuPlugin {
                 spawner::background::spawn,
                 spawner::backward_btn::spawn,
                 spawner::levels::spawn,
+                spawner::levels_warn_popups::spawn,
                 spawner::lock_levels::spawner_level_one_lock,
                 spawner::lock_levels::spawner_level_two_lock,
                 spawner::lock_levels::spawner_level_three_lock,
@@ -97,6 +98,7 @@ impl Plugin for MainMenuPlugin {
                 spawner::background::despawn,
                 spawner::backward_btn::despawn,
                 spawner::levels::despawn,
+                spawner::levels_warn_popups::despawn,
                 spawner::lock_levels::despawn,
             ),
         )
@@ -158,7 +160,8 @@ impl Plugin for MainMenuPlugin {
         )
         .add_systems(
             Update,
-            (
+                (
+                spawner::levels_warn_popups::update_popup_visibility,
                 actions::lock_levels::unlock_levels_one,
                 actions::lock_levels::unlock_levels_two,
                 actions::lock_levels::unlock_levels_three,
@@ -166,7 +169,8 @@ impl Plugin for MainMenuPlugin {
                 actions::lock_levels::unlock_levels_five,
                 actions::lock_levels::unlock_levels_six,
                 actions::lock_levels::unlock_levels_seven,
-
+                
+                spawner::levels_warn_popups::timer,
             ),
         );
     }
