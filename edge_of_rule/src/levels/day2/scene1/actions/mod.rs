@@ -111,9 +111,8 @@ pub fn enter_scene2(
         return;
     }
     let mut idx: Option<usize> = None;
-    for n in &notice {
-        idx = Some(n.0);
-        break;
+    if let Some(n) = (&notice).into_iter().next() {
+        idx = Some(n.0)
     }
     let Some(idx) = idx else {
         return;
