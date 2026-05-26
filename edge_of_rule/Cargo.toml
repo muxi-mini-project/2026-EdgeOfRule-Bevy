@@ -7,3 +7,18 @@ edition = "2024"
 bevy = "0.13.0"
 bevy_asset_loader = "0.17"
 bevy_rapier2d = "0.25.0"
+
+[package.metadata.packager]
+productName = "Edge of Rule"
+identifier = "com.edge-of-rule"
+description = "Edge of Rule"
+icons = ["assets/icon.png"]
+beforePackagingCommand = "cargo build --release"
+formats = ["appimage"]
+
+[package.metadata.packager.appimage]
+excludedLibs = ["libudev.so.1"]
+files = { "assets" = "usr/bin/assets" }
+
+[package.metadata.packager.deb]
+files = { "assets" = "usr/bin/assets" }
