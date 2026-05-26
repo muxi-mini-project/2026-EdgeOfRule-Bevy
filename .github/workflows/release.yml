@@ -13,20 +13,20 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
-        matrix:
-          include:
-            - os: ubuntu-latest
-              formats: appimage,deb
-              artifact: linux
-              config: ""
-            - os: windows-latest
-              formats: wix
-              artifact: windows
-              config: "-c ./edge_of_rule/Packager.windows.toml"
-            - os: macos-latest
-              formats: dmg
-              artifact: macos
-              config: ""
+      matrix:
+        include:
+          - os: ubuntu-latest
+            formats: appimage,deb
+            artifact: linux
+            config: ""
+          - os: windows-latest
+            formats: wix
+            artifact: windows
+            config: "-c ./edge_of_rule/Packager.windows.toml"
+          - os: macos-latest
+            formats: dmg
+            artifact: macos
+            config: ""
 
     steps:
       - uses: actions/checkout@v4
