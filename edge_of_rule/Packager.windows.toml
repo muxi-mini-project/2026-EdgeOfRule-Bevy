@@ -1,0 +1,6 @@
+productName = "Edge of Rule"
+identifier = "com.edge-of-rule"
+description = "Edge of Rule"
+icons = ["assets/icon.png"]
+beforePackagingCommand = "cargo build --release"
+resources = [{ src = "assets", target = "assets" }]

@@ -13,17 +13,20 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-latest
-            formats: appimage,deb
-            artifact: linux
-          - os: windows-latest
-            formats: wix
-            artifact: windows
-          - os: macos-latest
-            formats: dmg
-            artifact: macos
+        matrix:
+          include:
+            - os: ubuntu-latest
+              formats: appimage,deb
+              artifact: linux
+              config: ""
+            - os: windows-latest
+              formats: wix
+              artifact: windows
+              config: "-c ./edge_of_rule/Packager.windows.toml"
+            - os: macos-latest
+              formats: dmg
+              artifact: macos
+              config: ""
 
     steps:
       - uses: actions/checkout@v4
@@ -49,7 +52,7 @@ jobs:
         run: cargo install cargo-packager --locked
 
       - name: Package
-        run: cargo packager --release --manifest-path ./edge_of_rule/Cargo.toml --formats ${{ matrix.formats }}
+        run: cargo packager --release --manifest-path ./edge_of_rule/Cargo.toml --formats ${{ matrix.formats }} ${{ matrix.config }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
