@@ -18,15 +18,12 @@ jobs:
           - os: ubuntu-latest
             formats: appimage,deb
             artifact: linux
-            config: ""
           - os: windows-latest
             formats: wix
             artifact: windows
-            config: "-c ./edge_of_rule/Packager.windows.toml"
           - os: macos-latest
             formats: dmg
             artifact: macos
-            config: ""
 
     steps:
       - uses: actions/checkout@v4
@@ -51,8 +48,43 @@ jobs:
       - name: Install cargo-packager
         run: cargo install cargo-packager --locked
 
-      - name: Package
-        run: cargo packager --release --manifest-path ./edge_of_rule/Cargo.toml --formats ${{ matrix.formats }} ${{ matrix.config }}
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = "Stop"
+
+          Push-Location edge_of_rule
+          try {
+            $toml = Get-Content -Raw Cargo.toml
+            $match = [regex]::Match($toml, '^\s*version\s*=\s*"([^"]+)"', 'Multiline')
+            if (-not $match.Success) { throw "version not found in Cargo.toml" }
+            $version = $match.Groups[1].Value
+
+            cargo build --release
+
+            $config = @{
+              name = "edge_of_rule"
+              productName = "Edge of Rule"
+              version = $version
+              identifier = "com.edge-of-rule"
+              description = "Edge of Rule"
+              icons = @("assets/icon.png")
+              outDir = "target/release"
+              binariesDir = "target/release"
+              binaries = @(@{ path = "edge_of_rule"; main = $true })
+              resources = @(@{ src = "assets"; target = "assets" })
+            }
+            $configJson = $config | ConvertTo-Json -Compress -Depth 6
+            cargo packager --formats wix -c $configJson
+          } finally {
+            Pop-Location
+          }
+
+      - name: Package (non-Windows)
+        if: runner.os != 'Windows'
+        run: cargo packager --release --manifest-path ./edge_of_rule/Cargo.toml --formats ${{ matrix.formats }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
