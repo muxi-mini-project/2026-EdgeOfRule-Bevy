@@ -1,11 +1,7 @@
 pub mod actions;
 pub mod spawner;
 
-use crate::ui::mainmenu;
-
 use bevy::prelude::*;
-
-use crate::core::state::GameState;
 
 pub struct HudPlugin;
 
@@ -22,25 +18,7 @@ impl Plugin for HudPlugin {
             .add_systems(Startup, spawner::ingame_option_area::spawn_keys_words)
 
 
-            .add_systems(OnEnter(GameState::Day1Scene1), spawner::blood_bar::spawn_blood_bar)
-            .add_systems(OnEnter(GameState::Day1Scene2), spawner::blood_bar::spawn_blood_bar)
-            .add_systems(OnEnter(GameState::Day1Scene3), spawner::blood_bar::spawn_blood_bar)
-            .add_systems(OnEnter(GameState::Day1Scene4), spawner::blood_bar::spawn_blood_bar)
-
-            .add_systems(OnEnter(GameState::Day2Scene1), spawner::blood_bar::spawn_blood_bar)
-            .add_systems(OnEnter(GameState::Day2Scene2), spawner::blood_bar::spawn_blood_bar)
-            .add_systems(OnEnter(GameState::Day2Scene3), spawner::blood_bar::spawn_blood_bar)
-            .add_systems(OnEnter(GameState::Day2Scene4), spawner::blood_bar::spawn_blood_bar)
-
-            .add_systems(OnExit(GameState::Day1Scene1), spawner::blood_bar::despawn_blood_bar)
-            .add_systems(OnExit(GameState::Day1Scene2), spawner::blood_bar::despawn_blood_bar)
-            .add_systems(OnExit(GameState::Day1Scene3), spawner::blood_bar::despawn_blood_bar)
-            .add_systems(OnExit(GameState::Day1Scene4), spawner::blood_bar::despawn_blood_bar)
-
-            .add_systems(OnExit(GameState::Day2Scene1), spawner::blood_bar::despawn_blood_bar)
-            .add_systems(OnExit(GameState::Day2Scene2), spawner::blood_bar::despawn_blood_bar)
-            .add_systems(OnExit(GameState::Day2Scene3), spawner::blood_bar::despawn_blood_bar)
-            .add_systems(OnExit(GameState::Day2Scene4), spawner::blood_bar::despawn_blood_bar)
+            .add_systems(Update, spawner::blood_bar::manage_blood_bar)
 
             .add_systems(
                 Update,

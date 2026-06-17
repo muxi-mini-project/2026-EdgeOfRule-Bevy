@@ -12,6 +12,7 @@ pub struct LevelsImageAssets {
     pub day2_scene3_background: Handle<Image>,
     pub day2_scene4_background: Handle<Image>,
     pub day2_scene5_background: Handle<Image>,
+    pub day3_background: Handle<Image>,
 }
 
 pub fn load_levels_image_assets(mut commands: Commands, asset_server: Res<AssetServer>) {
@@ -26,5 +27,6 @@ pub fn load_levels_image_assets(mut commands: Commands, asset_server: Res<AssetS
         day2_scene3_background: asset_server.load("images/levels/day2/scene3_background.png"),
         day2_scene4_background: asset_server.load("images/levels/day2/scene4_background.png"),
         day2_scene5_background: asset_server.load("images/levels/day2/scene5_background.png"),
+        day3_background: asset_server.load("images/mainmenu/background.png"),
     });
 }

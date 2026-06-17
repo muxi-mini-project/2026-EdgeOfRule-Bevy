@@ -1,43 +1,55 @@
 use bevy::prelude::*;
-use bevy::sprite::Anchor; 
 
 use crate::assets::hud::HudImageAssets;
-use crate::core::health::{PlayerHealth, PlayerDied, SewageDamageAccum};
+use crate::core::state::GameState;
 
 #[derive(Component)]
 pub struct BloodBar;
-#[derive(Component)]
-pub struct BloodFill;
 
-pub fn spawn_blood_bar(
-    mut commands: Commands, 
+pub fn manage_blood_bar(
+    mut commands: Commands,
+    state: Res<State<GameState>>,
+    mut blood_bar_entity: Local<Option<Entity>>,
     hud_image_assets: Res<HudImageAssets>,
-    player_health: Res<PlayerHealth>, 
 ) {
-    commands.insert_resource(PlayerHealth::default());
-    let health_percent = player_health.current as f32 / player_health.max as f32;
-    
-    commands.spawn((
-        SpriteBundle {
-            texture: hud_image_assets.blood_bar.clone(),
-            sprite: Sprite {
-                anchor: Anchor::CenterLeft,  
-                custom_size: Some(Vec2::new(200.0, 20.0)), 
-                ..default()
-            },
-            transform: Transform {
-                translation: Vec3::new(-(1550.0/2.0) + 170.0, (950.0/2.0) - 120.0, 99.0),
-                scale: Vec3::new(health_percent, 1.0, 1.0),
-                ..Default::default()
-            },
-            ..Default::default()
-        },
-        BloodBar,
-    ));
-}
+    use GameState::*;
+    let in_gameplay = matches!(
+        state.get(),
+        Day1Scene1
+            | Day1Scene2
+            | Day1Scene3
+            | Day1Scene4
+            | Day2Scene1
+            | Day2Scene2
+            | Day2Scene3
+            | Day2Scene4
+            | Day2Scene5
+    );
 
-pub fn despawn_blood_bar(mut commands: Commands, blood_bars: Query<Entity, With<BloodBar>>) {
-    for entity in blood_bars.iter() {
-        commands.entity(entity).despawn();
+    if in_gameplay && blood_bar_entity.is_none() {
+        let entity = commands
+            .spawn((
+                ImageBundle {
+                    image: UiImage::new(hud_image_assets.blood_bar.clone()),
+                    style: Style {
+                        width: Val::Px(200.0),
+                        height: Val::Px(20.0),
+                        position_type: PositionType::Absolute,
+                        left: Val::Px(20.0),
+                        top: Val::Px(20.0),
+                        ..Default::default()
+                    },
+                    z_index: ZIndex::Global(500),
+                    ..Default::default()
+                },
+                BloodBar,
+            ))
+            .id();
+        *blood_bar_entity = Some(entity);
+    } else if !in_gameplay && blood_bar_entity.is_some() {
+        commands
+            .entity(blood_bar_entity.unwrap())
+            .despawn_recursive();
+        *blood_bar_entity = None;
     }
 }
