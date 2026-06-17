@@ -4,10 +4,10 @@ use crate::{
     animation::fade_mask::spawn_mask,
     animation::hurt_shake::HurtShake,
     control::ghost::Day2GhostManager,
-    core::{health::PlayerDied, health::PlayerHealth, health::SewageDamageAccum, state::GameState},
+    core::{health::PlayerDied, health::PlayerHealth, health::SewageDamageAccum, inventory::Inventory, state::GameState},
     entities::player::{Player, SpawnPoint},
     levels::day1::{
-        scene1::{Day1Finished, Picked, Scene1DoorState},
+        scene1::{Day1Finished, Scene1DoorState},
         scene2::TrapdoorState,
         scene3::{Scene3ChestState, Scene3CoverState, Scene3DoorState},
     },
@@ -56,7 +56,7 @@ pub fn on_player_died(
     mut events: EventReader<PlayerDied>,
     mut commands: Commands,
     state: Res<State<GameState>>,
-    mut picked: ResMut<Picked>,
+    mut inventory: ResMut<Inventory>,
     mut scene1_door_state: ResMut<Scene1DoorState>,
     mut day1_finished: ResMut<Day1Finished>,
     mut trapdoor_state: ResMut<TrapdoorState>,
@@ -72,7 +72,7 @@ pub fn on_player_died(
         return;
     }
 
-    *picked = Picked::None;
+    inventory.clear();
     *scene1_door_state = Scene1DoorState::Closed;
     *day1_finished = Day1Finished::No;
 

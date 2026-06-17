@@ -1,6 +1,9 @@
 use crate::{
     animation::fade_mask::spawn_mask,
-    core::state::GameState,
+    core::{
+        inventory::{Inventory, InventoryItem},
+        state::GameState,
+    },
     entities::{
         elevator::Elevator,
         player::{Player, SpawnPoint},
@@ -69,6 +72,7 @@ pub fn open_chest(
     querys: Query<&PressEtoOpenChest>,
     input: Res<ButtonInput<KeyCode>>,
     mut chest_state: ResMut<Scene3ChestState>,
+    mut inventory: ResMut<Inventory>,
 ) {
     if querys.iter().len() == 0 {
         return;
@@ -77,7 +81,10 @@ pub fn open_chest(
     if input.just_pressed(KeyCode::KeyE) {
         match *chest_state {
             Scene3ChestState::Packed => *chest_state = Scene3ChestState::Opened,
-            Scene3ChestState::Opened => *chest_state = Scene3ChestState::Picked,
+            Scene3ChestState::Opened => {
+                *chest_state = Scene3ChestState::Picked;
+                inventory.add(InventoryItem::Controller);
+            }
             _ => (),
         }
     }
@@ -87,6 +94,7 @@ pub fn open_cover(
     querys: Query<&PressEtoOpenCover>,
     input: Res<ButtonInput<KeyCode>>,
     mut chest_state: ResMut<Scene3CoverState>,
+    mut inventory: ResMut<Inventory>,
 ) {
     if querys.iter().len() == 0 {
         return;
@@ -95,7 +103,10 @@ pub fn open_cover(
     if input.just_pressed(KeyCode::KeyE) {
         match *chest_state {
             Scene3CoverState::Packed => *chest_state = Scene3CoverState::Opened,
-            Scene3CoverState::Opened => *chest_state = Scene3CoverState::Picked,
+            Scene3CoverState::Opened => {
+                *chest_state = Scene3CoverState::Picked;
+                inventory.add(InventoryItem::CoverPicked);
+            }
             _ => (),
         }
     }
@@ -116,11 +127,11 @@ pub fn fog_follow(
 pub fn move_elevator_when_chest_picked(
     time: Res<Time>,
     input: Res<ButtonInput<KeyCode>>,
-    chest_state: Res<Scene3ChestState>,
+    inventory: Res<Inventory>,
     mut elevators: Query<(&mut Transform, &Elevator), Without<Player>>,
     mut players: Query<&mut Transform, With<Player>>,
 ) {
-    if *chest_state != Scene3ChestState::Picked {
+    if !inventory.has(InventoryItem::Controller) {
         return;
     }
 

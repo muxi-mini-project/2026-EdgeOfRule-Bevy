@@ -1,5 +1,6 @@
 pub mod day1;
 pub mod day2;
+pub mod day3;
 
 use bevy::prelude::*;
 
@@ -15,6 +16,7 @@ impl Plugin for LevelsPlugin {
             .add_plugins(day2::scene2::Scene2Plugin)
             .add_plugins(day2::scene3::Scene3Plugin)
             .add_plugins(day2::scene4::Scene4Plugin)
-            .add_plugins(day2::scene5::Scene5Plugin);
+            .add_plugins(day2::scene5::Scene5Plugin)
+            .add_plugins(day3::Day3Plugin);
     }
 }

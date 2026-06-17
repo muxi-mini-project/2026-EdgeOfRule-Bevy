@@ -1,4 +1,5 @@
 pub mod arrow_of_door;
+pub mod arrow_of_mirror;
 pub mod arrow_of_trapdoor;
 pub mod background;
 pub mod door;
@@ -7,4 +8,5 @@ pub mod mirror;
 pub mod player;
 pub mod press_e_to_back_scene1;
 pub mod press_e_to_enter_trapdoor;
+pub mod press_e_to_look_mirror;
 pub mod trapdoor;
