@@ -5,24 +5,21 @@ use bevy::text::Text2dBounds;
 use crate::{
     animation::fade_mask::spawn_mask,
     constants::SCALE,
-    core::state::GameState,
+    core::{inventory::{Inventory, InventoryItem}, state::GameState},
     entities::{
-        key::{spawn_key, Key},
+        key::Key,
         player::SpawnPoint,
-        screw::{spawn_screw, Screw},
+        screw::Screw,
     },
     levels::day1::scene1::{
         spawner::{
             press_e_to_open_door::PressEtoOpenDoor, press_e_to_pick_key::PressEtoPickKey,
             press_e_to_pick_screw::PressEtoPickScrew, press_e_to_read::PressEtoRead,
-            press_e_to_return_key::PressEtoReturnKey, press_e_to_return_screw::PressEtoReturnScrew,
             press_e_to_sleep::PressEtoSleep,
         },
-        Picked, Scene1DoorState,
+        Scene1DoorState,
     },
-    ui::mainmenu::spawner::lock_levels::{
-        LevelTwoLock,    
-    },
+    ui::mainmenu::spawner::lock_levels::LevelTwoLock,
 };
 
 #[derive(Component)]
@@ -31,14 +28,14 @@ pub struct OpenedSmallNote;
 pub fn open_door(
     query: Query<&PressEtoOpenDoor>,
     input: Res<ButtonInput<KeyCode>>,
-    picked: Res<Picked>,
+    inventory: Res<Inventory>,
     mut commands: Commands,
 ) {
     if query.iter().len() == 0 {
         return;
     }
 
-    if *picked != Picked::Key {
+    if inventory.selected_item() != Some(InventoryItem::Key) {
         return;
     }
 
@@ -131,16 +128,16 @@ pub fn pick_key(
     input: Res<ButtonInput<KeyCode>>,
     query: Query<&PressEtoPickKey>,
     keys: Query<Entity, With<Key>>,
-    mut picked: ResMut<Picked>,
+    mut inventory: ResMut<Inventory>,
 ) {
     if query.iter().len() == 0 {
         return;
     }
 
     if input.just_pressed(KeyCode::KeyE) {
+        inventory.add(InventoryItem::Key);
         for key in keys.iter() {
             commands.entity(key).despawn();
-            *picked = Picked::Key;
         }
     }
 }
@@ -150,69 +147,17 @@ pub fn pick_screw(
     input: Res<ButtonInput<KeyCode>>,
     query: Query<&PressEtoPickScrew>,
     screws: Query<Entity, With<Screw>>,
-    mut picked: ResMut<Picked>,
+    mut inventory: ResMut<Inventory>,
 ) {
     if query.iter().len() == 0 {
         return;
     }
 
     if input.just_pressed(KeyCode::KeyE) {
+        inventory.add(InventoryItem::Screw);
         for screw in screws.iter() {
             commands.entity(screw).despawn();
-            *picked = Picked::Screw;
         }
-    }
-}
-
-pub fn return_key(
-    mut commands: Commands,
-    input: Res<ButtonInput<KeyCode>>,
-    query: Query<&PressEtoReturnKey>,
-    mut picked: ResMut<Picked>,
-    asset: Res<AssetServer>,
-) {
-    if query.iter().len() == 0 {
-        return;
-    }
-
-    if *picked != Picked::Key {
-        return;
-    }
-
-    if input.just_pressed(KeyCode::KeyE) {
-        spawn_key(
-            &mut commands,
-            Transform::from_xyz(-220.0, -64.0, -5.0),
-            asset,
-        );
-
-        *picked = Picked::None
-    }
-}
-
-pub fn return_screw(
-    mut commands: Commands,
-    input: Res<ButtonInput<KeyCode>>,
-    query: Query<&PressEtoReturnScrew>,
-    mut picked: ResMut<Picked>,
-    asset: Res<AssetServer>,
-) {
-    if query.iter().len() == 0 {
-        return;
-    }
-
-    if *picked != Picked::Screw {
-        return;
-    }
-
-    if input.just_pressed(KeyCode::KeyE) {
-        spawn_screw(
-            &mut commands,
-            Transform::from_xyz(-396.0, -64.0, -5.0),
-            asset,
-        );
-
-        *picked = Picked::None
     }
 }
 

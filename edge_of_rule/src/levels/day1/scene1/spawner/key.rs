@@ -1,12 +1,12 @@
 use bevy::prelude::*;
 
 use crate::{
+    core::inventory::{Inventory, InventoryItem},
     entities::key::{spawn_key, Key},
-    levels::day1::scene1::Picked,
 };
 
-pub fn spawn(mut commands: Commands, asset: Res<AssetServer>, picked: Res<Picked>) {
-    if *picked == Picked::Key {
+pub fn spawn(mut commands: Commands, asset: Res<AssetServer>, inventory: Res<Inventory>) {
+    if inventory.has(InventoryItem::Key) {
         return;
     }
     spawn_key(

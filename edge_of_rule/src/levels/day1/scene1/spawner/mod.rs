@@ -1,7 +1,5 @@
 pub mod arrow_of_door;
 pub mod arrow_of_key;
-pub mod arrow_of_return_key;
-pub mod arrow_of_return_screw;
 pub mod arrow_of_screw;
 pub mod arrow_of_sleep;
 pub mod arrow_of_small_note;
@@ -15,8 +13,6 @@ pub mod press_e_to_open_door;
 pub mod press_e_to_pick_key;
 pub mod press_e_to_pick_screw;
 pub mod press_e_to_read;
-pub mod press_e_to_return_key;
-pub mod press_e_to_return_screw;
 pub mod press_e_to_sleep;
 pub mod screw;
 pub mod small_note;

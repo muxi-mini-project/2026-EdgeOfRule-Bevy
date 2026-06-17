@@ -1,8 +1,8 @@
 use bevy::prelude::*;
 
 use crate::{
-    entities::{key::Key, player::Player, press_e::spawn_press_e},
-    levels::day1::scene1::Picked,
+    core::inventory::{Inventory, InventoryItem},
+    entities::{player::Player, press_e::spawn_press_e, key::Key},
 };
 
 #[derive(Component)]
@@ -14,9 +14,9 @@ pub fn spawn(
     querys: Query<&PressEtoPickKey>,
     players: Query<&Transform, With<Player>>,
     keys: Query<&Transform, With<Key>>,
-    picked: Res<Picked>,
+    inventory: Res<Inventory>,
 ) {
-    if *picked != Picked::None {
+    if inventory.has(InventoryItem::Key) {
         return;
     }
     if querys.iter().len() != 0 {

@@ -1,8 +1,9 @@
 use bevy::prelude::*;
 
 use crate::{
+    core::inventory::{Inventory, InventoryItem},
     entities::{arrow::spawn_arrow, player::Player, trapdoor::Trapdoor},
-    levels::day1::{scene1::Picked, scene2::TrapdoorState},
+    levels::day1::scene2::TrapdoorState,
 };
 
 #[derive(Component)]
@@ -14,14 +15,14 @@ pub fn spawn(
     arrows: Query<&ArrowOfTrapdoor>,
     players: Query<&Transform, With<Player>>,
     doors: Query<&Transform, With<Trapdoor>>,
-    picked: Res<Picked>,
+    inventory: Res<Inventory>,
     trapdoor_state: Res<TrapdoorState>,
 ) {
     if arrows.iter().len() != 0 {
         return;
     }
 
-    if *picked != Picked::Screw && *trapdoor_state == TrapdoorState::Closed {
+    if inventory.selected_item() != Some(InventoryItem::Screw) && *trapdoor_state == TrapdoorState::Closed {
         return;
     }
 

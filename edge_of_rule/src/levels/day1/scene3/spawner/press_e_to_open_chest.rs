@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 
 use crate::{
+    core::inventory::{Inventory, InventoryItem},
     entities::{chest::Chest, player::Player, press_e::spawn_press_e},
     levels::day1::scene3::Scene3ChestState,
 };
@@ -15,12 +16,13 @@ pub fn spawn(
     players: Query<&Transform, With<Player>>,
     doors: Query<&Transform, With<Chest>>,
     chest_state: Res<Scene3ChestState>,
+    inventory: Res<Inventory>,
 ) {
     if querys.iter().len() != 0 && !chest_state.is_changed() {
         return;
     }
 
-    if *chest_state == Scene3ChestState::Picked {
+    if *chest_state == Scene3ChestState::Picked || inventory.has(InventoryItem::Controller) {
         return;
     }
     for player in &players {
@@ -50,9 +52,11 @@ pub fn despawn(
     players: Query<&Transform, With<Player>>,
     doors: Query<&Transform, With<Chest>>,
     chest_state: Res<Scene3ChestState>,
+    inventory: Res<Inventory>,
 ) {
     for player in &players {
-        if *chest_state == Scene3ChestState::Picked || chest_state.is_changed() {
+        if *chest_state == Scene3ChestState::Picked || chest_state.is_changed()
+            || inventory.has(InventoryItem::Controller) {
             break;
         }
         for door in &doors {

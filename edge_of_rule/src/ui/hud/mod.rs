@@ -19,11 +19,14 @@ impl Plugin for HudPlugin {
 
 
             .add_systems(Update, spawner::blood_bar::manage_blood_bar)
+            .add_systems(Update, spawner::inventory_bar::manage_inventory_bar)
 
             .add_systems(
                 Update,
                     (
                         actions::blood_bar::update_blood_bar,
+                        actions::inventory_bar::select_slot,
+                        spawner::inventory_bar::update_inventory_display,
                         actions::esc_ingame_option::on_key_esc,
                         actions::esc_ingame_option::on_click_exit,
                         actions::esc_ingame_option::on_click_menu,
