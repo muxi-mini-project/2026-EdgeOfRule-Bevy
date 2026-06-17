@@ -70,7 +70,7 @@ jobs:
               version = $version
               identifier = "com.edge-of-rule"
               description = "Edge of Rule"
-              icons = @("assets/icon.png")
+              icons = @("assets/icon.png", "assets/icon.ico")
               outDir = "target/release"
               binariesDir = "target/release"
               binaries = @(@{ path = "edge_of_rule"; main = $true })
